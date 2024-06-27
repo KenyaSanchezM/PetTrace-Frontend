@@ -1,3 +1,4 @@
+/* Estilos generales para la aplicación */
 .App {
   text-align: center;
 }
@@ -13,26 +14,60 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* Estilos para el header */
+header {
+  background-color: #06231F;
+  padding: 20px;
   color: white;
+  text-align: center;
 }
 
-.App-link {
+h1 {
+  font-size: 2.5rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+
+/* Estilo específico para la Navbar */
+.MDBNavbar.MDBNavbar {
+  background-color: #ffffff; /* Color de fondo de la barra de navegación */
+}
+
+/* Estilo específico para los enlaces de la Navbar */
+.MDBNavbarLink.MDBNavbarLink {
+  color: #ffffff !important; /* Color del texto de los enlaces */
+}
+
+/* Estilo específico para el enlace activo de la Navbar */
+.MDBNavbarLink.MDBNavbarLink.active {
+  font-weight: bold; /* Estilo del enlace activo */
+}
+
+/* Otros estilos específicos según sea necesario */
+
+/* Estilos para el footer */
+.footer {
+  background-color: #282c34;
+  color: white;
+  padding: 20px 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+}
+
+.footer-content p {
+  margin: 5px 0;
+}
+
+.footer-content a {
   color: #61dafb;
+  text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.footer-content a:hover {
+  text-decoration: underline;
 }
