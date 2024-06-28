@@ -5,7 +5,7 @@ import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyec
 
 const Header = () => {
   return (
-    <header style={{ backgroundColor: '#25675f', color: '#FBFCF2', padding: '10px 20px', maxWidth: '100%' }}>
+    <header style={{ backgroundColor: '#8CAF6D', color: '#FBFCF2', padding: '10px 20px', maxWidth: '100%' }}>
           <nav className="navbar navbar-expand-lg navbar-dark">
             <div className="container">
               <a className="navbar-brand" href="/">
