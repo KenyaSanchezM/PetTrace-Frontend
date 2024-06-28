@@ -9,6 +9,7 @@ import Shelters from './components/Shelters';
 import Footer from './components/Footer'; 
 import Header from './components/Header';// Asegúrate de que la ruta del import sea correcta
 import './App.css'; // Asegúrate de importar el CSS
+import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<Register />} />
             <Route path="/shelters" element={<Shelters />} />
+            <Route path="/registro-perros" element={<RegistroPerros />} />
           </Routes>
         </main>
         <Footer />
