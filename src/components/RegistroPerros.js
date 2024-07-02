@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 import './RegistroPerros.css';
 
 const RegistroPerros = () => {
@@ -14,6 +15,9 @@ const RegistroPerros = () => {
     caracteristicas: '',
     fecha: '',
   });
+  const handleFormTypeChange = (event) => {
+      setFormType(event.target.value);
+    };
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -24,14 +28,27 @@ const RegistroPerros = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFormTypeChange = (event) => {
-    setFormType(event.target.value);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = new FormData();
+    form.append('file', file);
+    form.append('formType', formType);
+    for (const key in formData) {
+      form.append(key, formData[key]);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Aquí puedes manejar el envío del formulario
-    console.log(file, formType, formData);
+  
+    try {
+      const response = await axios.post('http://localhost:8000/api/RegistroPerros/', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data);
+      // Maneja la respuesta del servidor
+    } catch (error) {
+      console.error('Error subiendo el formulario:', error);
+    }
   };
 
   return (
@@ -208,7 +225,7 @@ const RegistroPerros = () => {
               </>
             )}
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" className="button">
               Registrar
             </Button>
           </Form>
