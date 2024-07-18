@@ -6,15 +6,14 @@ import About from './components/About';
 import Contact from './components/Contact';
 import RegisterModal from './components/Register';
 import SignIn from './components/SignIn';
-import Shelters from './components/Shelters';
 import Tutorial from './components/Tutorial';
-import Report from './components/Report';
 import Footer from './components/Footer'; 
 import Header from './components/Header';// Asegúrate de que la ruta del import sea correcta
 import './App.css'; // Asegúrate de importar el CSS
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 //import ReportModal from './components/Report';
 import RegisterShelterModal from './components/RegisterShelter';
+import Refugios from './components/Refugios';
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -43,10 +42,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/shelters" element={<Shelters />} />
             <Route path="/registro-perros" element={<RegistroPerros />} />
             <Route path="/tutorial" element={<Tutorial />} />
-            <Route path="/report" element={<Report />} />
+            <Route path="/refugios" element={<Refugios />} />
           </Routes>
         </main>
         <Footer />
