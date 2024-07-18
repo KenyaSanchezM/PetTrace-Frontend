@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyecto
 
-const Header = ({ onSignInClick }) => {
+const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
   return (
     <header style={{ backgroundColor: '#8CAF6D', color: '#FBFCF2', padding: '10px 20px', maxWidth: '100%' }}>
           <nav className="navbar navbar-expand-lg navbar-dark">
@@ -40,12 +40,19 @@ const Header = ({ onSignInClick }) => {
                     <a className="nav-link" href="/shelters">Refugios</a>
                   </li>
                   <li className="nav-item">
-                  <a className="nav-link" href="#" onClick={onSignInClick}>
+                  <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onSignInClick}>
                       Iniciar Sesión
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/register">Regístrate</a>
+                    <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
+                      Regístrate
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
+                      Registrar refugio
+                    </a>
                   </li>
                 </ul>
               </div>
