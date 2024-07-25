@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import './RegistroPerros.css';
 //import MapaSeleccion from './MapaSeleccion';
 
 const RegistroPerros = () => {
+  const [show, setShow] = useState(false);
   const [file, setFile] = useState(null);
   const [formType, setFormType] = useState('encontrado');
   const [formData, setFormData] = useState({
@@ -17,6 +18,10 @@ const RegistroPerros = () => {
     fecha: '',
     estatus:'',
   });
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const handleFormTypeChange = (event) => {
     const value = event.target.value;
     setFormType(value);
@@ -64,9 +69,8 @@ const RegistroPerros = () => {
       }
     }
 
-  
     try {
-      const response = await axios.post('http://localhost:8000/api/RegistroPerros/', form, {
+      const response = await axios.post('http://localhost:8000/api/registro-perros/', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -79,10 +83,18 @@ const RegistroPerros = () => {
   };
 
   return (
-    <Container className="my-5">
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <h2 className="text-center">Registro de Perros</h2>
+    <>
+      <Row className="justify-content-center my-3 ">
+        <Button variant="primary" onClick={handleShow}>
+          Registrar Perro
+        </Button>
+      </Row>
+
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Registro de Perros</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Sube una imagen</Form.Label>
@@ -98,7 +110,6 @@ const RegistroPerros = () => {
 
             {formType === 'encontrado' ? (
               <>
-              
                 <Form.Group controlId="nombreEncontrado" className="mb-3">
                   <Form.Label>¿Sabes su nombre? Ingresa el nombre</Form.Label>
                   <Form.Control
@@ -121,7 +132,6 @@ const RegistroPerros = () => {
                     <option value="no">No</option>
                   </Form.Select>
                 </Form.Group>
-                
                 <Form.Group controlId="edadEncontrado" className="mb-3">
                   <Form.Label>Edad</Form.Label>
                   <Form.Control
@@ -132,94 +142,91 @@ const RegistroPerros = () => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                
-              <Form.Group controlId="colorEncontrado" className="mb-3">
-              <Form.Label>Colores</Form.Label>
-              <div>
-                <Form.Check
-                  type="checkbox"
-                  label="Negro"
-                  id="colorNegro"
-                  name="negro"
-                  checked={formData.color.negro}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Blanco"
-                  name="blanco"
-                  id="colorBlanco"
-                  checked={formData.color.blanco}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Gris"
-                  name="gris"
-                  id="coloGris"
-                  checked={formData.color.gris}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Cafe"
-                  name="cafe"
-                  id="colorCafe"
-                  checked={formData.color.cafe}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Amarillo"
-                  name="amarillo"
-                  id="colorAmarillo"
-                  checked={formData.color.amarillo}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Rojizo"
-                  name="rojizo"
-                  id="colorRojizo"
-                  checked={formData.color.rojizo}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Dorado"
-                  name="dorado"
-                  id="colorDorado"
-                  checked={formData.color.dorado}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Naranja"
-                  name="naranja"
-                  id="colorNaranja"
-                  checked={formData.color.naranja}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Manchas"
-                  name="manchas"
-                  id="colorManchas"
-                  checked={formData.color.manchas}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Multicolor"
-                  name="multicolor"
-                  id="colorMulticolor"
-                  checked={formData.color.multicolor}
-                  onChange={handleInputChange}
-                />
-                
-              </div>
-            </Form.Group>
-
+                <Form.Group controlId="colorEncontrado" className="mb-3">
+                  <Form.Label>Colores</Form.Label>
+                  <div>
+                    <Form.Check
+                      type="checkbox"
+                      label="Negro"
+                      id="colorNegro"
+                      name="negro"
+                      checked={formData.color.includes('negro')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Blanco"
+                      name="blanco"
+                      id="colorBlanco"
+                      checked={formData.color.includes('blanco')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Gris"
+                      name="gris"
+                      id="colorGris"
+                      checked={formData.color.includes('gris')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Cafe"
+                      name="cafe"
+                      id="colorCafe"
+                      checked={formData.color.includes('cafe')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Amarillo"
+                      name="amarillo"
+                      id="colorAmarillo"
+                      checked={formData.color.includes('amarillo')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Rojizo"
+                      name="rojizo"
+                      id="colorRojizo"
+                      checked={formData.color.includes('rojizo')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Dorado"
+                      name="dorado"
+                      id="colorDorado"
+                      checked={formData.color.includes('dorado')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Naranja"
+                      name="naranja"
+                      id="colorNaranja"
+                      checked={formData.color.includes('naranja')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Manchas"
+                      name="manchas"
+                      id="colorManchas"
+                      checked={formData.color.includes('manchas')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Multicolor"
+                      name="multicolor"
+                      id="colorMulticolor"
+                      checked={formData.color.includes('multicolor')}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </Form.Group>
                 <Form.Group controlId="fechaEncontrado" className="mb-3">
                   <Form.Label>Fecha en la que se encontró</Form.Label>
                   <Form.Control
@@ -230,7 +237,7 @@ const RegistroPerros = () => {
                   />
                 </Form.Group>
                 <Form.Group controlId="ubicacionEncontrado" className="mb-3">
-                  <Form.Label>Ubicacion</Form.Label>
+                  <Form.Label>Ubicación</Form.Label>
                   <Form.Control
                     type="text"
                     name="ubicacion"
@@ -238,13 +245,11 @@ const RegistroPerros = () => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                
                 {/* Integración del mapa 
                 <Form.Group className="mb-3">
                   <Form.Label>Selecciona la ubicación donde lo encontraste</Form.Label>
                   <MapaSeleccion ubicacion={formData.ubicacion} onUbicacionChange={handleUbicacionChange} />
-                </Form.Group>*/}
-
+                </Form.Group> */}
                 <Form.Group controlId="caracteristicasEncontrado" className="mb-3">
                   <Form.Label>Características especiales</Form.Label>
                   <Form.Control
@@ -255,7 +260,6 @@ const RegistroPerros = () => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                
               </>
             ) : (
               <>
@@ -266,6 +270,16 @@ const RegistroPerros = () => {
                     placeholder="Nombre del perro"
                     name="nombre"
                     value={formData.nombre}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="edadPerdido" className="mb-3">
+                  <Form.Label>Edad</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Edad del perro"
+                    name="edad"
+                    value={formData.edad}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
@@ -281,104 +295,91 @@ const RegistroPerros = () => {
                     <option value="no">No</option>
                   </Form.Select>
                 </Form.Group>
-                <Form.Group controlId="edadPerdido" className="mb-3">
-                  <Form.Label>Edad</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Edad del perro"
-                    name="edad"
-                    value={formData.edad}
-                    onChange={handleInputChange}
-                  />
+                <Form.Group controlId="colorPerdido" className="mb-3">
+                  <Form.Label>Colores</Form.Label>
+                  <div>
+                    <Form.Check
+                      type="checkbox"
+                      label="Negro"
+                      id="colorNegro"
+                      name="negro"
+                      checked={formData.color.includes('negro')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Blanco"
+                      name="blanco"
+                      id="colorBlanco"
+                      checked={formData.color.includes('blanco')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Gris"
+                      name="gris"
+                      id="colorGris"
+                      checked={formData.color.includes('gris')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Cafe"
+                      name="cafe"
+                      id="colorCafe"
+                      checked={formData.color.includes('cafe')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Amarillo"
+                      name="amarillo"
+                      id="colorAmarillo"
+                      checked={formData.color.includes('amarillo')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Rojizo"
+                      name="rojizo"
+                      id="colorRojizo"
+                      checked={formData.color.includes('rojizo')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Dorado"
+                      name="dorado"
+                      id="colorDorado"
+                      checked={formData.color.includes('dorado')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Naranja"
+                      name="naranja"
+                      id="colorNaranja"
+                      checked={formData.color.includes('naranja')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Manchas"
+                      name="manchas"
+                      id="colorManchas"
+                      checked={formData.color.includes('manchas')}
+                      onChange={handleInputChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Multicolor"
+                      name="multicolor"
+                      id="colorMulticolor"
+                      checked={formData.color.includes('multicolor')}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </Form.Group>
-
-              <Form.Group controlId="colorPerdido" className="mb-3">
-              <Form.Label>Colores</Form.Label>
-              <div>
-                <Form.Check
-                  type="checkbox"
-                  label="Negro"
-                  id="colorNegro"
-                  name="negro"
-                  checked={formData.color.negro}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Blanco"
-                  name="blanco"
-                  id="colorBlanco"
-                  checked={formData.color.blanco}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Gris"
-                  name="gris"
-                  id="coloGris"
-                  checked={formData.color.gris}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Cafe"
-                  name="cafe"
-                  id="colorCafe"
-                  checked={formData.color.cafe}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Amarillo"
-                  name="amarillo"
-                  id="colorAmarillo"
-                  checked={formData.color.amarillo}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Rojizo"
-                  name="rojizo"
-                  id="colorRojizo"
-                  checked={formData.color.rojizo}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Dorado"
-                  name="dorado"
-                  id="colorDorado"
-                  checked={formData.color.dorado}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Naranja"
-                  name="naranja"
-                  id="colorNaranja"
-                  checked={formData.color.naranja}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Manchas"
-                  name="manchas"
-                  id="colorManchas"
-                  checked={formData.color.manchas}
-                  onChange={handleInputChange}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Multicolor"
-                  name="multicolor"
-                  id="colorMulticolor"
-                  checked={formData.color.multicolor}
-                  onChange={handleInputChange}
-                />
-                
-              </div>
-            </Form.Group>
-
                 <Form.Group controlId="fechaPerdido" className="mb-3">
                   <Form.Label>Fecha en la que se perdió</Form.Label>
                   <Form.Control
@@ -389,7 +390,7 @@ const RegistroPerros = () => {
                   />
                 </Form.Group>
                 <Form.Group controlId="ubicacionPerdido" className="mb-3">
-                  <Form.Label>Ubicacion</Form.Label>
+                  <Form.Label>Última ubicación</Form.Label>
                   <Form.Control
                     type="text"
                     name="ubicacion"
@@ -397,14 +398,11 @@ const RegistroPerros = () => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-
                 {/* Integración del mapa 
                 <Form.Group className="mb-3">
-                  <Form.Label>Selecciona la ubicación donde lo encontraste</Form.Label>
+                  <Form.Label>Selecciona la ubicación donde lo perdiste</Form.Label>
                   <MapaSeleccion ubicacion={formData.ubicacion} onUbicacionChange={handleUbicacionChange} />
-                </Form.Group>
-                */}
-
+                </Form.Group> */}
                 <Form.Group controlId="caracteristicasPerdido" className="mb-3">
                   <Form.Label>Características especiales</Form.Label>
                   <Form.Control
@@ -415,17 +413,15 @@ const RegistroPerros = () => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                
               </>
             )}
-
-            <Button variant="primary" type="submit" className="button">
+            <Button variant="primary" type="submit">
               Registrar
             </Button>
           </Form>
-        </Col>
-      </Row>
-    </Container>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 

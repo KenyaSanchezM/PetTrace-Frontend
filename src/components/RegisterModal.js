@@ -1,14 +1,15 @@
 // components/RegisterModal.js
 import React, { useState } from 'react';
 import { Modal, Button, Form, Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 import './Register.css';
 
 const RegisterModal = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
-    nombre: '',
     email: '',
-    contraseña: '',
+    nombre: '',
     telefono: '',
+    password: '',
   });
 
   const handleInputChange = (event) => {
@@ -16,17 +17,28 @@ const RegisterModal = ({ show, handleClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const [error, setError] = useState(''); // Añadimos el estado para errores
+
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
-    // Aquí puedes manejar el envío del formulario
-    handleClose();
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/registro-usuario/', formData);
+      console.log(response.data);
+      // Aquí puedes manejar la respuesta del servidor, por ejemplo, mostrando un mensaje de éxito
+      handleClose();
+    } catch (error) {
+      setError('Error al registrar usuario');
+      console.error('Error al registrar usuario:', error);
+    }
   };
 
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Registro de Usuarios</Modal.Title>
+        <Modal.Title >Regístrate</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
@@ -63,13 +75,13 @@ const RegisterModal = ({ show, handleClose }) => {
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                <Form.Group controlId="contraseña" className="mb-3">
+                <Form.Group controlId="password" className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Contraseña"
-                    name="contraseña"
-                    value={formData.contraseña}
+                    name="password"  // Asegúrate de que este nombre coincida con el estado
+                    value={formData.password}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
