@@ -8,9 +8,10 @@ import Register from './components/Register';
 import SignIn from './components/SignIn';
 import Footer from './components/Footer'; 
 import Refugios from './components/Refugios';
-import Header from './components/Header';// Asegúrate de que la ruta del import sea correcta
-import './App.css'; // Asegúrate de importar el CSS
+import Header from './components/Header';
+import PresentRef from './components/PresentRef';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
+import './App.css'; 
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -30,6 +31,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/registro-perros" element={<RegistroPerros />} />
           <Route path="/refugios" element={<Refugios />} />
+          <Route path="/refugio" element={<PresentRef/>} />
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} />

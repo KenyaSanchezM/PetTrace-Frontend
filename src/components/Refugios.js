@@ -115,6 +115,7 @@ const Refugios = () => {
               imagen="https://via.placeholder.com/300"
               titulo="Buenos Chicos"
               texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
+              enlace = "/refugio"
               /*Falta poner el enlace*/
             />
             <Tarjeta
