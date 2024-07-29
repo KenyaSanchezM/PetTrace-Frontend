@@ -30,9 +30,10 @@ h2 {
     border: 1px solid #ced4da;
 }
 
-.button {
+.custom-button {
     width: 100%;
-    background-color: #06231F;
+    background-color: #FF8700 !important;
+    border-color: #FF8700;
     color: #fff;
     padding: 10px;
     border-radius: 5px;
@@ -43,12 +44,12 @@ h2 {
     text-align: center;
 }
 
-.button:hover {
-    background-color: #06231F;
-    border-color: #06231F;
+.custom-button:hover {
+    background-color: #FF8700;
+    border-color: #FF8700;
 }
 
-.button:active {
+.custom-button:active {
     background-color: white;
     border-color: white;
 }

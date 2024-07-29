@@ -6,8 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 // import logo from '../pogo.jpg'; // Ajusta la ruta según tu estructura de proyecto
 import './Header.css';
 
-
-const Header = ({ onSignInClick }) => {
+const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
   useEffect(() => {
     const handleScroll = () => {
       const nav = document.getElementById('mainNav');
@@ -36,6 +35,21 @@ const Header = ({ onSignInClick }) => {
           <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
             <li className="nav-item">
               <a className="nav-link" href="/">Inicio</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onSignInClick}>
+                  Iniciar Sesión
+                </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
+                Regístrate
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
+                Registrar refugio
+              </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
