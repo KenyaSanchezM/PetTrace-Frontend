@@ -15,7 +15,9 @@ import PerfilRefugio from './components/PerfilRefugio';
 import RegistroPerrosRefugios from './components/RegistroPerrosRefugios';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 import './App.css'; 
-import RegisterShelterModal from './components/RegisterShelter';
+import RegisterShelterModal from './components/RegisterShelterModal';
+import PerfilUsuario from './components/PerfilUsuario';
+import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   //const [showReportModal, setShowReportModal] = useState(false);
   const [showRegisterShelterModal, setShowRegisterShelterModal] = useState(false);
+  const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -36,10 +39,13 @@ function App() {
   const handleShowRegisterShelterModal = () => setShowRegisterShelterModal(true);
   const handleCloseRegisterShelterModal = () => setShowRegisterShelterModal(false);
 
+  const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
+  const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
+
   return (
     <Router>
       <div className="App">
-        <Header onSignInClick={handleShowModal} onRegisterClick={handleShowRegisterModal} onRegisterShelterClick={handleShowRegisterShelterModal}/>
+        <Header onSignInClick={handleShowModal} onRegisterClick={handleShowRegisterModal} onRegisterShelterClick={handleShowRegisterShelterModal} onRegistrarEventoClick={handleShowRegistrarEvento}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -49,13 +55,15 @@ function App() {
           <Route path="/refugios" element={<Refugios />} />
           <Route path="/refugio" element={<PresentRef/>} />
           <Route path='/perfil-refugio' element={<PerfilRefugio/>} />
+          <Route path='/perfilusuario' element={<PerfilUsuario />} />
           <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios/>} />
         </Routes>
+
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
-        
         <RegisterShelterModal show={showRegisterShelterModal} handleClose={handleCloseRegisterShelterModal} />
+        <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
       </div>
     </Router>
   );
