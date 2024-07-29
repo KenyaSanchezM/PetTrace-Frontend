@@ -224,8 +224,8 @@ const RegistroPerros = () => {
                 
               </>
             )}
+            <Button variant="primary" type="submit">
 
-            <Button variant="primary" type="submit" className="button">
               Registrar
             </Button>
           </Form>
