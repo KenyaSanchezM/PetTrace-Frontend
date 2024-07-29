@@ -1,4 +1,4 @@
-//Presentación de refugios
+//Presentación de refugios... Página con los refugios registrados en el sitio web
 
 import React, { useEffect, useRef } from 'react';
 import './Refugios.css';

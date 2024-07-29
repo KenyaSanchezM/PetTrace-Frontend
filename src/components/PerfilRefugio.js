@@ -1,7 +1,5 @@
-// Pagina que verá el usuario con la información del refugio, perritos en adopción y sus eventos y voluntariado
-
 import React, { useState } from 'react';
-import './PresentRef.css'
+import './PerfilRefugio.css'
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -82,11 +80,11 @@ const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celu
                     <div className="p-5">
                         <h2 className="display-4"><img src={logo} className="rounded-circle me-3" alt="Logo" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
                         <h5 className="font-weight-light">{descripcion}<i className="fas fa-paw" style={{ marginLeft: '10px'}}></i></h5>
-                        <h5 className="font-weight-light"><i class="bi bi-geo-alt" style={{color: '#ff8700'}}></i> {ciudad}, {estado}</h5>
-                        <h5 className="font-weight-light"><i class="bi bi-telephone" style={{color: '#ff8700'}}></i> {celular}</h5>
-                        <h5 className="font-weight-light"><i class="fa-solid fa-piggy-bank" style={{color: '#ff8700'}}></i> {cuenta}</h5>
-                        <a href={facebook}><i class="fa-brands fa-facebook" style={{ marginTop: '20px', color: '#ff8700', fontSize: '1.5rem' }}></i></a>
-                        <a href={instagram}><i class="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft:'20px', color: '#ff8700', fontSize: '1.5rem' }}></i></a>
+                        <h5 className="font-weight-light"><i class="bi bi-geo-alt" style={{color: '#c55b03'}}></i> {ciudad}, {estado}</h5>
+                        <h5 className="font-weight-light"><i class="bi bi-telephone" style={{color: '#c55b03'}}></i> {celular}</h5>
+                        <h5 className="font-weight-light"><i class="fa-solid fa-piggy-bank" style={{color: '#c55b03'}}></i> {cuenta}</h5>
+                        <a href={facebook}><i class="fa-brands fa-facebook" style={{ marginTop: '20px', color: '#c55b03', fontSize: '1.5rem' }}></i></a>
+                        <a href={instagram}><i class="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft:'20px', color: '#c55b03', fontSize: '1.5rem' }}></i></a>
                         <button className="btn btn-warning btn-match text-light" href="#services">Match</button>
                     </div>
                     </div>
@@ -163,12 +161,8 @@ const PresentRef = () => {
                 estado = "Jal"
                 instagram= "https://www.instagram.com/refugiobuenoschicos/?hl=es"
                 logo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s"
-                facebook=""
             />
         </div>
     )
 }
 export default PresentRef
-
-
-
