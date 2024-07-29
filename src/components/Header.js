@@ -6,9 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 // import logo from '../pogo.jpg'; // Ajusta la ruta según tu estructura de proyecto
 import './Header.css';
 
-
-<<<<<<< HEAD
-const Header = ({ onSignInClick }) => {
+const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
   useEffect(() => {
     const handleScroll = () => {
       const nav = document.getElementById('mainNav');
@@ -23,9 +21,6 @@ const Header = ({ onSignInClick }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-=======
-const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
->>>>>>> Registros
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
       <div className="container">
