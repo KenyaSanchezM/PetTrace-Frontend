@@ -7,6 +7,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.css';
 
 
+<<<<<<< HEAD
 const Header = ({ onSignInClick }) => {
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +23,9 @@ const Header = ({ onSignInClick }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+=======
+const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
+>>>>>>> Registros
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
       <div className="container">
@@ -36,6 +40,21 @@ const Header = ({ onSignInClick }) => {
           <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
             <li className="nav-item">
               <a className="nav-link" href="/">Inicio</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onSignInClick}>
+                  Iniciar Sesión
+                </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
+                Regístrate
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
+                Registrar refugio
+              </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/registro-perros">Publicar Perrito</a>

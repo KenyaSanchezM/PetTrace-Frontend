@@ -48,7 +48,7 @@ const SignIn = ({ show, handleClose }) => {
                 onChange={handleInputChange}
               />
             </Form.Group>
-            <Button className="button" type="submit">
+            <Button className="button custom-button" type="submit">
               Iniciar Sesión
             </Button>
           </Form>
