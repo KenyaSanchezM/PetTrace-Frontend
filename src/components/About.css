@@ -1,0 +1,15 @@
+.text-card .card-text {
+    text-align: justify;
+  }
+
+  p{
+    text-align: justify;
+  }
+
+  .custom-accordion .accordion-button:not(.collapsed) {
+    background-color: #FF8700;
+    color: #fff;
+}
+.custom-accordion .accordion-button:focus {
+  box-shadow: none;
+}
