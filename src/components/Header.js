@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyecto
+import logo from '../Logo.png'; // Ajusta la ruta según tu estructura de proyecto
 import './Header.css';
 
 const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegistrarEventoClick }) => {
@@ -36,8 +36,8 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
               <a className="nav-link" href="/">Inicio</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onSignInClick}>
-                  Iniciar Sesión
+              <a className="nav-link" href="#" onClick={onSignInClick}>
+                Iniciar Sesión
                 </a>
               {/* <a className="nav-link" href="#" onClick={onSignInClick}>
                 Iniciar Sesión
