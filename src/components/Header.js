@@ -3,7 +3,8 @@ import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-// import logo from '../pogo.jpg'; // Ajusta la ruta según tu estructura de proyecto
+
+import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyecto
 import './Header.css';
 
 const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
@@ -25,7 +26,7 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
       <div className="container">
         <a className="navbar-brand" href="#page-top">
-          {/*<img src={logo} alt="Logo" />*/}
+          <img src={logo} alt="Logo" />
         </a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu

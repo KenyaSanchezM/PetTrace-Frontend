@@ -1,4 +1,5 @@
-//Presentación de refugios... Página con los refugios registrados en el sitio web
+
+//Presentación de refugios
 
 import React, { useEffect, useRef } from 'react';
 import './Refugios.css';
@@ -116,7 +117,6 @@ const Refugios = () => {
               titulo="Buenos Chicos"
               texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
               enlace = "/refugio"
-              /*Falta poner el enlace*/
             />
             <Tarjeta
               imagen="https://via.placeholder.com/300"
