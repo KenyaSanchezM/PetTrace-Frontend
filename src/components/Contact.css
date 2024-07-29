@@ -1,0 +1,52 @@
+/* Estilos para la sección de contacto */
+.container {
+    margin-top: 20px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  .button1 {
+    background-color: #FF8700 ;
+    border-color: #FF8700 ;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .button1:focus{
+    box-shadow: none;
+  }
+  
+  .button1:hover {
+    background-color: #C55B03;
+  }
+  
+  .social-media {
+    text-align: center;
+  }
+  
+  .social-media h4 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .icons a {
+    margin: 0 10px;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  .icons a:hover {
+    color: #FF8700;
+  }
+  
