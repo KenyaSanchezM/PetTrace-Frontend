@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
-import RegisterModal from './components/Register';
+import RegisterModal from './components/RegisterModal';
 import SignIn from './components/SignIn';
 import Tutorial from './components/Tutorial';
 import Footer from './components/Footer'; 

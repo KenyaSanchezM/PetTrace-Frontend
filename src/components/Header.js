@@ -71,7 +71,7 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
               <a className="nav-link" href="/refugios">Nuestra IA</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/refugios">Contáctanos</a>
+              <a className="nav-link" href="/contact">Contáctanos</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/perfil"><i className="bi bi-person-circle"></i></a>
