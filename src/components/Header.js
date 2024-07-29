@@ -1,13 +1,11 @@
-// components/Header.js
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
 import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyecto
 import './Header.css';
 
-const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
+const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegistrarEventoClick }) => {
   useEffect(() => {
     const handleScroll = () => {
       const nav = document.getElementById('mainNav');
@@ -38,8 +36,8 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
               <a className="nav-link" href="/">Inicio</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onSignInClick}>
-                  Iniciar Sesión
+              <a className="nav-link" href="#" onClick={onSignInClick}>
+                Iniciar Sesión
                 </a>
             </li>
             <li className="nav-item">
@@ -55,6 +53,11 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
             <li className="nav-item">
               <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
             </li>
+            {/* <li className="nav-item">
+              <a className="nav-link" href="#" onClick={onRegistrarEventoClick}>
+                Registrar evento 
+              </a>
+            </li>*/}
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="refugiosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Refugios
@@ -75,7 +78,7 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
               <a className="nav-link" href="/contact">Contáctanos</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/perfil"><i className="bi bi-person-circle"></i></a>
+              <a className="nav-link" href="/perfilusuario"><i className="bi bi-person-circle"></i></a>
             </li>
           </ul>
         </div>
@@ -85,3 +88,4 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick }) => {
 };
 
 export default Header;
+
