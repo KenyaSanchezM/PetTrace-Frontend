@@ -17,12 +17,15 @@ import RegistroPerros from './components/RegistroPerros'; // Importa el componen
 import './App.css'; 
 import RegisterShelterModal from './components/RegisterShelterModal';
 //import ReportModal from './components/Report';
+import PerfilUsuario from './components/PerfilUsuario';
+import RegistarEvento from './components/RegistrarEvento';
 
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   //const [showReportModal, setShowReportModal] = useState(false);
   const [showRegisterShelterModal, setShowRegisterShelterModal] = useState(false);
+  const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -36,10 +39,13 @@ function App() {
   const handleShowRegisterShelterModal = () => setShowRegisterShelterModal(true);
   const handleCloseRegisterShelterModal = () => setShowRegisterShelterModal(false);
 
+  const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
+  const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
+
   return (
     <Router>
       <div className="App">
-        <Header onSignInClick={handleShowModal} onRegisterClick={handleShowRegisterModal} onRegisterShelterClick={handleShowRegisterShelterModal}/>
+        <Header onSignInClick={handleShowModal} onRegisterClick={handleShowRegisterModal} onRegisterShelterClick={handleShowRegisterShelterModal} onRegistrarEventoClick={handleShowRegistrarEvento}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -50,12 +56,13 @@ function App() {
           <Route path="/refugio" element={<PresentRef/>} />
           <Route path='/perfil-refugio' element={<PerfilRefugio/>} />
           <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios/>} />
+          <Route path='/perfilusuario' element={<PerfilUsuario />} />
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
-        
         <RegisterShelterModal show={showRegisterShelterModal} handleClose={handleCloseRegisterShelterModal} />
+        <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
        </div>
     </Router>
   );
