@@ -85,7 +85,7 @@ const RegistroPerros = () => {
   return (
     <>
       <Row className="justify-content-center my-3 ">
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="primary" onClick={handleShow} style={{marginTop: '20%'}}>
           Registrar Perro
         </Button>
       </Row>

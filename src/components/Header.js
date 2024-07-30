@@ -53,9 +53,9 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
                 Registrar refugio
               </a>
             </li>
-            <li className="nav-item">
+            {/*<li className="nav-item">
               <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
-            </li>
+            </li>*/}
             {/* <li className="nav-item">
               <a className="nav-link" href="#" onClick={onRegistrarEventoClick}>
                 Registrar evento 
@@ -71,9 +71,9 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
                 <li><a className="dropdown-item" href="/refugio3">Eventos con causa</a></li>
               </ul>
             </li>
-            <li className="nav-item">
+            {/*<li className="nav-item">
               <a className="nav-link" href="/about">Acerca de nosotros</a>
-            </li>
+            </li>*/}
             <li className="nav-item">
               <a className="nav-link" href="/refugios">Nuestra IA</a>
             </li>
