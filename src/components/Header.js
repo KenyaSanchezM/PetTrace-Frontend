@@ -56,16 +56,6 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
             <li className="nav-item">
               <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#" onClick={onRegisterClick}>
-                Registrarse
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#" onClick={onRegisterShelterClick}>
-                Registrar refugio
-              </a>
-            </li>
             {/* <li className="nav-item">
               <a className="nav-link" href="#" onClick={onRegistrarEventoClick}>
                 Registrar evento 
