@@ -15,7 +15,7 @@ const RegisterShelterModal = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
-    password_R: '',
+    password: '',
     telefono: '',
     estado: '',
     ciudad: '',
@@ -92,13 +92,13 @@ const RegisterShelterModal = ({ show, handleClose }) => {
                   />
             </Form.Group>
 
-            <Form.Group controlId="password_R" className="mb-3">
+            <Form.Group controlId="password" className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Contraseña"
-                    name="password_R"  // Asegúrate de que este nombre coincida con el estado
-                    value={formData.password_R}
+                    name="password"  // Asegúrate de que este nombre coincida con el estado
+                    value={formData.password}
                     onChange={handleInputChange}
                   />
             </Form.Group>
