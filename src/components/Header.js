@@ -38,6 +38,36 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
             <li className="nav-item">
               <a className="nav-link" href="#" onClick={onSignInClick}>
                 Iniciar Sesión
+                </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
+                Regístrate
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
+                Registrar refugio
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#" onClick={onSignInClick}>
+                Iniciar Sesión
+                </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
+                Regístrate
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
+                Registrar refugio
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#" onClick={onSignInClick}>
+                Iniciar Sesión
               </a>
             </li>
             <li className="nav-item">

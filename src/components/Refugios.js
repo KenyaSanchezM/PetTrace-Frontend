@@ -1,3 +1,4 @@
+
 //Presentación de refugios
 
 import React, { useEffect, useRef } from 'react';
@@ -5,7 +6,7 @@ import './Refugios.css';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import Header from './Header';
 
 const Tarjeta = ({imagen, titulo, texto, enlace}) => {
   return(
@@ -115,7 +116,7 @@ const Refugios = () => {
               imagen="https://via.placeholder.com/300"
               titulo="Buenos Chicos"
               texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
-              /*Falta poner el enlace*/
+              enlace = "/refugio"
             />
             <Tarjeta
               imagen="https://via.placeholder.com/300"
