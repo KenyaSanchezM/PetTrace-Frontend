@@ -5,7 +5,6 @@ import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
 import RegisterModal from './components/RegisterModal';
-import RegisterModal from './components/RegisterModal';
 import SignIn from './components/SignIn';
 import Tutorial from './components/Tutorial';
 import Footer from './components/Footer'; 
@@ -16,7 +15,9 @@ import PerfilRefugio from './components/PerfilRefugio';
 import RegistroPerrosRefugios from './components/RegistroPerrosRefugios';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 import './App.css'; 
-import RegisterShelterModal from './components/RegisterShelter';
+import RegisterShelterModal from './components/RegisterShelterModal';
+import PerfilUsuario from './components/PerfilUsuario';
+import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
           <Route path="/refugio" element={<PresentRef/>} />
           <Route path='/perfil-refugio' element={<PerfilRefugio/>} />
           <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios/>} />
-            <Route path='/perfilusuario' element={<PerfilUsuario />} />
+          <Route path='/perfil-usuario' element={<PerfilUsuario />} />
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} />
