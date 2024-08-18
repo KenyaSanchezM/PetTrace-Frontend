@@ -1,32 +1,63 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyecto
 import './Header.css';
 
-const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegistrarEventoClick }) => {
+const Header = () => {
+  const mainNavRef = useRef(null);
+  const navbarTogglerRef = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
-      const nav = document.getElementById('mainNav');
-      if (window.scrollY > 50) {
-        nav.classList.add('navbar-shrink');
-      } else {
-        nav.classList.remove('navbar-shrink');
+      if (mainNavRef.current) {
+        if (window.scrollY > 50) {
+          mainNavRef.current.classList.add('navbar-shrink');
+        } else {
+          mainNavRef.current.classList.remove('navbar-shrink');
+        }
+      }
+    };
+
+    const handleNavItemClick = () => {
+      if (navbarTogglerRef.current && window.getComputedStyle(navbarTogglerRef.current).display !== 'none') {
+        navbarTogglerRef.current.click();
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
+    responsiveNavItems.forEach((item) => {
+      item.addEventListener('click', handleNavItemClick);
+    });
+
+    // Initial call to set navbar shrink state
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      responsiveNavItems.forEach((item) => {
+        item.removeEventListener('click', handleNavItemClick);
+      });
+    };
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <nav ref={mainNavRef} className="navbar navbar-expand-lg navbar-dark " id="mainNav">
       <div className="container">
-        <a className="navbar-brand" href="#page-top">
-          <img src={logo} alt="Logo" />
+        <a className="navbar-brand d-flex align-items-center" href="#page-top">
+          <span className="ms-2">PetTrace</span>
         </a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          ref={navbarTogglerRef}
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           Menu
           <i className="fas fa-bars ms-1"></i>
         </button>
@@ -35,29 +66,6 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
             <li className="nav-item">
               <a className="nav-link" href="/">Inicio</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#" onClick={onSignInClick}>
-                Iniciar Sesión
-                </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
-                Regístrate
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
-                Registrar refugio
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
-            </li>
-            {/* <li className="nav-item">
-              <a className="nav-link" href="#" onClick={onRegistrarEventoClick}>
-                Registrar evento 
-              </a>
-            </li>*/}
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="refugiosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Refugios
@@ -65,7 +73,7 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
               <ul className="dropdown-menu" aria-labelledby="refugiosDropdown">
                 <li><a className="dropdown-item" href="/refugio1">Match de perritos</a></li>
                 <li><a className="dropdown-item" href="/refugios">Conocer refugios</a></li>
-                <li><a className="dropdown-item" href="/refugio3">Eventos con causa</a></li>
+                <li><a className="dropdown-item" href="/eventos">Eventos con causa</a></li>
               </ul>
             </li>
             <li className="nav-item">
@@ -77,8 +85,9 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
             <li className="nav-item">
               <a className="nav-link" href="/contact">Contáctanos</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/perfilusuario"><i className="bi bi-person-circle"></i></a>
+            <li className="nav-item profile">
+              <a className="nav-link profile-link" href="/perfilusuario">
+                <i className="bi bi-person-circle"></i></a>
             </li>
           </ul>
         </div>
@@ -88,4 +97,3 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
 };
 
 export default Header;
-

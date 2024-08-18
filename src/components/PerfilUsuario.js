@@ -1,69 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const PerfilUsuario = () => {
-  const [perfil, setPerfil] = useState(null); // Estado para almacenar los datos del perfil del usuario
+  const [perfil, setPerfil] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Función para cargar el perfil del usuario
-  const cargarPerfil = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/perfil_usuario'); // Endpoint para obtener el perfil del usuario
-      setPerfil(response.data); // Actualizar el estado con los datos del perfil obtenidos del servidor
-    } catch (error) {
-      console.error('Error al cargar el perfil del usuario:', error);
-    }
-  };
-
-  // Cargar el perfil del usuario al cargar el componente
   useEffect(() => {
+    const cargarPerfil = async () => {
+      try {
+        // Obtener el token de autenticación desde el almacenamiento local
+        const token = localStorage.getItem('token');
+
+        const response = await axios.get('http://localhost:8000/api/perfil_usuario/', {
+          headers: {
+            'Authorization': `Token ${token}`  // O `Bearer ${token}` si usas JWT
+          }
+        });
+
+        setPerfil(response.data);
+      } catch (error) {
+        console.error('Error al cargar el perfil del usuario:', error);
+        setError('Error al cargar el perfil');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     cargarPerfil();
   }, []);
 
-  // Renderizar mientras se carga el perfil
-  if (!perfil) {
-    return <p>Cargando perfil...</p>;
-  }
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>{error}</div>;
+  if (!perfil) return <div>No se encontró el perfil</div>;
 
   return (
-    <Container className="my-5">
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <h2 className="text-center">Perfil de Usuario</h2>
-
-          {/* Botón para agregar perro perdido */}
-          <Button variant="primary" className="mb-3" href="/registro_perros">
-            Agregar Perro Perdido
-          </Button>
-
-          {/* Lista de perros del usuario */}
-          <h3>Mis Perros</h3>
-          {perfil.perros.map((perro) => (
-            <Card key={perro.id} className="mb-3">
-              <Card.Body>
-                <Row>
-                  <Col md={4}>
-                    <Card.Img variant="top" src={perro.imagen} />
-                  </Col>
-                  <Col md={8}>
-                    <Card.Title>{perro.nombre}</Card.Title>
-                    <Card.Text>
-                      <strong>Edad:</strong> {perro.edad} <br />
-                      <strong>Color:</strong> {perro.color} <br />
-                      <strong>Características:</strong> {perro.caracteristicas}
-                    </Card.Text>
-                    <Card.Link href={`https://maps.google.com/?q=${perro.ubicacion}`} target="_blank">
-                      Ver en Mapa
-                    </Card.Link>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          ))}
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <h1>Perfil del Usuario</h1>
+      <p>Nombre de usuario: {perfil.username}</p>
+      <p>Email: {perfil.email}</p>
+      {/* Añadir más campos según sea necesario */}
+    </div>
   );
 };
 
 export default PerfilUsuario;
+  

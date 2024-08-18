@@ -1998,7 +1998,7 @@ progress {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  border-radius: 0.375rem;
+  border-radius: 0.175rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -11005,4 +11005,7 @@ header.masthead .masthead-heading {
 .dropdown-menu {
   max-height: 150px; /* Ajusta este valor según sea necesario */
   overflow-y: auto;
+}
+.btn-filter{
+  margin-left: 28px;
 }

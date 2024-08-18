@@ -37,7 +37,7 @@
       padding-top: 1.5rem;
       padding-bottom: 1.5rem;
       border: none;
-      background-color: transparent;
+      background-color: black;
       transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
     }
     #mainNav .navbar-brand {
@@ -88,4 +88,29 @@
     color: #ff8700;
   }
 
+  .logo-img {
+    width: 120px; 
+    height: auto;
+    border: solid 3px #FF8700;
+  }
+
+  .navbar-shrink .logo-img {
+    width: 40px; /* Tamaño del logo cuando se hace scroll */
+  }
+
+  .navbar-brand span {
+    font-size: 1.5rem; /* Ajusta el tamaño del texto "PetTrace" */
+    font-weight: bold;
+    color: #fff; /* Ajusta el color según tus necesidades */
+    position: relative;
+    top: -13px;
+  }
+
+  .navbar-nav .bi-person-circle {
+    font-size: 2rem; /* Ajusta el tamaño según tus necesidades */
+    margin-left: 1rem;   
+    position: relative; 
+    top: -13px;
+  }
+  
   
