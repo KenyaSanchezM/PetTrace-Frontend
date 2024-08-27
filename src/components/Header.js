@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logo from '../Logo.jpg'; // Ajusta la ruta según tu estructura de proyecto
+import logo from '../Logo.png'; 
 import './Header.css';
 
 const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegistrarEventoClick }) => {
@@ -39,6 +39,9 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
               <a className="nav-link" href="#" onClick={onSignInClick}>
                 Iniciar Sesión
                 </a>
+              {/* <a className="nav-link" href="#" onClick={onSignInClick}>
+                Iniciar Sesión
+                </a> */}
             </li>
             <li className="nav-item">
               <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
@@ -50,9 +53,9 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
                 Registrar refugio
               </a>
             </li>
-            <li className="nav-item">
+            {/*<li className="nav-item">
               <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
-            </li>
+            </li>*/}
             {/* <li className="nav-item">
               <a className="nav-link" href="#" onClick={onRegistrarEventoClick}>
                 Registrar evento 
@@ -68,9 +71,9 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
                 <li><a className="dropdown-item" href="/refugio3">Eventos con causa</a></li>
               </ul>
             </li>
-            <li className="nav-item">
+            {/*<li className="nav-item">
               <a className="nav-link" href="/about">Acerca de nosotros</a>
-            </li>
+            </li>*/}
             <li className="nav-item">
               <a className="nav-link" href="/refugios">Nuestra IA</a>
             </li>
