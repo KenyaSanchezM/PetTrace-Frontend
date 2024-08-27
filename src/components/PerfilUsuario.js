@@ -1,48 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
-const PerfilUsuario = () => {
-  const [perfil, setPerfil] = useState(null);
+const UserProfile = () => {
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const cargarPerfil = async () => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('access_token');
       try {
-        // Obtener el token de autenticación desde el almacenamiento local
-        const token = localStorage.getItem('token');
-
-        const response = await axios.get('http://localhost:8000/api/perfil_usuario/', {
+        const response = await fetch('http://localhost:8000/api/perfil-usuario/', {
           headers: {
-            'Authorization': `Token ${token}`  // O `Bearer ${token}` si usas JWT
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        setPerfil(response.data);
+        if (response.ok) {
+          const data = await response.json();
+          setProfile(data);
+        } else {
+          throw new Error('Failed to fetch profile');
+        }
       } catch (error) {
-        console.error('Error al cargar el perfil del usuario:', error);
-        setError('Error al cargar el perfil');
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    cargarPerfil();
+    fetchProfile();
   }, []);
 
-  if (loading) return <div>Cargando...</div>;
-  if (error) return <div>{error}</div>;
-  if (!perfil) return <div>No se encontró el perfil</div>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-danger">{error}</p>;
 
   return (
     <div>
-      <h1>Perfil del Usuario</h1>
-      <p>Nombre de usuario: {perfil.username}</p>
-      <p>Email: {perfil.email}</p>
-      {/* Añadir más campos según sea necesario */}
+      {profile ? (
+        <div>
+          <h1>{profile.nombre}</h1>
+          <p>Email: {profile.email}</p>
+          {/* Agrega más detalles aquí */}
+        </div>
+      ) : (
+        <p>No profile data</p>
+      )}
     </div>
   );
 };
 
-export default PerfilUsuario;
-  
+export default UserProfile;
