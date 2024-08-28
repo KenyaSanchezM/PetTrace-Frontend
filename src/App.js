@@ -19,6 +19,9 @@ import RegisterShelterModal from './components/RegisterShelterModal';
 import PerfilUsuario from './components/PerfilUsuario';
 import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
+import HomeUser from './components/HomeUser';
+import Eventos from './components/Eventos';
+
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -56,6 +59,8 @@ function App() {
           <Route path='/perfil-refugio' element={<PerfilRefugio/>} />
           <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios/>} />
           <Route path='/perfil-usuario' element={<PerfilUsuario />} />
+          <Route path='/home' element={<HomeUser />} />
+          <Route path='/eventos' element={<Eventos/>} />
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} />

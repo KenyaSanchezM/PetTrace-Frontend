@@ -91,7 +91,6 @@ const RegisterShelterModal = ({ show, handleClose }) => {
                     onChange={handleInputChange}
                   />
             </Form.Group>
-
             <Form.Group controlId="password" className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
                   <Form.Control
