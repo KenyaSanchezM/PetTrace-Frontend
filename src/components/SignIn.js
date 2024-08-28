@@ -8,7 +8,7 @@ const SignIn = ({ show, handleClose }) => {
     email: '',
     password: '',
   });
-  const [error, setError] = useState(null); // Definir el estado para el error
+  const [error, setError] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -19,13 +19,13 @@ const SignIn = ({ show, handleClose }) => {
     event.preventDefault();
 
     try {
-      // Usar formData en lugar de credentials
       const response = await axios.post('http://localhost:8000/api/inicio-sesion/', formData);
-      const token = response.data.token; // Ajusta según el formato de respuesta
-
-      // Almacenar el token en localStorage
-      localStorage.setItem('token', token);
-
+      const { access, refresh } = response.data;
+  
+      // Almacenar los tokens en localStorage
+      localStorage.setItem('access', access);
+      localStorage.setItem('refresh', refresh);
+  
       // Cerrar el modal o redirigir al usuario
       handleClose();
     } catch (error) {
@@ -61,7 +61,7 @@ const SignIn = ({ show, handleClose }) => {
               onChange={handleInputChange}
             />
           </Form.Group>
-          {error && <p className="text-danger">{error}</p>} {/* Mostrar mensaje de error si existe */}
+          {error && <p className="text-danger">{error}</p>}
           <Button className="button custom-button" type="submit">
             Iniciar Sesión
           </Button>
