@@ -8,6 +8,7 @@ const SignIn = ({ show, handleClose }) => {
     email: '',
     password: '',
   });
+
   const [error, setError] = useState(null);
 
   const handleInputChange = (event) => {
@@ -15,18 +16,35 @@ const SignIn = ({ show, handleClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // Después de una respuesta exitosa de inicio de sesión
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await axios.post('http://localhost:8000/api/inicio-sesion/', formData);
-      const { access, refresh } = response.data;
-  
-      // Almacenar los tokens en localStorage
-      localStorage.setItem('access', access);
-      localStorage.setItem('refresh', refresh);
-  
-      // Cerrar el modal o redirigir al usuario
+      const { access, refresh, user_type } = response.data;
+
+      // Verifica si los tokens existen antes de almacenarlos
+      if (access) {
+        localStorage.setItem('access_token', access);
+      } else {
+        console.error('No se recibió un token de acceso');
+      }
+
+      if (refresh) {
+        localStorage.setItem('refresh_token', refresh);
+      } else {
+        console.error('No se recibió un token de refresh');
+      }
+
+      // Redirige según el tipo de usuario
+      if (user_type === 'shelter') {
+        window.location.href = '/perfil-refugio';
+      } else {
+        window.location.href = '/perfil-usuario';
+      }
+
+      // Cierra el modal
       handleClose();
     } catch (error) {
       setError('Error al iniciar sesión');

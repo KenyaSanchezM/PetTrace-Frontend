@@ -38,24 +38,18 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
             <li className="nav-item">
               <a className="nav-link" href="#" onClick={onSignInClick}>
                 Iniciar Sesión
-                </a>
-              {/* <a className="nav-link" href="#" onClick={onSignInClick}>
-                Iniciar Sesión
-                </a> */}
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterClick} >
-                Regístrate
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" style={{ cursor: 'pointer' }} onClick={onRegisterShelterClick} >
+              <a className="nav-link" href="#" onClick={onRegisterClick}>
+                Registrarse
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#" onClick={onRegisterShelterClick}>
                 Registrar refugio
               </a>
             </li>
-            {/*<li className="nav-item">
-              <a className="nav-link" href="/registro-perros">Publicar Perrito</a>
-            </li>*/}
             {/* <li className="nav-item">
               <a className="nav-link" href="#" onClick={onRegistrarEventoClick}>
                 Registrar evento 
@@ -81,7 +75,7 @@ const Header = ({ onSignInClick, onRegisterClick, onRegisterShelterClick, onRegi
               <a className="nav-link" href="/contact">Contáctanos</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/perfilusuario"><i className="bi bi-person-circle"></i></a>
+              <a className="nav-link" href="/perfil-usuario"><i className="bi bi-person-circle"></i></a>
             </li>
           </ul>
         </div>
