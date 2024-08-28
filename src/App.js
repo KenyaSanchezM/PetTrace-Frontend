@@ -16,10 +16,9 @@ import RegistroPerrosRefugios from './components/RegistroPerrosRefugios';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 import './App.css'; 
 import RegisterShelterModal from './components/RegisterShelterModal';
-//import ReportModal from './components/Report';
 import PerfilUsuario from './components/PerfilUsuario';
 import RegistarEvento from './components/RegistrarEvento';
-
+//import ReportModal from './components/Report';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -56,7 +55,7 @@ function App() {
           <Route path="/refugio" element={<PresentRef/>} />
           <Route path='/perfil-refugio' element={<PerfilRefugio/>} />
           <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios/>} />
-          <Route path='/perfilusuario' element={<PerfilUsuario />} />
+          <Route path='/perfil-usuario' element={<PerfilUsuario />} />
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} />

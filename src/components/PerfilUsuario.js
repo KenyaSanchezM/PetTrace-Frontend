@@ -1,52 +1,89 @@
 import React, { useState, useEffect } from 'react';
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
+import RegistroPerros from './RegistroPerros';
 
-const UserProfile = () => {
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const PerfilUsuario = () => {
+  const [userData, setUserData] = useState(null);
+  const [showRegistro, setShowRegistro] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchUserData = async () => {
       const token = localStorage.getItem('access_token');
+  
       try {
-        const response = await fetch('http://localhost:8000/api/perfil-usuario/', {
+        const response = await axios.get('http://localhost:8000/api/perfil-usuario/', {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            'Authorization': `Bearer ${token}`
+          }
         });
-
-        if (response.ok) {
-          const data = await response.json();
-          setProfile(data);
-        } else {
-          throw new Error('Failed to fetch profile');
-        }
+        console.log('User Data:', response.data); // Debugging
+        setUserData(response.data);
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching user data:', error.response ? error.response.data : error.message);
+        alert('Hubo un problema al cargar los datos del usuario. Por favor, inténtalo de nuevo.');
       }
     };
-
-    fetchProfile();
+  
+    fetchUserData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-danger">{error}</p>;
+  const handleShowRegistro = () => setShowRegistro(true);
+  const handleCloseRegistro = () => setShowRegistro(false);
 
   return (
-    <div>
-      {profile ? (
-        <div>
-          <h1>{profile.nombre}</h1>
-          <p>Email: {profile.email}</p>
-          {/* Agrega más detalles aquí */}
-        </div>
-      ) : (
-        <p>No profile data</p>
-      )}
-    </div>
+    <Container>
+      <Row className="my-4">
+        <Col>
+          {userData ? (
+            <>
+              <Card>
+                <Card.Header>{userData.user.nombre} - Perfil</Card.Header>
+                <Card.Body>
+                  <Card.Text>Email: {userData.user.email}</Card.Text>
+                  <Card.Text>Teléfono: {userData.user.telefono}</Card.Text>
+                  <Button variant="primary" onClick={handleShowRegistro}>
+                    Registrar Perro
+                  </Button>
+                </Card.Body>
+              </Card>
+              <h3>Mis Perros Registrados</h3>
+              {userData.predictions.length > 0 ? (
+                <Row>
+                  {userData.predictions.map((perro, index) => (
+                    <Col md={4} key={index} className="mb-3">
+                      <Card>
+                        {perro.image && (
+                          <Card.Img variant="top" src={`http://localhost:8000${perro.image}`} />
+                        )}
+                        <Card.Body>
+                          <Card.Title>{perro.nombre}</Card.Title>
+                          <Card.Text>
+                            Edad: {perro.edad}<br />
+                            Color: {perro.color}<br />
+                            Ubicación: {perro.ubicacion}<br />
+                            ¿Tiene collar?: {perro.tieneCollar ? 'Sí' : 'No'}<br />
+                            Características: {perro.caracteristicas}<br />
+                            Fecha: {perro.fecha}
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <p>No tienes perros registrados.</p>
+              )}
+            </>
+          ) : (
+            <p>Cargando datos del usuario...</p>
+          )}
+        </Col>
+      </Row>
+          
+      <RegistroPerros show={showRegistro} handleClose={handleCloseRegistro} userId={userData ? userData.user.id : null} />
+    </Container>
   );
 };
 
-export default UserProfile;
+export default PerfilUsuario;
