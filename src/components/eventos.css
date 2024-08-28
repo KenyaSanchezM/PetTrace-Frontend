@@ -1,0 +1,67 @@
+header.head {
+    position: relative;
+    display: flex;
+    padding-top: 10.5rem;
+    padding-bottom: 6rem;
+    text-align: center;
+    color: #fff;
+    background-image: url("../../public/images/eventos.jpg");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center center;
+    background-size: cover;
+    z-index: 1;
+}
+header.head::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Opacidad y color del degradado */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); /* Degradado */
+    z-index: -1; 
+  } 
+  
+  header.head .head-subheading {
+    font-size: 1.5rem;
+    font-style: italic;
+    line-height: 1.5rem;
+    margin-bottom: 25px;
+    font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  header.head .head-heading {
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 3.25rem;
+    margin-bottom: 2rem;
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  
+  
+  @media (min-width: 768px) {
+    header.head {
+      padding-top: 8rem;
+      padding-bottom: 4.5rem;
+    }
+    
+    header.head .head-subheading {
+      font-size: 2.25rem;
+      font-style: italic;
+      line-height: 2.25rem;
+      margin-bottom: 1rem;
+    }
+    header.head .head-heading {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 4.5rem;
+      margin-bottom: 4rem;
+    }
+  }
+
+  .btn-category{
+    margin-left: 15px;
+    border-radius: 5px;
+  }
+  

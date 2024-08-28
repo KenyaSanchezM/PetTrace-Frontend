@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
+
 import axios from 'axios';
 import RegistroPerros from './RegistroPerros';
 
@@ -83,7 +85,9 @@ const PerfilUsuario = () => {
           
       <RegistroPerros show={showRegistro} handleClose={handleCloseRegistro} userId={userData ? userData.user.id : null} />
     </Container>
+
   );
 };
 
 export default PerfilUsuario;
+  

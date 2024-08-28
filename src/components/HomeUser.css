@@ -1,0 +1,246 @@
+body{
+    background-color: rgb(240, 245, 248);
+}
+.dog-icon{
+    font-size:1.8rem;
+    margin-right: 15px;
+    top: 6px;
+    position: relative;
+}
+.publish-button{
+    background-color: #fff;
+    border-radius: 4px;
+    border-color: rgb(138, 133, 133);
+    width: 300px;
+    color: rgb(112, 111, 111);
+}
+.publish-button:hover{
+    background-color: transparent;
+    color: rgb(112, 111, 111);
+    border-color: #ff8700;
+}
+.publish-button:focus,
+.publish-button:active{
+    background-color: #ff8700;
+    border-color: #ff8700;
+    color: #fff;
+    outline: none;
+    box-shadow: transparent; 
+}
+
+.publish{
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.card-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    max-width: 100%;
+}
+
+.DogCard {
+    width: 100%;
+    max-width: 450px; /* Ajusta el tamaño máximo de la tarjeta */
+    min-width: 450px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.DogCard-text{
+    padding-top: 18px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px; /* Espacio entre la información del usuario y la tarjeta */
+    margin-top: 11px;
+    padding: 0 12px;
+    position: relative;
+}
+
+.user-details{
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.username {
+    font-weight: bold; 
+}
+
+.points{
+    font-size: 18px;
+}
+
+.settings{
+   background-color: transparent;
+   border-color: transparent;
+   cursor: pointer;
+   margin-left: auto;
+}
+
+.user{
+    text-decoration: none;
+    color: #222222;
+}
+.user:hover{
+    text-decoration: none;
+    color: #222222;
+}
+
+@media (max-width: 768px) {
+    .publish-button {
+        width: 100%;
+    }
+
+    .DogCard {
+        min-width: 100%;
+    }
+}
+
+.contact-button{
+    background-color: #ff8700;
+    border-color: #ff8700;
+    border-radius: 3px;  
+    margin-bottom: 15px;
+}
+
+.contact-button:hover,
+.contact-button:focus,
+.contact-button:active{
+    background-color: #c55b03;
+    border-color: #c55b03;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*Sección de eventos*/
+.home-user {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px; /* Ancho de la barra lateral */
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* Color de fondo */
+    overflow: hidden;
+    height: 100%;
+}
+
+.sidebar h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.sidebar hr {
+    border: none;
+    border-top: 1px solid #a3a3a3; /* Color gris tenue */
+    margin-bottom: 25px;
+}
+
+.sidebar h5 {
+    font-size: 15px;
+    color: #727272;
+}
+
+.EventCardHome {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.content {
+    flex: 1; /* Toma el resto del espacio disponible */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.event-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    margin-bottom: 5px; /* Espacio entre la imagen y el título */
+}
+.view-more {
+    text-align: right; 
+    margin-top: 10px; 
+}
+
+.view-more a {
+    text-decoration: none; 
+    font-weight: bold; 
+    color: #222222;
+}
+
+.settings-menu {
+    position: absolute;
+    top: 53%;
+    right: 15%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    list-style-type: none;
+    margin: 0;
+    z-index: 1000; /* Asegura que el menú aparezca encima de otros elementos */
+}
+
+.settings-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.settings-menu li:hover {
+    background-color: #f0f0f0;
+}
+
+.settings-menu a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+@media (max-width: 576px) {
+    .home-user {
+        flex-direction: column; /* Cambia la dirección del flex a columna */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto; /* Ajusta la altura automáticamente */
+        position: static; /* Cambia la posición para permitir el flujo normal */
+        display: flex;
+        flex-direction: row; /* Muestra los elementos en una fila */
+        overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
+        box-shadow: none; /* Elimina la sombra para un diseño más limpio */
+    }
+
+    .EventCardHome {
+        flex: 1; /* Cada tarjeta toma el mismo ancho */
+        margin: 0 5px; /* Espaciado entre tarjetas */
+    }
+
+    .content {
+        width: 100%; /* Asegura que el contenido tome todo el ancho */
+        padding: 10px; /* Reduce el padding para espacios pequeños */
+    }
+}

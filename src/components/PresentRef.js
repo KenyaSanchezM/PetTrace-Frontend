@@ -82,11 +82,11 @@ const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celu
                     <div className="p-5">
                         <h2 className="display-4"><img src={logo} className="rounded-circle me-3" alt="Logo" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
                         <h5 className="font-weight-light">{descripcion}<i className="fas fa-paw" style={{ marginLeft: '10px'}}></i></h5>
-                        <h5 className="font-weight-light"><i class="bi bi-geo-alt" style={{color: '#ff8700'}}></i> {ciudad}, {estado}</h5>
-                        <h5 className="font-weight-light"><i class="bi bi-telephone" style={{color: '#ff8700'}}></i> {celular}</h5>
-                        <h5 className="font-weight-light"><i class="fa-solid fa-piggy-bank" style={{color: '#ff8700'}}></i> {cuenta}</h5>
-                        <a href={facebook}><i class="fa-brands fa-facebook" style={{ marginTop: '20px', color: '#ff8700', fontSize: '1.5rem' }}></i></a>
-                        <a href={instagram}><i class="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft:'20px', color: '#ff8700', fontSize: '1.5rem' }}></i></a>
+                        <h5 className="font-weight-light"><i class="bi bi-geo-alt"></i> {ciudad}, {estado}</h5>
+                        <h5 className="font-weight-light"><i class="bi bi-telephone" ></i> {celular}</h5>
+                        <h5 className="font-weight-light"><i class="fa-solid fa-piggy-bank" ></i> {cuenta}</h5>
+                        <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color:'#070B83' }}></i></a>
+                        <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft:'20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
                         <button className="btn btn-warning btn-match text-light" href="#services">Match</button>
                     </div>
                     </div>
