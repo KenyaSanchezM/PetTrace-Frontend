@@ -5,6 +5,8 @@ import './RegistroPerros.css';
 
 const RegistroPerros = ({ show, handleClose, user_id }) => {
   const [file, setFile] = useState(null);
+  const [profileImage1, setProfileImage1] = useState(null);
+  const [profileImage2, setProfileImage2] = useState(null);
   const [formType, setFormType] = useState('encontrado');
   const [nombre, setNombre] = useState('');
   const [edad, setEdad] = useState('');
@@ -16,6 +18,8 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
 
   const resetForm = () => {
     setFile(null);
+    setProfileImage1(null);
+    setProfileImage2(null);
     setNombre('');
     setEdad('');
     setColor([]);
@@ -28,6 +32,13 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+  };
+  const handleProfileImage1Change = (event) => {
+    setProfileImage1(event.target.files[0]);
+  };
+
+  const handleProfileImage2Change = (event) => {
+    setProfileImage2(event.target.files[0]);
   };
 
   const handleColorChange = (event) => {
@@ -54,7 +65,9 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
         });
 
         const breeds = predictionResponse.data.top_10_breeds.join(',');
-
+        
+        formData.append('profile_image1', profileImage1);
+        formData.append('profile_image2', profileImage2);
         formData.append('nombre', nombre);
         formData.append('edad', edad);
         formData.append('color', JSON.stringify(color));
@@ -121,9 +134,19 @@ return (
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Sube una imagen</Form.Label>
+            <Form.Label>Sube la imagen para la IA</Form.Label>
             <Form.Control type="file" onChange={handleFileChange} />
           </Form.Group>
+          
+          <Form.Group controlId="profileImage1" className="mb-3">
+            <Form.Label>Sube una imagen para mostrar en el perfil (opcional)</Form.Label>
+            <Form.Control type="file" onChange={handleProfileImage1Change} />
+          </Form.Group>
+          <Form.Group controlId="profileImage2" className="mb-3">
+            <Form.Label>Sube otra imagen para mostrar en el perfil (opcional)</Form.Label>
+            <Form.Control type="file" onChange={handleProfileImage2Change} />
+          </Form.Group>
+
           <Form.Group controlId="formType" className="mb-3">
             <Form.Label>¿Es un perro encontrado o perdido?</Form.Label>
             <Form.Select value={formType} onChange={(e) => setFormType(e.target.value)}>

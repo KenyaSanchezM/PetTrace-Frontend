@@ -15,7 +15,6 @@ import PerfilRefugio from './components/PerfilRefugio';
 import RegistroPerrosRefugios from './components/RegistroPerrosRefugios';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 import './App.css'; 
-import RegisterShelterModal from './components/RegisterShelterModal';
 import PerfilUsuario from './components/PerfilUsuario';
 import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
@@ -25,7 +24,6 @@ import Eventos from './components/Eventos';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showRegisterShelterModal, setShowRegisterShelterModal] = useState(false);
   const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -34,9 +32,6 @@ function App() {
 
   const handleShowRegisterModal = () => setShowRegisterModal(true);
   const handleCloseRegisterModal = () => setShowRegisterModal(false);
-
-  const handleShowRegisterShelterModal = () => setShowRegisterShelterModal(true);
-  const handleCloseRegisterShelterModal = () => setShowRegisterShelterModal(false);
 
   const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
   const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
@@ -69,7 +64,6 @@ function App() {
           onSignInClick={handleShowModal}
           onLogoutClick={handleLogout}
           onRegisterClick={handleShowRegisterModal}
-          onRegisterShelterClick={handleShowRegisterShelterModal}
           onRegistrarEventoClick={handleShowRegistrarEvento}
         />
         <Routes>
@@ -89,7 +83,6 @@ function App() {
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
-        <RegisterShelterModal show={showRegisterShelterModal} handleClose={handleCloseRegisterShelterModal} />
         <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
       </div>
     </Router>

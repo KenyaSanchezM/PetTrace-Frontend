@@ -1,20 +1,30 @@
-//Home para cuando un usuario inicia sesión
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomeUser.css';
 import PubDogCard from './PubDogCard';
+import axios from 'axios';
 
 const HomeUser = () => {
+    const [dogs, setDogs] = useState([]);
+    const [error, setError] = useState(null);
 
-    const images = [
-        'https://www.infobae.com/new-resizer/Zi-z-Gb1A5Barig2D4iG_wVMblA=/1200x1200/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/YB6ALQWUQBB3LDJ6SCXGIK3224.jpg', // Imagen principal
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTYsw9QW3-LbeBGHDTe5vCaVOfePMHLvpb1Q&s',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3h3lw6f-d85hI2XAqYx8WTOWDqitAu9VzdfRlIidzioVjVfM7g8AJSAU0VCCFHB5DcM8&usqp=CAU', // Imagen superior derecha
-    ];
+    useEffect(() => {
+        const token = localStorage.getItem('access_token'); // Ajusta según tu lógica de almacenamiento de token
+        const fetchDogs = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/dog-predictions/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Incluir el token en la cabecera
+                    }
+                });
+                setDogs(response.data);
+            } catch (error) {
+                console.error('Error fetching dogs:', error);
+                setError('Hubo un problema al cargar los datos de los perros.');
+            }
+        };
 
-    const text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley";
-    const userName = "Juan Perez"
-    const userImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBkg2EL6OenMycHAe49e2KKyLG7Tguoqz9wxkJFqOOA1H2l6QuQA9-BxcE5RPQ7ALa-mI&usqp=CAU"
+        fetchDogs();
+    }, []);
 
     return (
         <div className="home-user">
@@ -43,12 +53,20 @@ const HomeUser = () => {
                     <button type="button" className="btn btn-outline-warning publish-button">Publicar Mascota</button>
                 </div>
                 <div className='card-container'>
-                    <PubDogCard 
-                        images={images} 
-                        text= {text}
-                        userName= {userName}
-                        userImage= {userImage}
-                    />
+                    {error && <p className="text-danger">{error}</p>}
+                    {dogs.length > 0 ? (
+                        dogs.map((dog) => (
+                            <PubDogCard 
+                                key={dog.id}
+                                images={[dog.image]} 
+                                text={dog.caracteristicas}
+                                userName={dog.user.nombre}  // Utiliza el nombre del usuario del perfil del perro
+                                userImage={dog.user.profile_image}  // Utiliza la imagen del usuario del perfil del perro
+                            />
+                        ))
+                    ) : (
+                        <p>No hay perros registrados.</p>
+                    )}
                 </div>
             </div>
         </div>
