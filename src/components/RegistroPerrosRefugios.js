@@ -65,13 +65,13 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
       formData.append('vacunas', vacunas);
       formData.append('esterilizado', esterilizado);
       formData.append('shelter_user', shelterUserId); // Usar el ID del usuario del refugio
-      formData.append('breeds', breeds); 
+      formData.append('breeds', breeds);
 
       if (file) {
         formData.append('file', file); 
       }
 
-      const response = await axios.post('http://localhost:8000/api/registro-perros-refugio/', formData, {
+      const response = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -82,29 +82,35 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
       handleClose(); 
       resetForm();
     } catch (error) {
-      if (error.response && error.response.status === 401 && error.response.data.code === 'token_not_valid') {
-        try {
-          const refreshToken = localStorage.getItem('refresh_token');
-          const refreshResponse = await axios.post('http://localhost:8000/api/token/refresh/', {
-            refresh: refreshToken
-          });
+      if (error.response && error.response.status === 401) {
+        const refreshToken = localStorage.getItem('refresh_token');
+        
+        if (refreshToken) {
+          try {
+            const refreshResponse = await axios.post('http://localhost:8000/api/token/refresh/', {
+              refresh: refreshToken
+            });
 
-          token = refreshResponse.data.access;
-          localStorage.setItem('token', token);
+            token = refreshResponse.data.access;
+            localStorage.setItem('token', token);
 
-          const retryResponse = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          });
+            const retryResponse = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+              }
+            });
 
-          console.log('Perro de refugio registrado:', retryResponse.data);
-          handleClose(); 
-          resetForm();
-        } catch (refreshError) {
-          console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
-          alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');
+            console.log('Perro de refugio registrado:', retryResponse.data);
+            handleClose(); 
+            resetForm();
+          } catch (refreshError) {
+            console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
+            alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');
+          }
+        } else {
+          console.error('Token de refresco no disponible.');
+          alert('No se pudo encontrar el token de refresco. Por favor, inicia sesión de nuevo.');
         }
       } else {
         console.error('Error al registrar el perro de refugio:', error.response ? error.response.data : error.message);
@@ -112,7 +118,7 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
       }
     }
   };
-
+  
   return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }}>
       <Modal.Header closeButton>

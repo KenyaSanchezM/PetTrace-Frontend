@@ -16,71 +16,72 @@ const SignIn = ({ show, handleClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Después de una respuesta exitosa de inicio de sesión
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = formData;
+    
     try {
-      const response = await axios.post('http://localhost:8000/api/inicio-sesion/', formData);
-      const { access, refresh, user_type } = response.data;
+        const response = await axios.post('http://localhost:8000/api/inicio-sesion/', {
+          email: formData.email,
+          password: formData.password
+        });
 
-      // Verifica si los tokens existen antes de almacenarlos
-      if (access) {
-        localStorage.setItem('access_token', access);
-      } else {
-        console.error('No se recibió un token de acceso');
-      }
+        console.log('Inicio de sesión exitoso:', response.data);
 
-      if (refresh) {
-        localStorage.setItem('refresh_token', refresh);
-      } else {
-        console.error('No se recibió un token de refresh');
-      }
+        // Extraer tokens y user_type
+        const { access,refresh, user_type } = response.data;
 
-      // Redirige según el tipo de usuario
-      if (user_type === 'shelter') {
-        window.location.href = '/perfil-refugio';
-      } else {
-        window.location.href = '/perfil-usuario';
-      }
+        if (access) {
+          localStorage.setItem('access_token', access);
+          localStorage.setItem('refresh_token', response.data.refresh);
 
-      // Cierra el modal
-      handleClose();
+          // Redirige según el tipo de usuario
+          if (user_type === 'shelter') {
+            window.location.href = '/perfil-refugio';
+          } else {
+            window.location.href = '/perfil-usuario';
+          }
+          
+          // Cierra el modal
+          handleClose();
+        } else {
+          setError('No se recibieron tokens válidos.');
+        }
     } catch (error) {
-      setError('Error al iniciar sesión');
-      console.error('Error al iniciar sesión:', error);
+        console.error('Error al iniciar sesión:', error.response ? error.response.data : error.message);
+        setError('Error al iniciar sesión. Verifica tus credenciales.');
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Iniciar sesión</Modal.Title>
+        <Modal.Title>Iniciar Sesión</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="email" className="mb-3">
+          <Form.Group controlId="formEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
+              required
             />
           </Form.Group>
-          <Form.Group controlId="password" className="mb-3">
+          <Form.Group controlId="formPassword">
             <Form.Label>Contraseña</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Contraseña"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
+              required
             />
           </Form.Group>
-          {error && <p className="text-danger">{error}</p>}
-          <Button className="button custom-button" type="submit">
+          {error && <div className="error">{error}</div>}
+          <Button variant="primary" type="submit">
             Iniciar Sesión
           </Button>
         </Form>
