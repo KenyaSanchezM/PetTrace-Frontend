@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home';
@@ -25,9 +25,9 @@ import Eventos from './components/Eventos';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  //const [showReportModal, setShowReportModal] = useState(false);
   const [showRegisterShelterModal, setShowRegisterShelterModal] = useState(false);
   const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -35,19 +35,43 @@ function App() {
   const handleShowRegisterModal = () => setShowRegisterModal(true);
   const handleCloseRegisterModal = () => setShowRegisterModal(false);
 
-  //const handleShowReportModal = () => setShowReportModal(true);
-  //const handleCloseReportModal = () => setShowReportModal(false);
-
   const handleShowRegisterShelterModal = () => setShowRegisterShelterModal(true);
   const handleCloseRegisterShelterModal = () => setShowRegisterShelterModal(false);
 
   const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
   const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
 
+  useEffect(() => {
+    // Verificar si el usuario está autenticado al cargar la aplicación
+    const token = localStorage.getItem('access_token');
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // Función para manejar el cierre de sesión
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    setIsAuthenticated(false);
+    window.location.href = '/'; // Redirigir al inicio después de cerrar sesión
+  };
+
+  // Función para actualizar la autenticación tras iniciar sesión exitosamente
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    handleCloseModal();
+  };
+
   return (
     <Router>
       <div className="App">
-        <Header onSignInClick={handleShowModal} onRegisterClick={handleShowRegisterModal} onRegisterShelterClick={handleShowRegisterShelterModal} onRegistrarEventoClick={handleShowRegistrarEvento}/>
+        <Header
+          isAuthenticated={isAuthenticated}
+          onSignInClick={handleShowModal}
+          onLogoutClick={handleLogout}
+          onRegisterClick={handleShowRegisterModal}
+          onRegisterShelterClick={handleShowRegisterShelterModal}
+          onRegistrarEventoClick={handleShowRegistrarEvento}
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -55,22 +79,21 @@ function App() {
           <Route path="/registro-perros" element={<RegistroPerros />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/refugios" element={<Refugios />} />
-          <Route path="/refugio" element={<PresentRef/>} />
-          <Route path='/perfil-refugio' element={<PerfilRefugio/>} />
-          <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios/>} />
+          <Route path="/refugio" element={<PresentRef />} />
+          <Route path='/perfil-refugio' element={<PerfilRefugio />} />
+          <Route path='/registro-perros-refugios' element={<RegistroPerrosRefugios />} />
           <Route path='/perfil-usuario' element={<PerfilUsuario />} />
           <Route path='/home' element={<HomeUser />} />
-          <Route path='/eventos' element={<Eventos/>} />
+          <Route path='/eventos' element={<Eventos />} />
         </Routes>
         <Footer />
-        <SignIn show={showModal} handleClose={handleCloseModal} />
+        <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
         <RegisterShelterModal show={showRegisterShelterModal} handleClose={handleCloseRegisterShelterModal} />
         <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
-       </div>
+      </div>
     </Router>
   );
 }
 
 export default App;
-

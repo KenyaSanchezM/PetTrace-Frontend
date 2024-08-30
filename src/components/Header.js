@@ -1,55 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.css';
 
-const Header = () => {
-  const mainNavRef = useRef(null);
-  const navbarTogglerRef = useRef(null);
+const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick, onRegisterShelterClick, onRegistrarEventoClick }) => {
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (mainNavRef.current) {
-        if (window.scrollY > 50) {
-          mainNavRef.current.classList.add('navbar-shrink');
-        } else {
-          mainNavRef.current.classList.remove('navbar-shrink');
-        }
-      }
-    };
-
-    const handleNavItemClick = () => {
-      if (navbarTogglerRef.current && window.getComputedStyle(navbarTogglerRef.current).display !== 'none') {
-        navbarTogglerRef.current.click();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
-    responsiveNavItems.forEach((item) => {
-      item.addEventListener('click', handleNavItemClick);
-    });
-
-    // Initial call to set navbar shrink state
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      responsiveNavItems.forEach((item) => {
-        item.removeEventListener('click', handleNavItemClick);
-      });
-    };
-  }, []);
+  const getProfileLink = () => {
+    const userType = localStorage.getItem('user_type'); // Obtenemos el tipo de usuario
+    if (userType === 'shelter') {
+      return '/perfil-refugio';
+    } else {
+      return '/perfil-usuario';
+    }
+  };
 
   return (
-    <nav ref={mainNavRef} className="navbar navbar-expand-lg navbar-dark " id="mainNav">
+    <nav className="navbar navbar-expand-lg navbar-dark" id="mainNav">
       <div className="container">
         <a className="navbar-brand d-flex align-items-center" href="#page-top">
           <span className="ms-2">PetTrace</span>
         </a>
         <button
-          ref={navbarTogglerRef}
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -76,18 +47,29 @@ const Header = () => {
                 <li><a className="dropdown-item" href="/eventos">Eventos con causa</a></li>
               </ul>
             </li>
-            {/*<li className="nav-item">
-              <a className="nav-link" href="/about">Acerca de nosotros</a>
-            </li>*/}
             <li className="nav-item">
               <a className="nav-link" href="/refugios">Nuestra IA</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/contact">Contáctanos</a>
             </li>
-            <li className="nav-item profile">
-              <a className="nav-link profile-link" href="/perfilusuario">
-                <i className="bi bi-person-circle"></i></a>
+            <li className="nav-item dropdown profile">
+              <a className="nav-link dropdown-toggle profile-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i className="bi bi-person-circle"></i>
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="profileDropdown">
+                {isAuthenticated ? (
+                  <>
+                    <li><a className="dropdown-item" href={getProfileLink()}>Mi perfil</a></li>
+                    <li><button className="dropdown-item" onClick={onLogoutClick}>Cerrar sesión</button></li>
+                  </>
+                ) : (
+                  <>
+                    <li><button className="dropdown-item" onClick={onSignInClick}>Iniciar sesión</button></li>
+                    <li><a className="dropdown-item" href="/#" onClick={onRegisterClick}>Registrarse</a></li>
+                  </>
+                )}
+              </ul>
             </li>
           </ul>
         </div>
@@ -97,3 +79,4 @@ const Header = () => {
 };
 
 export default Header;
+

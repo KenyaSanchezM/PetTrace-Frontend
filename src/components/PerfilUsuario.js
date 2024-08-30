@@ -10,16 +10,18 @@ const PerfilUsuario = () => {
   const [showRegistro, setShowRegistro] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async () => { 
       const token = localStorage.getItem('access_token');
-  
+      console.log('Token1:', token);
       try {
+        
         const response = await axios.get('http://localhost:8000/api/perfil-usuario/', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
         console.log('User Data:', response.data); // Debugging
+        console.log('Token2:', token);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error.response ? error.response.data : error.message);
