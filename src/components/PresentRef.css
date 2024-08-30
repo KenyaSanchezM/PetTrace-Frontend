@@ -1,5 +1,6 @@
 .Head{
-    background-color: #2d3340;
+    background-color: #fff;
+    margin-top: 0px;
     
 }
 .carousel-inner img {
@@ -11,12 +12,12 @@
 }
 
 .display-4 {
-    color: #fff;
+    color: #333333;
     font-size: 42px;
 }
 
 .font-weight-light{
-    color: #fff;
+    color: #333333;
 }
 
 .btn-match {
@@ -53,4 +54,8 @@
 
 .card-text{
     text-align: justify;
+}
+
+.info{
+    border-color: #2d3340;
 }
