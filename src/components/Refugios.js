@@ -7,10 +7,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Tarjeta = ({imagen, titulo, texto, enlace}) => {
   return(
-    //<img src={imagen} className="card-img-top" alt={titulo} />  Codigo para poner la imagen
     <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
       <div className="card tarjeta" onClick={() => window.location.href = enlace}>
-      <img src="https://i0.wp.com/despertarmexico.com/wp-content/uploads/2023/12/refigio-de-perritos-pide-apoyo1.jpg?resize=1024%2C768&ssl=1" className="card-img-top" style={{width: '100%', height: '100%'}} alt="..." />
+      <img src={imagen} className="card-img-top" style={{width: '100%', height: '100%'}} alt={titulo} />
         <div className="card-img-overlay d-flex flex-column justify-content-end p-3">
           <h5 className="card-title">{titulo}</h5>
           <hr className="title-underline" />
@@ -82,25 +81,25 @@ const Refugios = () => {
             </div>
             <div className="row text-center mt-5">
               <Tarjeta
-                imagen="https://via.placeholder.com/300"
+                imagen="https://www.hogarmania.com/archivos/202011/cosas-donar-refugio-animales-portada-668x400x80xX-1.jpg"
                 titulo="Buenos Chicos"
-                texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
+                texto="Refugio dedicado a brindar amor y hogar a perros en busca de una segunda oportunidad."
                 enlace = "/refugio"
               />
               <Tarjeta
-                imagen="https://via.placeholder.com/300"
+                imagen="https://cdn.unotv.com/images/2023/12/refugio-animales-140859-1024x576.jpg"
                 titulo="Dejando Huellitas"
-                texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
+                texto="Comprometidos en rescatar y encontrar familias amorosas para perros necesitados."
               />
               <Tarjeta
-                imagen="https://via.placeholder.com/300"
+                imagen="https://www.elsoldetlaxcala.com.mx/incoming/mc3rhk-albergue-de-perros/ALTERNATES/LANDSCAPE_960/Albergue%20de%20perros"
                 titulo="Patitas Felices"
-                texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
+                texto="Ofrecemos esperanza y un nuevo hogar a perros abandonados"
               />
               <Tarjeta
-                imagen="https://via.placeholder.com/300"
+                imagen="https://res.cloudinary.com/worldpackers/image/upload/c_fill,f_auto,q_auto,w_1024/v1/guides/article_cover/wesauslaoz5kkprwrkjg"
                 titulo="Patitas Felices"
-                texto="Algunos textos de ejemplo para construir el título de la tarjeta y hacer que el contenido de la tarjeta sea más extenso."
+                texto="Un refugio seguro donde los perros encuentran amor y cuidado"
               />
             </div>
           </div>
