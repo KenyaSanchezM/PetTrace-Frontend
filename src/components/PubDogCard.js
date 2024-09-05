@@ -54,7 +54,7 @@ const PubDogCard = ({ images, text, userImage, userName }) => {
                         style={{ width: '50px', height: '50px' }}
                         />
                         <span className="username">
-                            <a className="user" href='/perfilusuario'>
+                            <a className="user" href='/perfil-usuario'>
                                 {userName}
                             </a>
                         </span>
@@ -63,7 +63,7 @@ const PubDogCard = ({ images, text, userImage, userName }) => {
                     {/* Menú desplegable */}
                     {showMenu && (
                         <ul className="settings-menu" ref={menuRef} >
-                            <li><a href="/perfilusuario">Ir al perfil</a></li>
+                            <li><a href="/perfil-usuario">Ir al perfil</a></li>
                             <li><a href="/enviar-mensaje">Enviar mensaje</a></li>
                             <li><a href="/reportar-usuario">Reportar usuario</a></li>
                         </ul>

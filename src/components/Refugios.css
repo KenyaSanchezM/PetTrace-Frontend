@@ -10828,6 +10828,13 @@ html {
 body {
   position: relative;
 }
+.contenedor-refugios{
+  background-image: url("../../public/images/fondo_home.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 
 p {
   line-height: 1.75;

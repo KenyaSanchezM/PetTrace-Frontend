@@ -7,14 +7,14 @@ import PubDogCard from './PubDogCard';
 const HomeUser = () => {
 
     const images = [
-        'https://www.infobae.com/new-resizer/Zi-z-Gb1A5Barig2D4iG_wVMblA=/1200x1200/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/YB6ALQWUQBB3LDJ6SCXGIK3224.jpg', // Imagen principal
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTYsw9QW3-LbeBGHDTe5vCaVOfePMHLvpb1Q&s',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3h3lw6f-d85hI2XAqYx8WTOWDqitAu9VzdfRlIidzioVjVfM7g8AJSAU0VCCFHB5DcM8&usqp=CAU', // Imagen superior derecha
+        'https://c.pxhere.com/photos/a6/b7/husky_siberian_cute_animal_dog_face_looking_indoor-1089136.jpg!d', // Imagen principal
+        'https://imageserve.babycenter.com/22/000/420/TLljxoX77Vu6CQOePXmyESyJolrXadG7_med.jpg',
+        'https://www.huskysiberiano10.com/wp-content/uploads/2018/03/como-criar-husky-siberiano.jpg', // Imagen superior derecha
     ];
 
-    const text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley";
-    const userName = "Juan Perez"
-    const userImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBkg2EL6OenMycHAe49e2KKyLG7Tguoqz9wxkJFqOOA1H2l6QuQA9-BxcE5RPQ7ALa-mI&usqp=CAU"
+    const text = "Es un perro de talla grande con un collar azul. Tiene una marca distintiva en una de sus orejas. Es un poco miedoso, así que por favor, trátalo con paciencia y calma si lo ves. Es importante que regrese a casa, así que cualquier información sobre su paradero será muy apreciada.";
+    const userName = "Luna Fuentes"
+    const userImage = "https://s.cafebazaar.ir/images/icons/br.com.blackmountain.photo.blackwhite-2bef36db-306d-4b35-bdb5-c6170bf54348_512x512.webp"
 
     return (
         <div className="home-user">
@@ -27,7 +27,7 @@ const HomeUser = () => {
                 </div>
                 <div className="EventCardHome">
                     <h5>Rifa</h5>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1hfCvVjMnvOqyiQ54L2uXaqWHvyUp0YVl6w&s" alt="Evento 2" className="event-image" />
+                    <img src="https://editorial.aristeguinoticias.com/wp-content/uploads/2023/06/colonia-dogtores-refugio-perros-puebla-250623-2.jpg" alt="Evento 2" className="event-image" />
                 </div>
                 <div className="EventCardHome">
                     <h5>Voluntariado</h5>
@@ -40,7 +40,7 @@ const HomeUser = () => {
             <div className='content'>
                 <div className='publish'>
                     <i className="fa-solid fa-dog dog-icon"></i>
-                    <button type="button" className="btn btn-outline-warning publish-button">Publicar Mascota</button>
+                    <button type="button" className="btn btn-outline-warning publish-button" >Publicar Mascota</button>
                 </div>
                 <div className='card-container'>
                     <PubDogCard 
