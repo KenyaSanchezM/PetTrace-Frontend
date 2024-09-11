@@ -164,7 +164,7 @@ const PerfilUsuario = () => {
         }
 
         .cont2 {
-            background-image: url("../../public/images/fondo_home.png");
+            background-image: url("/images/fondo_home.png");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
