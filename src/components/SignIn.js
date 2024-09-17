@@ -42,7 +42,7 @@ const SignIn = ({ show, handleClose, onLoginSuccess }) => {
         // Redirige según el tipo de usuario
         if (user_type === 'shelter') {
           window.location.href = '/perfil-refugio';
-        } else if (user_type === 'user') {
+        } else  {
           window.location.href = '/perfil-usuario';
         } 
       }

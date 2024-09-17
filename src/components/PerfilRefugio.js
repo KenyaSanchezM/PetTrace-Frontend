@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import RegistroPerrosRefugio from './RegistroPerrosRefugios';
@@ -8,6 +8,17 @@ const PerfilUsuarioRefugio = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [showRegistro, setShowRegistro] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState({
+    nombre: '',
+    edad: '',
+    color: [],
+    temperamento: '',
+    vacunas: '',
+    caracteristicas: '',
+    esterilizado: '',
+    tamanio: '',
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -34,6 +45,96 @@ const PerfilUsuarioRefugio = () => {
 
   const handleShowRegistro = () => setShowRegistro(true);
   const handleCloseRegistro = () => setShowRegistro(false);
+
+  const handleDelete = async (id) => {
+    if (!id) {
+      alert('ID de publicación no válido.');
+      return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    try {
+      await axios.delete(`http://localhost:8000/api/dog-predictions-shelter/${id}/delete/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setUserData((prevData) => ({
+        ...prevData,
+        predictions: prevData.predictions.filter((perro) => perro.id !== id)
+      }));
+      alert('Publicación eliminada con éxito.');
+    } catch (error) {
+      console.error('Error al eliminar la publicación:', error);
+      alert('Hubo un problema al eliminar la publicación.');
+    }
+  };
+
+  const handleEdit = (perro) => {
+    setEditData({
+      ...perro,
+      color: Array.isArray(perro.color) ? perro.color : JSON.parse(perro.color),
+    });
+    setShowEditModal(true);
+  };
+
+  const handleUpdate = async () => {
+    if (!editData.id) {
+      alert('ID de publicación no válido.');
+      return;
+    }
+  
+    const token = localStorage.getItem('access_token');
+    
+    const dataToUpdate = { 
+      ...editData,
+      color: JSON.stringify(editData.color),
+    };
+
+    // Eliminar campos no necesarios o solo de lectura
+    delete dataToUpdate.user;
+    delete dataToUpdate.image;
+    delete dataToUpdate.profile_image1;
+    delete dataToUpdate.profile_image2;
+    delete dataToUpdate.sexo;
+  
+    try {
+      const response = await axios.put(`http://localhost:8000/api/dog-predictions-shelter/${editData.id}/update/`, dataToUpdate, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setUserData((prevData) => ({
+        ...prevData,
+        predictions: prevData.predictions.map((perro) => 
+          perro.id === editData.id ? response.data : perro
+        )
+      }));
+      setShowEditModal(false);
+      alert('Publicación actualizada con éxito.');
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.error('Error al actualizar la publicación:', error.response.data);
+        alert('Hubo un problema al actualizar la publicación: ' + JSON.stringify(error.response.data));
+      } else {
+        console.error('Error al actualizar la publicación:', error);
+        alert('Hubo un problema al actualizar la publicación.');
+      }
+    }
+  };
+
+  const handleColorChange = (e) => {
+    const { name, checked } = e.target;
+    setEditData((prevData) => {
+      let newColors = [...prevData.color];
+      if (checked) {
+        newColors.push(name);
+      } else {
+        newColors = newColors.filter((color) => color !== name);
+      }
+      return { ...prevData, color: newColors };
+    });
+  };
 
   return (
     <Container>
@@ -68,6 +169,12 @@ const PerfilUsuarioRefugio = () => {
                             Tamaño: {perro.tamanio || 'Tamaño no disponible'}<br />
                             Descripción: {perro.caracteristicas || 'Descripción no disponible'}<br />
                           </Card.Text>
+                          <Button variant="danger" onClick={() => handleDelete(perro.id)}>
+                            Eliminar Publicación
+                          </Button>
+                          <Button variant="warning" className="ml-2" onClick={() => handleEdit(perro)}>
+                            Editar Publicación
+                          </Button>
                         </Card.Body>
                       </Card>
                     </Col>
@@ -84,8 +191,95 @@ const PerfilUsuarioRefugio = () => {
       </Row>
 
       <RegistroPerrosRefugio show={showRegistro} handleClose={handleCloseRegistro} userId={userData ? userData.shelter_user.id : null} />
-    </Container>
-  );
-};
 
-export default PerfilUsuarioRefugio;
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Publicación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formNombre">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.nombre || ''}
+                onChange={(e) => setEditData({ ...editData, nombre: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formEdad">
+              <Form.Label>Edad</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.edad || ''}
+                onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="colorEncontrado" className="mb-3">
+              <Form.Label>Colores</Form.Label>
+              <div>
+                {['negro', 'blanco', 'gris', 'cafe', 'amarillo', 'rojizo', 'dorado', 'naranja', 'manchas', 'multicolor'].map((color) => (
+                  <Form.Check
+                    key={color}
+                    type="checkbox"
+                    label={color.charAt(0).toUpperCase() + color.slice(1)}
+                    name={color}
+                    checked={editData.color.includes(color)}
+                    onChange={handleColorChange}
+                  />
+                ))}
+              </div>
+            </Form.Group>
+            <Form.Group controlId="formTemperamento">
+              <Form.Label>Temperamento</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.temperamento || ''}
+                onChange={(e) => setEditData({ ...editData, temperamento: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formVacunas">
+              <Form.Label>Vacunas</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.vacunas || ''}
+                onChange={(e) => setEditData({ ...editData,
+                  vacunas: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formCaracteristicas">
+                  <Form.Label>Características</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={editData.caracteristicas || ''}
+                    onChange={(e) => setEditData({ ...editData, caracteristicas: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formEsterilizado">
+                  <Form.Label>Esterilizado</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editData.esterilizado || ''}
+                    onChange={(e) => setEditData({ ...editData, esterilizado: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formTamanio">
+                  <Form.Label>Tamaño</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editData.tamanio || ''}
+                    onChange={(e) => setEditData({ ...editData, tamanio: e.target.value })}
+                  />
+                </Form.Group>
+                <Button variant="primary" onClick={handleUpdate}>
+                  Actualizar
+                </Button>
+              </Form>
+            </Modal.Body>
+          </Modal>
+        </Container>
+      );
+    };
+    
+    export default PerfilUsuarioRefugio;
+    

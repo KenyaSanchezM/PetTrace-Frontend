@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
-const PubDogCard = ({ images, text, userImage, userName }) => {
+const PubDogCard = ({ images, texts, userImage, userName, dogId }) => {
     const [showModal, setShowModal] = useState(false);
     const [modalImage, setModalImage] = useState(null);
-    const [showMenu, setShowMenu] = useState(false); 
+    const [showMenu, setShowMenu] = useState(false);
+    const [isMarked, setIsMarked] = useState(null);  // Estado para manejar la selección
     const menuRef = useRef(null);
 
     const handleImageClick = (image) => {
@@ -35,32 +37,47 @@ const PubDogCard = ({ images, text, userImage, userName }) => {
             document.removeEventListener('click', handleClickOutside);
         }
 
-        // Cleanup event listener on component unmount
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, [showMenu]);
 
+    const handleMarkAsMine = async () => {
+        try {
+            await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, { is_marked: true });
+            setIsMarked(true);
+        } catch (error) {
+            console.error('Error al marcar como "Es mi mascota":', error);
+        }
+    };
+
+    const handleMarkAsNotMine = async () => {
+        try {
+            await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, { is_marked: false });
+            setIsMarked(false);
+        } catch (error) {
+            console.error('Error al marcar como "No es mi mascota":', error);
+        }
+    };
+
     return (
         <div className="container mt-4">
-            <div className="DogCard" style={{ width: '18rem'}}>
-                {/* Sección del usuario */}
+            <div className="DogCard" style={{ width: '18rem' }}>
                 <div className="user-info">
                     <div className='user-details'>
                         <img
-                        src={userImage} // Imagen de perfil del usuario
-                        alt="Usuario"
-                        className="rounded-circle me-2"
-                        style={{ width: '50px', height: '50px' }}
+                            src={userImage || 'default-image-url'}
+                            alt="Usuario"
+                            className="rounded-circle me-2"
+                            style={{ width: '50px', height: '50px' }}
                         />
                         <span className="username">
-                            <a className="user" href='/perfil-usaurio'>
-                                {userName}
+                            <a className="user" href='/perfil-usuario'>
+                                {userName || 'Nombre no disponible'}
                             </a>
                         </span>
                     </div> 
                     <button className='settings' onClick={toggleMenu}><i className="fa-solid fa-ellipsis-vertical points"></i></button>
-                    {/* Menú desplegable */}
                     {showMenu && (
                         <ul className="settings-menu" ref={menuRef}>
                             <li><a href="/perfilusuario">Ir al perfil</a></li>
@@ -70,78 +87,40 @@ const PubDogCard = ({ images, text, userImage, userName }) => {
                     )}
                 </div>
                 <div className="row g-0">
-                    {images.length === 1 && (
-                        <div className="col-12">
+                    {images.map((img, index) => (
+                        <div key={index} className="col-6">
                             <img
-                                src={images[0]}
+                                src={img}
                                 className="img-fluid"
-                                alt="Main"
-                                onClick={() => handleImageClick(images[0])}
+                                alt={`Imagen ${index + 1}`}
+                                onClick={() => handleImageClick(img)}
                                 style={{ cursor: 'pointer', width: '100%' }}
                             />
                         </div>
-                    )}
-                    {images.length === 2 && (
-                        <div className="row g-0">
-                            <div className="col-6">
-                                <img
-                                    src={images[0]}
-                                    className="img-fluid"
-                                    alt="Left"
-                                    onClick={() => handleImageClick(images[0])}
-                                    style={{ cursor: 'pointer', width: '100%' }}
-                                />
-                            </div>
-                            <div className="col-6">
-                                <img
-                                    src={images[1]}
-                                    className="img-fluid"
-                                    alt="Right"
-                                    onClick={() => handleImageClick(images[1])}
-                                    style={{ cursor: 'pointer', width: '100%' }}
-                                />
-                            </div>
-                        </div>
-                    )}
-                    {images.length === 3 && (
-                        <>
-                            <div className="col-8">
-                                <img
-                                    src={images[0]}
-                                    className="img-fluid"
-                                    alt="Main"
-                                    onClick={() => handleImageClick(images[0])}
-                                    style={{ cursor: 'pointer', height: '100%' }}
-                                />
-                            </div>
-                            <div className="col-4 d-flex flex-column">
-                                <img
-                                    src={images[1]}
-                                    className="img-fluid mb-2"
-                                    alt="Top Right"
-                                    onClick={() => handleImageClick(images[1])}
-                                    style={{ cursor: 'pointer' }}
-                                />
-                                <img
-                                    src={images[2]}
-                                    className="img-fluid"
-                                    alt="Bottom Right"
-                                    onClick={() => handleImageClick(images[2])}
-                                    style={{ cursor: 'pointer' }}
-                                />
-                            </div>
-                        </>
-                    )}
+                    ))}
                 </div>
                 <div className="DogCard-body">
-                    <p className="DogCard-text">{text}</p>
+                    <div className="dog-details">
+                        <p><strong>Estatus:</strong> {texts[2] || 'No disponible'}</p>
+                        <p><strong>Nombre:</strong> {texts[1] || 'No disponible'}</p>
+                        <p><strong>Características:</strong> {texts[0] || 'No disponible'}</p>
+                        <p><strong>Ubicación:</strong> {texts[3] || 'No disponible'}</p>
+                        <p><strong>Razas:</strong> {texts[4] || 'No disponible'}</p>
+                    </div>
                     <div className='button-container'>
-                        <Button variant="primary contact-button">Enviar mensaje</Button>
+                        <Button variant="primary" className="contact-button">Enviar mensaje</Button>
+                    </div>
+                    <div className='mark-buttons'>
+                        <Button variant="success" onClick={handleMarkAsMine} disabled={isMarked === true}>
+                            Es mi mascota
+                        </Button>
+                        <Button variant="danger" onClick={handleMarkAsNotMine} disabled={isMarked === false}>
+                            No es mi mascota
+                        </Button>
                     </div>
                 </div>
             </div>
 
-            {/* Modal for showing images */}
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                 </Modal.Header>

@@ -44,8 +44,11 @@ function App() {
 
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
+    localStorage.removeItem('token');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_type');
     setIsAuthenticated(false);
     window.location.href = '/'; // Redirigir al inicio después de cerrar sesión
   };

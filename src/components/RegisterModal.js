@@ -11,6 +11,7 @@ const estados = [
   'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 
   'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'
 ];
+
 const RegisterModal = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -18,7 +19,11 @@ const RegisterModal = ({ show, handleClose }) => {
     telefono: '',
     password: '',
     user_type: 'user',  // Añadido para diferenciar entre usuario regular y refugio
-    profile_image: null
+    profile_image: null,
+    estado: '',
+    ciudad: '',
+    direccion: '',
+    codigoPostal: ''
   });
 
   const [error, setError] = useState('');
@@ -33,8 +38,8 @@ const RegisterModal = ({ show, handleClose }) => {
   };
 
   const handleSelectChange = (event) => {
-    const { value } = event.target;
-    setFormData({ ...formData, user_type: value });
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (event) => {
@@ -48,9 +53,16 @@ const RegisterModal = ({ show, handleClose }) => {
     formDataToSend.append('password', formData.password);
     formDataToSend.append('user_type', formData.user_type);
     if (formData.profile_image) {
-      formDataToSend.append('profile_image', formData.profile_image); // Asegúrate de usar el nombre del campo correcto
+      formDataToSend.append('profile_image', formData.profile_image);
     }
-  
+    
+    if (formData.user_type === 'shelter') {
+      formDataToSend.append('estado', formData.estado);
+      formDataToSend.append('ciudad', formData.ciudad);
+      formDataToSend.append('direccion', formData.direccion);
+      formDataToSend.append('codigoPostal', formData.codigoPostal);
+    }
+    
     try {
       const response = await axios.post(url, formDataToSend, {
         headers: {
@@ -138,7 +150,7 @@ const RegisterModal = ({ show, handleClose }) => {
                         as="select"
                         name="estado"
                         value={formData.estado}
-                        onChange={handleInputChange}
+                        onChange={handleSelectChange}
                       >
                         <option value="">Selecciona un estado</option>
                         {estados.map((estado, index) => (
