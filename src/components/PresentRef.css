@@ -1,14 +1,24 @@
 .Head{
     background-color: #fff;
     margin-top: 0px;
+    margin-bottom: -100px;
     
+}
+
+@media (max-width: 425px) {
+    .Head{
+        margin-bottom: -40px;
+    }
+
 }
 .carousel-inner img {
     width: 100%;
-    height: auto;
+    height: 400px;
     max-height: 400px; 
-    max-width: 600px;
+    max-width: 620px;
     object-fit: cover; 
+    border-radius: 5px;
+    transition: opacity 1s ease-in-out; /* Suaviza la transición */
 }
 
 .display-4 {
@@ -58,4 +68,13 @@
 
 .info{
     border-color: #2d3340;
+}
+
+.card:hover{
+    transform: translateY(-15px); 
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); 
+}
+
+.card{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

@@ -5,13 +5,13 @@ import './Refugios.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const Tarjeta = ({imagen, titulo, texto, enlace}) => {
+const Tarjeta = ({imagen, titulo, texto, enlace, fotoPerfil}) => {
   return(
     <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
       <div className="card tarjeta" onClick={() => window.location.href = enlace}>
       <img src={imagen} className="card-img-top" style={{width: '100%', height: '100%'}} alt={titulo} />
         <div className="card-img-overlay d-flex flex-column justify-content-end p-3">
-          <h5 className="card-title">{titulo}</h5>
+        <h5 className="card-title">{titulo}</h5>
           <hr className="title-underline" />
         </div>
         <div className="card-body">
@@ -79,12 +79,13 @@ const Refugios = () => {
                   </form>
               </div>
             </div>
-            <div className="row text-center mt-5">
+            <div className=" tarjetas row text-center mt-5">
               <Tarjeta
                 imagen="https://www.hogarmania.com/archivos/202011/cosas-donar-refugio-animales-portada-668x400x80xX-1.jpg"
                 titulo="Buenos Chicos"
                 texto="Refugio dedicado a brindar amor y hogar a perros en busca de una segunda oportunidad."
                 enlace = "/refugio"
+                fotoPerfil = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s'
               />
               <Tarjeta
                 imagen="https://cdn.unotv.com/images/2023/12/refugio-animales-140859-1024x576.jpg"

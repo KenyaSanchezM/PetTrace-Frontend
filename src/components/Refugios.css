@@ -10946,6 +10946,18 @@ header.masthead .masthead-heading {
     line-height: 4.5rem;
     margin-bottom: 4rem;
   }
+  
+}
+
+@media (max-width: 768px) {
+  .tarjetas {
+    flex-wrap: wrap;
+    gap: 90px;
+  }
+  .tarjeta{
+    width: 290px;
+    
+  }
 }
 
 .tarjeta {
@@ -10955,7 +10967,8 @@ header.masthead .masthead-heading {
   cursor:pointer;
   margin-bottom: 15px;
   margin-left: 30px;
-  height: 380px;
+  height: 395px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tarjeta img {
@@ -11009,6 +11022,12 @@ header.masthead .masthead-heading {
 .tarjeta:hover .card-body {
   opacity: 1;
 }
+
+.tarjeta:hover{
+  transform: translateY(-15px); 
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); 
+}
+
 .dropdown-menu {
   max-height: 150px; /* Ajusta este valor según sea necesario */
   overflow-y: auto;

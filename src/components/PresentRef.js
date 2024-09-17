@@ -42,7 +42,7 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
             <div className="card mb-3" style={{marginTop: '10px'}}>
                 <div className="row g-0">
                     <div className="col-md-4">
-                    <img src={imagen} className="img-fluid rounded-start" alt="..."/>
+                    <img src={imagen} className="img-fluid rounded-start" alt="..." style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
                     </div>
                     <div className="col-md-8">
                     <div className="card-body">
@@ -67,29 +67,29 @@ const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celu
             <section className='Head'>
                 <div className="container px-5">
                 <div className="row gx-5 align-items-center">
-                    <div id="carouselExampleFade" class="carousel slide carousel-fade col-lg-6 order-1">
+                    <div id="carouselExampleInterval" class="carousel slide col-lg-6 order-1" data-bs-ride="carousel" >
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
+                            <div class="carousel-item active" data-bs-interval="3000">
                             <img src={imagen1} class="d-block w-100" alt="..."/>
                             </div>
-                            <div class="carousel-item">
+                            <div class="carousel-item" data-bs-interval="3000">
                             <img src={imagen2} class="d-block w-100" alt="..."/>
                             </div>
-                            <div class="carousel-item">
+                            <div class="carousel-item" >
                             <img src={imagen3} class="d-block w-100" alt="..."/>
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
                     <div className="col-lg-6 order-2 ">
-                    <div className="p-5" style={{ borderRadius: '10px', boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)'}}>
+                    <div className="p-5" style={{ borderRadius: '10px', boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)', height: '420px'}}>
                         <h2 className="display-4"><img src={logo} className="rounded-circle me-3" alt="Logo" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
                         <h5 className="font-weight-light">{descripcion}<i className="fas fa-paw" style={{ marginLeft: '10px'}}></i></h5>
                         <h5 className="font-weight-light"><i class="bi bi-geo-alt"></i> {ciudad}, {estado}</h5>
