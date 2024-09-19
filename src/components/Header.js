@@ -35,7 +35,15 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
             <li className="nav-item">
-              <a className="nav-link" href="/home">Inicio</a>
+              {isAuthenticated ? (
+                <>
+                  <a className="nav-link" href="/home">Inicio</a>
+                </>
+                ):(
+                <>
+                  <a className="nav-link" href="/">Inicio</a>
+                </>
+              )}
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="refugiosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

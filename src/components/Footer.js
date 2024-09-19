@@ -5,20 +5,14 @@ import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer className=" text-white mt-5 p-4 text-center" style={{ backgroundColor: '#000108',}}>
+    <footer className=" text-white mt-5 p-4 text-center" style={{ backgroundColor: '#1f273b',}}>
       <div className="container">
-        <div className="row">
-          <div className="col-12 col-md-6 mb-3 mb-md-0">
-            <h5>PetTracer</h5>
-            <p>&copy; {new Date().getFullYear()} PetTrace. Todos los derechos reservados.</p>
-            <p>Hecho con ❤️ por el equipo de PetTrace</p>
-          </div>
-          <div className="col-12 col-md-6">
-            <h5>Contacto</h5>
-            <ul className="list-unstyled">
-              <li>Email: info@pettracer.com</li>
-              <li>Teléfono: +1 234 567 890</li>
-            </ul>
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-6 text-center">
+            <h5  >PetTrace</h5>
+            <p style={{textAlign:'center'}}>&copy; {new Date().getFullYear()} PetTrace. Todos los derechos reservados.
+              <br/>Hecho con ❤️ por el equipo de PetTrace
+              <br/>Correo: info@pettracer.com</p>
           </div>
         </div>
       </div>
