@@ -42,23 +42,41 @@ const PubDogCard = ({ images, texts, userImage, userName, dogId }) => {
         };
     }, [showMenu]);
 
-    const handleMarkAsMine = async () => {
+    const handleMarkAsMine = async (dogId, isMarked) => {
+        console.log("dogId:", dogId);
+        const token = localStorage.getItem('access_token');
+        console.log("Token de autenticación:", token);
+
         try {
-            await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, { is_marked: true });
-            setIsMarked(true);
+            const response = await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, {
+                is_marked: isMarked,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }                
+            });
+            console.log('Perro marcado correctamente:', response.data);
         } catch (error) {
             console.error('Error al marcar como "Es mi mascota":', error);
         }
     };
 
-    const handleMarkAsNotMine = async () => {
-        try {
-            await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, { is_marked: false });
-            setIsMarked(false);
-        } catch (error) {
-            console.error('Error al marcar como "No es mi mascota":', error);
-        }
-    };
+    const handleMarkAsNotMine = async (dogId) => {
+    try {
+        const token = localStorage.getItem('access_token');
+        await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, {
+            is_marked: false,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // JWT token si lo estás usando
+            },
+        });
+        setIsMarked(false);
+    } catch (error) {
+        console.error('Error al marcar como "No es mi mascota":', error);
+    }
+};
+
 
     return (
         <div className="container mt-4">
@@ -111,12 +129,12 @@ const PubDogCard = ({ images, texts, userImage, userName, dogId }) => {
                         <Button variant="primary" className="contact-button">Enviar mensaje</Button>
                     </div>
                     <div className='mark-buttons'>
-                        <Button variant="success" onClick={handleMarkAsMine} disabled={isMarked === true}>
-                            Es mi mascota
-                        </Button>
-                        <Button variant="danger" onClick={handleMarkAsNotMine} disabled={isMarked === false}>
-                            No es mi mascota
-                        </Button>
+                    <Button variant="success" onClick={() => handleMarkAsMine(dogId, true)} disabled={isMarked === true}>
+                        Es mi mascota
+                    </Button>
+                    <Button variant="danger" onClick={() => handleMarkAsNotMine(dogId)} disabled={isMarked === false}>
+                        No es mi mascota
+                    </Button>
                     </div>
                 </div>
             </div>

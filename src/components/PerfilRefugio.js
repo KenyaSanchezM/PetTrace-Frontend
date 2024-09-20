@@ -181,7 +181,7 @@ const PerfilUsuarioRefugio = () => {
                   ))}
                 </Row>
               ) : (
-                <p>No hay perros registrados.</p>
+                <p></p>
               )}
             </>
           ) : (

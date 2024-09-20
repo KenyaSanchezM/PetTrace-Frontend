@@ -32,7 +32,6 @@ const PerfilUsuario = () => {
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error.response ? error.response.data : error.message);
-        alert('Hubo un problema al cargar los datos del usuario. Por favor, inténtalo de nuevo.');
       }
     };
 
@@ -151,15 +150,22 @@ const PerfilUsuario = () => {
   };
 
   const handleSearchMatches = (perro) => {
+    if (!perro.id) {
+        console.error('ID del perro no disponible.');
+        return;
+    }
+    console.log('ID del perro:', perro.id);
+
+
     const query = {
-      breeds: perro.breeds || [],
-      color: perro.color || []
+      
+        current_dog_id: perro.id  // Aquí se envía el ID correctamente
     };
-  
-    // Redirige al HomeUser con los parámetros de búsqueda en la URL
+
     navigate(`/home?search=${encodeURIComponent(JSON.stringify(query))}`);
-  };
-  
+};
+
+    
 
   return (
     <Container>

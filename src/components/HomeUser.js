@@ -23,13 +23,16 @@ const HomeUser = () => {
         const searchParams = new URLSearchParams(location.search);
         const searchQuery = searchParams.get('search');
         
+        console.log('Search Query:', searchQuery);  // Agregar este log
+        
         if (searchQuery) {
             const query = JSON.parse(decodeURIComponent(searchQuery));
+            console.log('Query después de parsear:', query);  // Agregar este log
             searchMatches(query);
         } else {
             fetchAllDogs();  // Si no hay búsqueda, muestra todas las publicaciones
         }
-    }, [location.search]);
+    }, [location.search]);    
     
     
     const fetchAllDogs = async () => {
@@ -53,25 +56,16 @@ const HomeUser = () => {
             setError('Hubo un problema al cargar los datos de los perros.');
         }
     };
+ 
     
-    
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const searchQuery = searchParams.get('search');
-        if (searchQuery) {
-            const query = JSON.parse(decodeURIComponent(searchQuery));
-            searchMatches(query);  // Realiza la búsqueda con las razas proporcionadas
-        }
-    }, [location.search]);
-    
-    const searchMatches = async (dog) => {
+    const searchMatches = async (query) => {
         const token = localStorage.getItem('access_token');
+        console.log('Enviando el ID del perro en searchMatches:', query.current_dog_id);  // Agregar este log
+    
         try {
             const response = await axios.get('http://localhost:8000/api/search-matches/', {
                 params: {
-                    breeds: JSON.stringify(dog.breeds),
-                    colors: JSON.stringify(dog.color)  // Enviar también el filtro de colores
+                    search: JSON.stringify(query),  // Envía el query correctamente
                 },
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -88,8 +82,7 @@ const HomeUser = () => {
             setError('Hubo un problema al buscar coincidencias.');
         }
     };
-    
-    
+            
     const resetSearchResults = () => {
         setShowSearchResults(false);
         setSearchResults([]);
@@ -154,11 +147,12 @@ const HomeUser = () => {
                                     userName={dog.user ? dog.user.nombre : 'Nombre no disponible'}
                                     userImage={dog.user ? getAbsoluteImageUrl(dog.user.profile_image) : 'default-image-url'}
                                     onSearchMatches={() => searchMatches(dog)}
+                                    dogId={dog.id}  // Asegúrate de pasar el ID correcto
                                 />
                             </div>
                         ))
                     ) : (
-                        <p>No hay perros registrados.</p>
+                        <p>No hay perros registrados</p>
                     )}
                 </div>
                 {/* Mostrar resultados filtrados de la búsqueda */}
@@ -177,6 +171,7 @@ const HomeUser = () => {
                                         texts={[result.caracteristicas, result.nombre, result.form_type, result.ubicacion, result.breeds]}
                                         userName={result.user ? result.user.nombre : 'Nombre no disponible'}
                                         userImage={result.user ? getAbsoluteImageUrl(result.user.profile_image) : 'default-image-url'}
+                                        dogId={result.id}  // Asegúrate de pasar el ID correcto
                                     />
                                 ))
                             ) : (
