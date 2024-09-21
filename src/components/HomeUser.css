@@ -1,5 +1,9 @@
-body{
-    background-color: rgb(240, 245, 248);
+.home-user{
+    background-image: url("../../public/images/fondo_home.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 .dog-icon{
     font-size:1.8rem;
@@ -11,8 +15,10 @@ body{
     background-color: #fff;
     border-radius: 4px;
     border-color: rgb(138, 133, 133);
-    width: 300px;
+    width: 500px;
     color: rgb(112, 111, 111);
+    margin-right: 48px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .publish-button:hover{
     background-color: transparent;

@@ -42,24 +42,26 @@ const PubDogCard = ({ images, texts, userImage, userName, dogId }) => {
         };
     }, [showMenu]);
 
-    const handleMarkAsMine = async (dogId, isMarked) => {
+    const handleMarkAsMine = async (dogId) => {
         console.log("dogId:", dogId);
         const token = localStorage.getItem('access_token');
         console.log("Token de autenticación:", token);
-
+    
         try {
             const response = await axios.post(`http://localhost:8000/api/mark-dog/${dogId}/`, {
-                is_marked: isMarked,
+                is_marked: true,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }                
             });
             console.log('Perro marcado correctamente:', response.data);
+            setIsMarked(true);  // Actualiza el estado
         } catch (error) {
             console.error('Error al marcar como "Es mi mascota":', error);
         }
     };
+    
 
     const handleMarkAsNotMine = async (dogId) => {
     try {

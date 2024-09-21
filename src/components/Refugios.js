@@ -24,7 +24,7 @@ const Tarjeta = ({imagen, titulo, texto, enlace}) => {
 
 const Refugios = () => {
     return(
-      <div>
+      <div className='contenedor-refugios'>
         {/* Masthead */}
         <header className="masthead">
           <div className="container">

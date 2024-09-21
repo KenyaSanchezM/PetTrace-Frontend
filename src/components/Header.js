@@ -59,6 +59,9 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
             <li className="nav-item">
               <a className="nav-link" href="/contact">Contáctanos</a>
             </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/about">Acerca de nosotros</a>
+            </li>
             <li className="nav-item dropdown profile">
               <a className="nav-link dropdown-toggle profile-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i className="bi bi-person-circle"></i>
