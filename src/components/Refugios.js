@@ -1,5 +1,4 @@
 //Presentación de refugios
-
 import React from 'react';
 import './Refugios.css';
 import 'bootstrap/dist/css/bootstrap.min.css';

@@ -1,8 +1,9 @@
-//Home para cuando un usuario inicia sesión
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom'; // Importa useLocation
 import './HomeUser.css';
 import PubDogCard from './PubDogCard';
+import RegistroPerros from './RegistroPerros';
+import axios from 'axios';
 
 const HomeUser = () => {
 
@@ -15,6 +16,98 @@ const HomeUser = () => {
     const text = "Es un perro de talla grande con un collar azul. Tiene una marca distintiva en una de sus orejas. Es un poco miedoso, así que por favor, trátalo con paciencia y calma si lo ves. Es importante que regrese a casa, así que cualquier información sobre su paradero será muy apreciada.";
     const userName = "Luna Fuentes"
     const userImage = "https://s.cafebazaar.ir/images/icons/br.com.blackmountain.photo.blackwhite-2bef36db-306d-4b35-bdb5-c6170bf54348_512x512.webp"
+    
+    const [dogs, setDogs] = useState([]);
+    const [error, setError] = useState(null);
+    const [showRegistroModal, setShowRegistroModal] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
+    const [showSearchResults, setShowSearchResults] = useState(false);
+    const location = useLocation(); // Obtén la ubicación actual para manejar parámetros de búsqueda
+
+    const handleShowRegistroModal = () => setShowRegistroModal(true);
+    const handleCloseRegistroModal = () => setShowRegistroModal(false);
+
+    const userType = localStorage.getItem('user_type'); // Obtén el tipo de usuario desde localStorage
+    const userId = localStorage.getItem('user_id');
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const searchQuery = searchParams.get('search');
+        
+        console.log('Search Query:', searchQuery);  // Agregar este log
+        
+        if (searchQuery) {
+            const query = JSON.parse(decodeURIComponent(searchQuery));
+            console.log('Query después de parsear:', query);  // Agregar este log
+            searchMatches(query);
+        } else {
+            fetchAllDogs();  // Si no hay búsqueda, muestra todas las publicaciones
+        }
+    }, [location.search]);    
+    
+    
+    const fetchAllDogs = async () => {
+        const token = localStorage.getItem('access_token');
+        try {
+            const response = await axios.get('http://localhost:8000/api/dog-predictions/', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            // Verifica las URLs de las imágenes
+            console.log(response.data.map(dog => ({
+                image: getAbsoluteImageUrl(dog.image),
+                profile_image1: getAbsoluteImageUrl(dog.profile_image1),
+                profile_image2: getAbsoluteImageUrl(dog.profile_image2),
+                userImage: dog.user ? getAbsoluteImageUrl(dog.user.profile_image) : 'default-image-url'
+            })));
+            setDogs(response.data); // Muestra todas las publicaciones
+        } catch (error) {
+            console.error('Error fetching dogs:', error);
+            setError('Hubo un problema al cargar los datos de los perros.');
+        }
+    };
+ 
+    
+    const searchMatches = async (query) => {
+        const token = localStorage.getItem('access_token');
+        console.log('Enviando el ID del perro en searchMatches:', query.current_dog_id);  // Agregar este log
+    
+        try {
+            const response = await axios.get('http://localhost:8000/api/search-matches/', {
+                params: {
+                    search: JSON.stringify(query),  // Envía el query correctamente
+                },
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            if (response.data && response.data.length > 0) {
+                setDogs(response.data);  // Actualiza el estado con los resultados filtrados
+            } else {
+                setDogs([]);  // Si no hay resultados, muestra un array vacío
+            }
+        } catch (error) {
+            console.error('Error searching matches:', error);
+            setError('Hubo un problema al buscar coincidencias.');
+        }
+    };
+            
+    const resetSearchResults = () => {
+        setShowSearchResults(false);
+        setSearchResults([]);
+    };
+
+    const getAbsoluteImageUrl = (url) => {
+        // Si la URL ya tiene un dominio, no añadir el prefijo
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+        }
+        // Si la URL es relativa, añadir el dominio base
+        return `http://localhost:8000${url}`;
+    };
+    
 
     return (
         <div className="home-user">
@@ -40,17 +133,69 @@ const HomeUser = () => {
             <div className='content'>
                 <div className='publish'>
                     <i className="fa-solid fa-dog dog-icon"></i>
-                    <button type="button" className="btn btn-outline-warning publish-button" >Publicar Mascota</button>
+                    {userType === 'user' && ( // Mostrar solo si el tipo de usuario es 'user'
+                        <button 
+                            type="button" 
+                            className="btn btn-outline-warning publish-button"
+                            onClick={handleShowRegistroModal}
+                        >
+                            Publicar Mascota
+                        </button>
+                    )}
                 </div>
                 <div className='card-container'>
-                    <PubDogCard 
-                        images={images} 
-                        text= {text}
-                        userName= {userName}
-                        userImage= {userImage}
-                    />
+                    {error && <p className="text-danger">{error}</p>}
+                    {!showSearchResults && dogs.length > 0 ? (
+                        dogs.map((dog) => (
+                            <div key={dog.id} className="dog-card">
+                                <PubDogCard 
+                                    images={[
+                                        getAbsoluteImageUrl(dog.image),
+                                        getAbsoluteImageUrl(dog.profile_image1),
+                                        getAbsoluteImageUrl(dog.profile_image2)
+                                    ]}
+                                    texts={[dog.caracteristicas, dog.nombre, dog.form_type, dog.ubicacion, dog.breeds]}
+                                    userName={dog.user ? dog.user.nombre : 'Nombre no disponible'}
+                                    userImage={dog.user ? getAbsoluteImageUrl(dog.user.profile_image) : 'default-image-url'}
+                                    onSearchMatches={() => searchMatches(dog)}
+                                    dogId={dog.id}  // Asegúrate de pasar el ID correcto
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <p>No hay perros registrados</p>
+                    )}
                 </div>
+                {/* Mostrar resultados filtrados de la búsqueda */}
+                    {showSearchResults && (
+                        <div className='search-results'>
+                            <h3>Resultados de la búsqueda:</h3>
+                            {searchResults.length > 0 ? (
+                                searchResults.map((result) => (
+                                    <PubDogCard 
+                                        key={result.id}
+                                        images={[
+                                            getAbsoluteImageUrl(result.image),
+                                            getAbsoluteImageUrl(result.profile_image1),
+                                            getAbsoluteImageUrl(result.profile_image2)
+                                        ]}
+                                        texts={[result.caracteristicas, result.nombre, result.form_type, result.ubicacion, result.breeds]}
+                                        userName={result.user ? result.user.nombre : 'Nombre no disponible'}
+                                        userImage={result.user ? getAbsoluteImageUrl(result.user.profile_image) : 'default-image-url'}
+                                        dogId={result.id}  // Asegúrate de pasar el ID correcto
+                                    />
+                                ))
+                            ) : (
+                                <p>No se encontraron coincidencias.</p>
+                            )}
+                        </div>
+                    )}
             </div>
+            <RegistroPerros 
+                show={showRegistroModal} 
+                handleClose={handleCloseRegistroModal}
+                user_id={userId}
+            />
         </div>
     );
 };

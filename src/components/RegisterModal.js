@@ -11,16 +11,26 @@ const estados = [
   'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 
   'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'
 ];
+
 const RegisterModal = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
     email: '',
     nombre: '',
     telefono: '',
     password: '',
-    userType: 'user'  // Añadido para diferenciar entre usuario regular y refugio
+    user_type: 'user',  // Añadido para diferenciar entre usuario regular y refugio
+    profile_image: null,
+    estado: '',
+    ciudad: '',
+    direccion: '',
+    codigoPostal: ''
   });
 
   const [error, setError] = useState('');
+  
+  const handleFileChange = (event) => {
+    setFormData({ ...formData, profile_image: event.target.files[0] });
+  };
   
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -28,16 +38,37 @@ const RegisterModal = ({ show, handleClose }) => {
   };
 
   const handleSelectChange = (event) => {
-    const { value } = event.target;
-    setFormData({ ...formData, userType: value });
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = formData.userType === 'shelter' ? 'http://localhost:8000/api/registro-refugio/' : 'http://localhost:8000/api/registro-usuario/';
+    const url = formData.user_type === 'shelter' ? 'http://localhost:8000/api/registro-refugio/' : 'http://localhost:8000/api/registro-usuario/';
+    
+    const formDataToSend = new FormData();
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('nombre', formData.nombre);
+    formDataToSend.append('telefono', formData.telefono);
+    formDataToSend.append('password', formData.password);
+    formDataToSend.append('user_type', formData.user_type);
+    if (formData.profile_image) {
+      formDataToSend.append('profile_image', formData.profile_image);
+    }
+    
+    if (formData.user_type === 'shelter') {
+      formDataToSend.append('estado', formData.estado);
+      formDataToSend.append('ciudad', formData.ciudad);
+      formDataToSend.append('direccion', formData.direccion);
+      formDataToSend.append('codigoPostal', formData.codigoPostal);
+    }
     
     try {
-      const response = await axios.post(url, formData);
+      const response = await axios.post(url, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       console.log(response.data);
       handleClose();
     } catch (error) {
@@ -56,12 +87,19 @@ const RegisterModal = ({ show, handleClose }) => {
           <Row>
             <Col>
               <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="userType" className="mb-3">
+                <Form.Group controlId="user_type" className="mb-3">
                   <Form.Label>Tipo de usuario</Form.Label>
-                  <Form.Control as="select" name="userType" value={formData.userType} onChange={handleSelectChange}>
+                  <Form.Control as="select" name="user_type" value={formData.user_type} onChange={handleSelectChange}>
                     <option value="user">Usuario</option>
                     <option value="shelter">Refugio</option>
                   </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="profile_image" className="mb-3">
+                  <Form.Label>Imagen de perfil</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={handleFileChange}
+                  />
                 </Form.Group>
                 <Form.Group controlId="nombre" className="mb-3">
                   <Form.Label>Nombre</Form.Label>
@@ -104,7 +142,7 @@ const RegisterModal = ({ show, handleClose }) => {
                   />
                 </Form.Group>
 
-                {formData.userType === 'shelter' && (
+                {formData.user_type === 'shelter' && (
                   <>
                     <Form.Group controlId="estado" className="mb-3">
                       <Form.Label>Estado</Form.Label>
@@ -112,7 +150,7 @@ const RegisterModal = ({ show, handleClose }) => {
                         as="select"
                         name="estado"
                         value={formData.estado}
-                        onChange={handleInputChange}
+                        onChange={handleSelectChange}
                       >
                         <option value="">Selecciona un estado</option>
                         {estados.map((estado, index) => (

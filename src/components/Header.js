@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.css';
 
-const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick, onRegisterShelterClick, onRegistrarEventoClick }) => {
+const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick }) => {
 
   const getProfileLink = () => {
     const userType = localStorage.getItem('user_type'); // Obtenemos el tipo de usuario
@@ -34,17 +34,15 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
         </button>
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-            <li className="nav-item">
-              {isAuthenticated ? (
-                <>
-                  <a className="nav-link" href="/home">Inicio</a>
-                </>
-                ):(
-                <>
-                  <a className="nav-link" href="/">Inicio</a>
-                </>
-              )}
-            </li>
+            {!isAuthenticated ? (
+              <li className="nav-item">
+                <a className="nav-link" href="/">Pagina principal</a>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <a className="nav-link" href="/home">Inicio</a>
+              </li>
+            )}
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="refugiosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Refugios
@@ -77,7 +75,7 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
                 ) : (
                   <>
                     <li><button className="dropdown-item" onClick={onSignInClick}>Iniciar sesión</button></li>
-                    <li><a className="dropdown-item" href="/#" onClick={onRegisterClick}>Registrarse</a></li>
+                    <li><a className="dropdown-item" href="#" onClick={onRegisterClick}>Registrarse</a></li>
                   </>
                 )}
               </ul>

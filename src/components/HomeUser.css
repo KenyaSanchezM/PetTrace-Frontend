@@ -42,6 +42,10 @@
 }
 
 .card-container{
+    flex-direction: column; /* Alinea las cards una debajo de otra */
+    gap: 20px; /* Espacio entre las cards */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    align-items: center; /* Centra las cards horizontalmente */
     display: flex;
     justify-content: center;
     margin-top: 20px;
@@ -56,7 +60,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     border-radius: 5px;
+    border: 1px solid #ddd; /* Borde opcional */
     padding: 10px;
+    overflow: hidden; /* Oculta cualquier desbordamiento */
+}
+.DogCard img {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho de la card */
+    height: 200px; /* Fija una altura específica para las imágenes */
+    object-fit: cover; /* Recorta la imagen para que cubra el espacio uniformemente */
 }
 
 .DogCard-text{
