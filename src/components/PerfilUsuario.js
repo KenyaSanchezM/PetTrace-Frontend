@@ -21,6 +21,7 @@ const PerfilUsuario = () => {
   const navigate = useNavigate();  // Usa useNavigate
 
   useEffect(() => {
+    
     const fetchUserData = async () => {
       const token = localStorage.getItem('access_token');
       try {
@@ -88,7 +89,6 @@ const PerfilUsuario = () => {
     const dataToUpdate = { 
       ...editData,
       color: JSON.stringify(editData.color),  // Convertimos el arreglo a una cadena JSON
-      breeds: JSON.stringify(editData.breeds) // Convertimos el arreglo a una cadena JSON
     };
 
     // Eliminar campos no necesarios o solo de lectura
@@ -137,18 +137,6 @@ const PerfilUsuario = () => {
     });
   };
 
-  const handleBreedChange = (e) => {
-    const { name, checked } = e.target;
-    setEditData((prevData) => {
-      let newBreeds = [...prevData.breeds];
-      if (checked) {
-        newBreeds.push(name);
-      } else {
-        newBreeds = newBreeds.filter((breed) => breed !== name);
-      }
-      return { ...prevData, breeds: newBreeds };
-    });
-  };
 
   const handleSearchMatches = (perro) => {
     if (!perro.id) {
@@ -214,7 +202,7 @@ return (
                               <div className="card-body">
                                 <p className='p-name'>{perro.nombre}</p>
                                 <p className='text'>
-                                  <strong>Estado: </strong>{perro.form_type ? 'Perdido' : 'Encontrado'}<br />
+                                  <strong>Estado: </strong>{perro.form_type === 'perdido' ? 'Perdido' : 'Encontrado'}<br />
                                   <strong>Edad:</strong> {perro.edad}<br />
                                   <strong>Color:</strong> {perro.color}<br />
                                   <strong>Ubicación:</strong> {perro.ubicacion}<br />

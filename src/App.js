@@ -20,6 +20,8 @@ import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
 import HomeUser from './components/HomeUser';
 import Eventos from './components/Eventos';
+import IrPerfilUser from './components/IrPerfilUser';
+
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -82,6 +84,8 @@ function App() {
           <Route path='/perfil-usuario' element={<PerfilUsuario />} />
           <Route path='/home' element={<HomeUser />} />
           <Route path='/eventos' element={<Eventos />} />
+          <Route path="/ir-perfil-usuario/:userId" element={<IrPerfilUser />} />
+
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
