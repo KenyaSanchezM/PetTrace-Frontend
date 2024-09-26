@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 
 const FiltrosRazas = ({ onFilterSubmit }) => {
     const [selectedBreeds, setSelectedBreeds] = useState([]);
-    const [selectedColors, setSelectedColors] = useState([]);
+    const [selectedColors, setSelectedColors] = useState([]);   
     const [is_mine, setIsMine] = useState(null);
     const [selectedSex, setSelectedSex] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     
-    // Estado para controlar la visibilidad del contenedor de filtros
     const [showFilters, setShowFilters] = useState(false);
 
     const availableBreeds = ['Afgano', 'Akita', 'Alaskan Malamute',  'Basenji', 'Basset Hound',
@@ -41,26 +40,41 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
     };
 
     const handleSearchClick = () => {
-        onFilterSubmit({
+        const filters = {
             breeds: selectedBreeds,
             colors: selectedColors,
-            is_mine,
             sex: selectedSex,
             date: selectedDate,
-            status: selectedStatus
-        });
-    };
+            status: selectedStatus,
+        };
+    
+        // Solo agregar el filtro is_mine si se ha seleccionado (true o false)
+        if (is_mine !== null) {
+            filters.is_mine = is_mine;
+        }
+    
+        onFilterSubmit(filters);
+    
 
+        console.log({
+            isMineNumber: is_mine,
+            filters: filters
+        });
+    
+        // Llamar la función que envía los filtros
+        onFilterSubmit(filters); 
+    
+        
+    };
+    
     return (
         <div>
-            {/* Botón para abrir y cerrar el contenedor de filtros */}
             <button onClick={() => setShowFilters(!showFilters)}>
                 {showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'}
             </button>
 
             {showFilters && (
                 <div style={{ marginTop: '10px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                    {/* Filtros de razas */}
                     <h4>Filtrar por raza</h4>
                     {availableBreeds.map(breed => (
                         <div key={breed}>
@@ -75,7 +89,6 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
                         </div>
                     ))}
 
-                    {/* Filtros de colores */}
                     <h4>Filtrar por color</h4>
                     {availableColors.map(color => (
                         <div key={color}>
@@ -90,30 +103,30 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
                         </div>
                     ))}
 
-                    {/* Filtros adicionales */}
                     <h4>¿Es mío o no?</h4>
-                    <select onChange={(e) => setIsMine(e.target.value)}>
-                        <option value="">Ambos</option>
-                        <option value="true">Mío</option>
-                        <option value="false">No mío</option>
+                    <select onChange={(e) => setIsMine(e.target.value === '1' ? true : e.target.value === '0' ? false : null)}>
+                        <option value="">Ambos</option>    {/* Se envía null si el usuario no elige ninguna opción */}
+                        <option value={1}>Mío</option>     {/* Cambiar a '1' para representar true */}
+                        <option value={0}>No mío</option>  {/* Cambiar a '0' para representar false */}
                     </select>
 
                     <h4>Filtrar por sexo</h4>
                     <select onChange={(e) => setSelectedSex(e.target.value)}>
                         <option value="">Ambos</option>
-                        <option value="male">Macho</option>
-                        <option value="female">Hembra</option>
+                        <option value="Macho">Macho</option>
+                        <option value="Hembra">Hembra</option>
                     </select>
 
                     <h4>Filtrar por fecha</h4>
                     <input type="date" onChange={(e) => setSelectedDate(e.target.value)} />
 
-                    <h4>Filtrar por estado</h4>
+                    <h4>Estatus</h4>
                     <select onChange={(e) => setSelectedStatus(e.target.value)}>
-                        <option value="">Ambos</option>
-                        <option value="found">Encontrado</option>
-                        <option value="lost">Perdido</option>
+                        <option value="">Selecciona</option>
+                        <option value="perdido">Perdido</option>
+                        <option value="encontrado">Encontrado</option>
                     </select>
+
 
                     <button onClick={handleSearchClick}>Buscar</button>
                 </div>

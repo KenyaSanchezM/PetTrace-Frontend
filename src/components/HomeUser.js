@@ -80,7 +80,7 @@ const HomeUser = () => {
                 params: {
                     breeds: filters.breeds.join(','),
                     colors: filters.colors.join(','),
-                    is_mine: filters.is_mine === true ? 1 : filters.is_mine === false ? 0 : null,
+                    is_mine: filters.is_mine === null ? null : filters.is_mine,  // Asegúrate de enviar null si is_mine es null
                     sex: filters.sex,
                     date: filters.date,
                     status: filters.status,
