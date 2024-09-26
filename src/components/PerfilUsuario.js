@@ -476,7 +476,7 @@ return (
 
     </Container>
   );
-erfilBusquedas
+
 };
 
 export default PerfilUsuario;

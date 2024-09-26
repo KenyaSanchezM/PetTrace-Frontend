@@ -80,7 +80,7 @@ const HomeUser = () => {
                 params: {
                     breeds: filters.breeds.join(','),
                     colors: filters.colors.join(','),
-                    is_mine: filters.is_mine,
+                    is_mine: filters.is_mine === true ? 1 : filters.is_mine === false ? 0 : null,
                     sex: filters.sex,
                     date: filters.date,
                     status: filters.status,
@@ -92,6 +92,7 @@ const HomeUser = () => {
             setError('Hubo un problema al filtrar los perros.');
         }
     };
+    
 
     const getAbsoluteImageUrl = (url) => {
         if (!url) return 'public/images/temporal.jpeg';
@@ -144,7 +145,7 @@ const HomeUser = () => {
                                         getAbsoluteImageUrl(dog.profile_image1),
                                         getAbsoluteImageUrl(dog.profile_image2)
                                     ]}
-                                    texts={[dog.caracteristicas, dog.nombre, dog.form_type, dog.ubicacion, dog.breeds]}
+                                    texts={[dog.caracteristicas, dog.nombre, dog.form_type, dog.ubicacion, dog.breeds,dog.id,dog.sexo]}
                                     userName={dog.user ? dog.user.nombre : 'Nombre no disponible'}
                                     userImage={dog.user ? getAbsoluteImageUrl(dog.user.profile_image) : 'default-image-url'}
                                     dogId={dog.id}

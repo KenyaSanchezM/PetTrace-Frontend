@@ -132,6 +132,8 @@ return (
                     <p><strong>Características:</strong> {texts[0] || 'No disponible'}</p>
                     <p><strong>Ubicación:</strong> {texts[3] || 'No disponible'}</p>
                     <p><strong>Razas:</strong> {texts[4] || 'No disponible'}</p>
+                    <p><strong>ID:</strong> {texts[5] || 'No disponible'}</p>
+                    <p><strong>sexo:</strong> {texts[6] || 'No disponible'}</p>
                 </div>
                 <div className='button-container'>
                     <Button variant="primary" className="contact-button">Enviar mensaje</Button>
