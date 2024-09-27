@@ -4,7 +4,7 @@ import './Refugios.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const Tarjeta = ({imagen, titulo, texto, enlace, fotoPerfil}) => {
+const Tarjeta = ({imagen, titulo, texto, enlace, estado,ciudad}) => {
   return(
     <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
       <div className="card tarjeta" onClick={() => window.location.href = enlace}>
@@ -14,7 +14,7 @@ const Tarjeta = ({imagen, titulo, texto, enlace, fotoPerfil}) => {
           <hr className="title-underline" />
         </div>
         <div className="card-body">
-          <p className="card-text">{texto}</p>
+          <p className="card-text">{texto}<br/><br/>{ciudad}, {estado}</p>
         </div>
       </div>
     </div>
@@ -23,6 +23,8 @@ const Tarjeta = ({imagen, titulo, texto, enlace, fotoPerfil}) => {
 };
 
 const Refugios = () => {
+
+
     return(
       <div className='contenedor-refugios'>
         {/* Masthead */}
@@ -84,7 +86,8 @@ const Refugios = () => {
                 titulo="Buenos Chicos"
                 texto="Refugio dedicado a brindar amor y hogar a perros en busca de una segunda oportunidad."
                 enlace = "/refugio"
-                fotoPerfil = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s'
+                estado = "CDMX"
+                ciudad = "Perro"
               />
               <Tarjeta
                 imagen="https://cdn.unotv.com/images/2023/12/refugio-animales-140859-1024x576.jpg"
