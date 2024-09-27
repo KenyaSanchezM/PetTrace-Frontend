@@ -1,20 +1,21 @@
 //Presentación de refugios
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Refugios.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const Tarjeta = ({imagen, titulo, texto, enlace, estado,ciudad}) => {
+const Tarjeta = ({image1, nombre, descripcion, enlace, estado,ciudad}) => {
   return(
     <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
       <div className="card tarjeta" onClick={() => window.location.href = enlace}>
-      <img src={imagen} className="card-img-top" style={{width: '100%', height: '100%'}} alt={titulo} />
+      <img src={image1} className="card-img-top" style={{width: '100%', height: '100%'}} alt={nombre} />
         <div className="card-img-overlay d-flex flex-column justify-content-end p-3">
-        <h5 className="card-title">{titulo}</h5>
+        <h5 className="card-title">{nombre}</h5>
           <hr className="title-underline" />
         </div>
         <div className="card-body">
-          <p className="card-text">{texto}<br/><br/>{ciudad}, {estado}</p>
+          <p className="card-text">{descripcion}<br/><br/>{ciudad}, {estado}</p>
         </div>
       </div>
     </div>
@@ -24,6 +25,22 @@ const Tarjeta = ({imagen, titulo, texto, enlace, estado,ciudad}) => {
 
 const Refugios = () => {
 
+  const [refugios, setRefugios] = useState([]);
+  const refugioId = localStorage.getItem('refugio_id');
+
+  useEffect(() => {
+    fetchRefugios();
+  }, []);
+
+  const fetchRefugios = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/refugios/'); // Ajusta el endpoint a tu API
+      console.log('Respuesta de la API:', response.data);
+      setRefugios(response.data.refugios); // Accede a los refugios en la respuesta
+    } catch (error) {
+      console.error('Error al obtener los refugios:', error);
+    }
+  };
 
     return(
       <div className='contenedor-refugios'>
@@ -81,29 +98,21 @@ const Refugios = () => {
               </div>
             </div>
             <div className=" tarjetas row text-center mt-5">
-              <Tarjeta
-                imagen="https://www.hogarmania.com/archivos/202011/cosas-donar-refugio-animales-portada-668x400x80xX-1.jpg"
-                titulo="Buenos Chicos"
-                texto="Refugio dedicado a brindar amor y hogar a perros en busca de una segunda oportunidad."
-                enlace = "/refugio"
-                estado = "CDMX"
-                ciudad = "Perro"
-              />
-              <Tarjeta
-                imagen="https://cdn.unotv.com/images/2023/12/refugio-animales-140859-1024x576.jpg"
-                titulo="Dejando Huellitas"
-                texto="Comprometidos en rescatar y encontrar familias amorosas para perros necesitados."
-              />
-              <Tarjeta
-                imagen="https://www.elsoldetlaxcala.com.mx/incoming/mc3rhk-albergue-de-perros/ALTERNATES/LANDSCAPE_960/Albergue%20de%20perros"
-                titulo="Patitas Felices"
-                texto="Ofrecemos esperanza y un nuevo hogar a perros abandonados"
-              />
-              <Tarjeta
-                imagen="https://res.cloudinary.com/worldpackers/image/upload/c_fill,f_auto,q_auto,w_1024/v1/guides/article_cover/wesauslaoz5kkprwrkjg"
-                titulo="Patitas Felices"
-                texto="Un refugio seguro donde los perros encuentran amor y cuidado"
-              />
+            {refugios.length > 0 ? (
+              refugios.map(refugio => (
+                <Tarjeta
+                  key={refugio.user.id}
+                  image1={refugio.image1}  
+                  nombre={refugio.user.nombre}
+                  descripcion={refugio.descripcion}
+                  enlace={`/refugio/${refugio.user.id}`}  
+                  estado={refugio.estado}
+                  ciudad={refugio.ciudad}
+                />
+              ))
+            ) : (
+              <p>No se encontraron refugios.</p>
+            )}
             </div>
           </div>
         </section>

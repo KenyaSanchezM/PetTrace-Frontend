@@ -6,16 +6,6 @@ import RegistroPerros from './RegistroPerros';
 import axios from 'axios';
 
 const HomeUser = () => {
-
-    const images = [
-        'https://c.pxhere.com/photos/a6/b7/husky_siberian_cute_animal_dog_face_looking_indoor-1089136.jpg!d', // Imagen principal
-        'https://imageserve.babycenter.com/22/000/420/TLljxoX77Vu6CQOePXmyESyJolrXadG7_med.jpg',
-        'https://www.huskysiberiano10.com/wp-content/uploads/2018/03/como-criar-husky-siberiano.jpg', // Imagen superior derecha
-    ];
-
-    const text = "Es un perro de talla grande con un collar azul. Tiene una marca distintiva en una de sus orejas. Es un poco miedoso, así que por favor, trátalo con paciencia y calma si lo ves. Es importante que regrese a casa, así que cualquier información sobre su paradero será muy apreciada.";
-    const userName = "Luna Fuentes"
-    const userImage = "https://s.cafebazaar.ir/images/icons/br.com.blackmountain.photo.blackwhite-2bef36db-306d-4b35-bdb5-c6170bf54348_512x512.webp"
     
     const [dogs, setDogs] = useState([]);
     const [error, setError] = useState(null);
