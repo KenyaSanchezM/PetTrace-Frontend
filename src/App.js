@@ -21,6 +21,7 @@ import RegistarEvento from './components/RegistrarEvento';
 import HomeUser from './components/HomeUser';
 import Eventos from './components/Eventos';
 import IrPerfilUser from './components/IrPerfilUser';
+import NuestraIA from './components/NuestraIA'
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/registro-perros" element={<RegistroPerros />} />
           <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/NuestraIA" element={<NuestraIA />} />
           <Route path="/refugios" element={<Refugios />} />
           <Route path="/refugio" element={<PresentRef />} />
           <Route path='/perfil-refugio' element={<PerfilRefugio />} />

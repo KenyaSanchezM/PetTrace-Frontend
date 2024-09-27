@@ -1,0 +1,30 @@
+.ai-process-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1,h2 {
+    color: #333;
+}
+
+.step {
+    margin-bottom: 40px;
+}
+
+.step h2 {
+    color: #555;
+}
+
+.step-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #777;
+}
