@@ -4198,10 +4198,22 @@ textarea.form-control-lg {
 }
 
 .card-body {
-  flex: 1 1 auto;
-  padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-  color: var(--bs-card-color);
+  display: block; /* Asegurarte de que sea un bloque */
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en columna */
+  align-items: flex-start; /* Alineación a la izquierda */
+  justify-content: center; /* Centra verticalmente si es necesario */
+  color: #fff;
+  transition: opacity 0.3s ease;
 }
+
 
 .card-title {
   margin-bottom: var(--bs-card-title-spacer-y);
@@ -10952,11 +10964,10 @@ header.masthead .masthead-heading {
 @media (max-width: 768px) {
   .tarjetas {
     flex-wrap: wrap;
-    gap: 90px;
+    gap: 15px; /* Espacio entre tarjetas en dispositivos móviles */
   }
-  .tarjeta{
-    width: 290px;
-    
+  .tarjeta {
+    width: 100%; /* Asegurarte de que en móviles ocupe el ancho completo */
   }
 }
 
@@ -10964,11 +10975,11 @@ header.masthead .masthead-heading {
   position: relative;
   overflow: hidden;
   border: none;
-  cursor:pointer;
+  cursor: pointer;
   margin-bottom: 15px;
-  margin-left: 30px;
   height: 395px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 0 auto; /* Permitir que crezca y ocupe el espacio disponible */
 }
 
 .tarjeta img {
@@ -11035,3 +11046,4 @@ header.masthead .masthead-heading {
 .btn-filter{
   margin-left: 28px;
 }
+

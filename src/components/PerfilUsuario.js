@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Container, Row, Col, Modal, Form,Image } from 'react-bootstrap';
 import axios from 'axios';
 import RegistroPerros from './RegistroPerros';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNavigate
 
 const PerfilUsuario = () => {
@@ -211,20 +212,21 @@ return (
                                   <strong>Fecha:</strong> {perro.fecha}
                                 </p>
                               </div>
-                              <div className="card-footer">
-                              <Button variant="danger" onClick={() => handleDelete(perro.id)}>
-                                Elimin
-                              </Button>
-
+                              <div className="card-footer d-flex justify-content-end"style={{ backgroundColor: 'transparent' }}> {/* Alinea los botones a la derecha */}
+                                <Button variant="danger" onClick={() => handleDelete(perro.id)} className="me-2"> {/* Agrega margen a la derecha */}
+                                  <i className="fa-solid fa-trash"></i>
+                                </Button>
                                 <Button variant="warning" onClick={() => handleEdit(perro)}>
-                                    Editar 
+                                  <i className="fa-solid fa-pencil-alt"></i>
                                 </Button>
-                                <Button variant="info" onClick={() => handleSearchMatches(perro)}>
-                                    Coinci
+
+                                <Button style={{ backgroundColor: '#3498db', borderColor: '#3498db' }} onClick={() => handleSearchMatches(perro)}>
+                                  <i className="fa-solid fa-search"></i>
                                 </Button>
-                            </div>
-                              
-                            </div>
+     
+                              </div>
+                                
+                           </div>
                           </Col>
                         ))}
                       </Row>

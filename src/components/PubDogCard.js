@@ -136,28 +136,38 @@ return (
                     <p><strong>sexo:</strong> {texts[6] || 'No disponible'}</p>
                 </div>
                 <div className='button-container'>
-                    <Button variant="primary" className="contact-button">Enviar mensaje</Button>
+                <Button variant="primary" className="contact-button"title="Envía un mensaje">
+                    <i className="fa-solid fa-envelope"></i> 
+                </Button>
                 </div>
+
 
                 {/* Mostrar botones solo si el userType no es 'shelter' */}
                
                 {userType !== 'shelter' && (
                     <div className='mark-buttons'>
-                        <Button 
-                            variant="success" 
-                            onClick={() => handleMarkAsMine(dogId)} 
-                            disabled={isMarked === true}
-                        >
-                            Es mi mascota
-                        </Button>
-                        <Button 
-                            variant="danger" 
-                            onClick={() => handleMarkAsNotMine(dogId)} 
-                            disabled={isMarked === false}
-                        >
-                            No es mi mascota
-                        </Button>
-                    </div>
+                    <Button
+                      variant="success"
+                      onClick={() => handleMarkAsMine(dogId)}
+                      disabled={isMarked === true}
+                      title="Marcar como mío"
+                      className="mx-2"  // Clase para agregar margen
+                    >
+                      <i className="fa-solid fa-thumbs-up"></i>
+                    </Button>
+                  
+                    <Button
+                      style={{ backgroundColor: '#e57373', borderColor: '#e57373' }}
+                      onClick={() => handleMarkAsNotMine(dogId)}
+                      disabled={isMarked === false}
+                      title="No es mío"
+                      className="mx-2"  // Clase para agregar margen
+                    >
+                      <i className="fa-solid fa-thumbs-down"></i>
+                    </Button>
+                  </div>
+                  
+                  
                 )}
             </div>
         </div>
@@ -174,7 +184,10 @@ return (
         </Modal>
     </div>
 
+    
+
 );
+   
 };
 
 export default PubDogCard;

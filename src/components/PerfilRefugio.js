@@ -3,6 +3,9 @@ import { Button, Card, Container, Row, Col, Modal, Form } from 'react-bootstrap'
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import RegistroPerrosRefugio from './RegistroPerrosRefugios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const PerfilUsuarioRefugio = () => {
   const [userData, setUserData] = useState(null);
@@ -19,6 +22,9 @@ const PerfilUsuarioRefugio = () => {
     esterilizado: '',
     tamanio: '',
   });
+  const [eventos, setEventos] = useState([]);
+  const [perros, setPerros] = useState([]);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -42,6 +48,7 @@ const PerfilUsuarioRefugio = () => {
 
     fetchUserData();
   }, []);
+  
 
   const handleShowRegistro = () => setShowRegistro(true);
   const handleCloseRegistro = () => setShowRegistro(false);
@@ -136,59 +143,206 @@ const PerfilUsuarioRefugio = () => {
     });
   };
 
+  
+const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
+  return (
+      <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
+        <div className="card h-100" style={{ width: '18rem' }}>
+          <div className="image-container" style={{ height: '200px', overflow: 'hidden' }}>
+            <img
+              src={imagen}
+              className="card-img-top"
+              alt="..."
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
+          <div className="card-body">
+            <h5 className="card-title">{nombre}</h5>
+            <p className="card-text">
+              <b>Edad: </b> {edad}
+              <br />
+              <b>Tamaño: </b> {tamanio}
+              <br />
+              {descripcion}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+
+};
+
+const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
+  return(
+      //Poner la fecha en la que se publicó o cuanto tiempo pasó desde su publicación
+      <div className="row">
+          <div className="card mb-3" style={{marginTop: '10px'}}>
+              <div className="row g-0">
+                  <div className="col-md-4">
+                  <img src={imagen} className="img-fluid rounded-start" alt="..." style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+                  </div>
+                  <div className="col-md-8">
+                  <div className="card-body">
+                      <h5 className="card-title">{nombre} </h5>
+                      <p className="card-text">{descripcion}<br/>
+                          <b>Ubicación: </b>{ubicacion}<br/>
+                          <b>Fecha del evento: </b>{fecha}
+                      </p>
+                  </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  );
+
+};
+
+const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcion, telefono, instagram, facebook, cuenta, ciudad, estado }) => {
+  const [activeButton, setActiveButton] = useState(''); // Maneja el botón activo
+  const defaultImage = "/path/to/default_image.jpg"; // Imagen predeterminada
+
+  return (
+      <div>
+          <section className='Head'>
+              <div className="container px-5">
+                  <div className="row gx-5 align-items-center">
+                      <div id="carouselExampleInterval" className="carousel slide col-lg-6 order-1" data-bs-ride="carousel">
+                          <div className="carousel-inner">
+                              <div className="carousel-item active" data-bs-interval="3000">
+                                  <img src={image1 ? `http://localhost:8000${image1}` : defaultImage} className="d-block w-100" alt="..." />
+                              </div>
+                              <div className="carousel-item" data-bs-interval="3000">
+                                  <img src={image2 ? `http://localhost:8000${image2}` : defaultImage} className="d-block w-100" alt="..." />
+                              </div>
+                              <div className="carousel-item">
+                                  <img src={image3 ? `http://localhost:8000${image3}` : defaultImage} className="d-block w-100" alt="..." />
+                              </div>
+                          </div>
+                          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span className="visually-hidden">Previous</span>
+                          </button>
+                          <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span className="visually-hidden">Next</span>
+                          </button>
+                      </div>
+                      <div className="col-lg-6 order-2 ">
+                          <div className="p-5" style={{ borderRadius: '10px', boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)', height: '420px' }}>
+                              <h2 className="display-4"><img src={profile_image ? `http://localhost:8000${profile_image}` : defaultImage} className="rounded-circle me-3" alt="" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
+                              <h5 className="font-weight-light"><i className="fas fa-paw" style={{ marginLeft: '10px' }}></i>{descripcion}</h5>
+                              <h5 className="font-weight-light"><i className="bi bi-geo-alt"></i> {ciudad}, {estado}</h5>
+                              <h5 className="font-weight-light"><i className="bi bi-telephone"></i> {telefono}</h5>
+                              <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
+                              <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
+                              <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
+                              <div>
+                                <Button variant="primary" onClick={handleShowRegistro}>
+                                  Registrar Perro
+                                </Button>
+                              </div>
+                              
+                          </div>
+                      </div>
+                  </div>
+                  
+              </div>
+          </section>
+
+          <div className='AdditionalSection'>
+              <div className="container px-5 mt-5">
+                  <div className="row justify-content-center">
+                      <button className={`btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>Perritos<i className="fa-solid fa-dog" style={{ marginLeft: '10px' }}></i></button>
+                      <button className={`btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>Eventos con Causa y Voluntariado</button>
+                  </div>
+                  <hr />
+                  {activeButton === 'eventos' ? (
+                      <div className='row'>
+                          <TarjetaEventos
+                              imagen="https://www.diariodexalapa.com.mx/local/9mabtw-proyecto-permanente-de-esterilizacion-de-mascotas/ALTERNATES/LANDSCAPE_960/Proyecto-permanente-de-esterilizaci%C3%B3n-de-mascotas"
+                              nombre="Campaña de esterilización"
+                              descripcion="Trae a tu perro y asegúrate de que reciban atención médica de calidad de la mano de profesionales. Además, estaremos brindando pláticas informativas sobre el cuidado responsable de los animales y cómo podemos contribuir a un mejor futuro para ellos."
+                              fecha="24/08/2022"
+                              ubicacion="Calle Luna 123, Colonia Esperanza"
+                          />
+                          <TarjetaEventos
+                              imagen="https://static.mercadonegro.pe/wp-content/uploads/2022/12/01162745/WXEY6TVZ2RD2RKAZJB7U7JGXFU.jpg"
+                              nombre="Evento de Adopción"
+                              descripcion="¡Ven a nuestro evento de adopción y encuentra a tu nuevo mejor amigo! Tendremos muchos perritos buscando un hogar lleno de amor. Conoce a nuestras adorables mascotas, cada una con una historia única y lista para ser parte de tu familia."
+                              fecha="24/08/2022"
+                              ubicacion="Avenida Solidaridad 456"
+                          />
+                      </div>
+                  ) : (
+                      <div className='row'>
+                          {userData && userData.predictions && userData.predictions.map((perro) => (
+                              <Col md={4} key={perro.id} className="mb-4">
+                                  <TarjetaPerros
+                                      imagen={`http://localhost:8000${perro.image}`} // Asumiendo que tu API devuelve la imagen con un prefijo de URL
+                                      nombre={perro.nombre}
+                                      edad={perro.edad}
+                                      tamanio={perro.tamanio}
+                                      descripcion={
+                                          <div>
+                                              <b>Características: </b> {perro.caracteristicas}
+                                              <br />
+                                              <b>Temperamento: </b> {perro.temperamento}
+                                              <br />
+                                              <b>Vacunas: </b> {perro.vacunas}
+                                              <br />
+                                              <b>Color: </b> {JSON.parse(perro.color).join(', ')} {/* Convierte el JSON a array y muestra las razas */}
+                                              <div className="card-footer d-flex justify-content-end"style={{ backgroundColor: 'transparent' }}> {/* Alinea los botones a la derecha */}
+                                                <Button variant="danger" onClick={() => handleDelete(perro.id)} className="me-2"> {/* Agrega margen a la derecha */}
+                                                  <i className="fa-solid fa-trash"></i>
+                                                </Button>
+                                                <Button variant="warning" onClick={() => handleEdit(perro)}>
+                                                  <i className="fa-solid fa-pencil-alt"></i>
+                                                </Button>
+                                              </div>
+
+
+                                          </div>
+                                      }
+                                  />
+                              </Col>
+                          ))}
+                      </div>
+                  )}
+              </div>
+          </div>
+      </div>
+  );
+};
+
+
   return (
     <Container>
       <Row className="my-4">
         <Col>
           {error && <p className="text-danger">{error}</p>}
+
           {userData ? (
-            <>
-              <Card>
-                <Card.Header>{userData.shelter_user.nombre || 'Nombre no disponible'} - Perfil de Refugio</Card.Header>
-                <Card.Body>
-                  <Card.Text>Email: {userData.shelter_user.email || 'Email no disponible'}</Card.Text>
-                  <Card.Text>Teléfono: {userData.shelter_user.telefono || 'Teléfono no disponible'}</Card.Text>
-                  <Button variant="primary" onClick={handleShowRegistro}>
-                    Registrar Perro
-                  </Button>
-                </Card.Body>
-              </Card>
-              <h3>Perros Registrados</h3>
-              {userData.predictions && userData.predictions.length > 0 ? (
-                <Row>
-                  {userData.predictions.map((perro, index) => (
-                    <Col md={4} key={index} className="mb-3">
-                      <Card>
-                        {perro.image && (
-                          <Card.Img variant="top" src={`http://localhost:8000${perro.image}`} />
-                        )}
-                        <Card.Body>
-                          <Card.Title>{perro.nombre || 'Nombre no disponible'}</Card.Title>
-                          <Card.Text>
-                            Edad: {perro.edad || 'Edad no disponible'}<br />
-                            Tamaño: {perro.tamanio || 'Tamaño no disponible'}<br />
-                            Descripción: {perro.caracteristicas || 'Descripción no disponible'}<br />
-                          </Card.Text>
-                          <Button variant="danger" onClick={() => handleDelete(perro.id)}>
-                            Eliminar Publicación
-                          </Button>
-                          <Button variant="warning" className="ml-2" onClick={() => handleEdit(perro)}>
-                            Editar Publicación
-                          </Button>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              ) : (
-                <p></p>
-              )}
+              <>
+                <HeadSection
+                image1={userData.shelter_user.image1} // Asegúrate de que la URL sea correcta
+                image2={userData.shelter_user.image2}
+                image3={userData.shelter_user.image3}
+                titulo={userData.shelter_user.nombre} // Cambia según los datos de tu API
+                descripcion={userData.shelter_user.descripcion}
+                cuenta={userData.shelter_user.cuenta}
+                telefono={userData.shelter_user.telefono}
+                ciudad={userData.shelter_user.ciudad}
+                estado={userData.shelter_user.estado}
+                profile_image={userData.shelter_user.profile_image}
+              />
+            
             </>
           ) : (
             <p>Cargando datos del refugio...</p>
           )}
         </Col>
-      </Row>
+        
+      </Row>     
 
       <RegistroPerrosRefugio show={showRegistro} handleClose={handleCloseRegistro} userId={userData ? userData.shelter_user.id : null} />
 

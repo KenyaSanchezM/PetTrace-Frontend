@@ -23,13 +23,30 @@ const RegisterModal = ({ show, handleClose }) => {
     estado: '',
     ciudad: '',
     direccion: '',
-    codigoPostal: ''
+    codigoPostal: '',
+    descripcion: '',
+    cuenta: '',
+    image1: null,
+    image2: null,
+    image3: null,
   });
 
   const [error, setError] = useState('');
   
   const handleFileChange = (event) => {
     setFormData({ ...formData, profile_image: event.target.files[0] });
+  };
+
+  const handleImage1Change = (event) => {
+    setFormData({ ...formData, image1: event.target.files[0] });
+  };
+
+  const handleImage2Change = (event) => {
+    setFormData({ ...formData, image2: event.target.files[0] });
+  };
+
+  const handleImage3Change = (event) => {
+    setFormData({ ...formData, image3: event.target.files[0] });
   };
   
   const handleInputChange = (event) => {
@@ -61,6 +78,19 @@ const RegisterModal = ({ show, handleClose }) => {
       formDataToSend.append('ciudad', formData.ciudad);
       formDataToSend.append('direccion', formData.direccion);
       formDataToSend.append('codigoPostal', formData.codigoPostal);
+      formDataToSend.append('descripcion', formData.descripcion);
+      formDataToSend.append('cuenta', formData.cuenta);
+      if (formData.image1) {
+        formDataToSend.append('image1', formData.image1);
+      }
+      if (formData.image2) {
+        formDataToSend.append('image2', formData.image2);
+      }
+      if (formData.image3) {
+        formDataToSend.append('image3', formData.image3);
+      }
+      
+      
     }
     
     try {
@@ -144,6 +174,27 @@ const RegisterModal = ({ show, handleClose }) => {
 
                 {formData.user_type === 'shelter' && (
                   <>
+                    <Form.Group controlId="image1" className="mb-3">
+                      <Form.Label>Imagen del refugio</Form.Label>
+                      <Form.Control
+                        type="file"
+                        onChange={handleImage1Change}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="image2" className="mb-3">
+                      <Form.Label>Imagen del refugio</Form.Label>
+                      <Form.Control
+                        type="file"
+                        onChange={handleImage2Change}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="image3" className="mb-3">
+                      <Form.Label>Imagen del refugio</Form.Label>
+                      <Form.Control
+                        type="file"
+                        onChange={handleImage3Change}
+                      />
+                    </Form.Group>
                     <Form.Group controlId="estado" className="mb-3">
                       <Form.Label>Estado</Form.Label>
                       <Form.Control
@@ -190,6 +241,27 @@ const RegisterModal = ({ show, handleClose }) => {
                         onChange={handleInputChange}
                       />
                     </Form.Group>
+                    <Form.Group controlId="descripcion" className="mb-3">
+                      <Form.Label>Descripcion</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="descripcion"
+                        name="descripcion"
+                        value={formData.descripcion}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="cuenta" className="mb-3">
+                      <Form.Label>Cuenta</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="cuenta"
+                        name="cuenta"
+                        value={formData.cuenta}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    
                   </>
                 )}
 
