@@ -292,13 +292,13 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                                               <br />
                                               <b>Color: </b> {JSON.parse(perro.color).join(', ')} {/* Convierte el JSON a array y muestra las razas */}
                                               <div className="card-footer d-flex justify-content-end"style={{ backgroundColor: 'transparent' }}> {/* Alinea los botones a la derecha */}
-                                                <Button variant="danger" onClick={() => handleDelete(perro.id)} className="me-2"> {/* Agrega margen a la derecha */}
-                                                  <i className="fa-solid fa-trash"></i>
-                                                </Button>
-                                                <Button variant="warning" onClick={() => handleEdit(perro)}>
-                                                  <i className="fa-solid fa-pencil-alt"></i>
-                                                </Button>
-                                              </div>
+                                              <Button variant="danger" onClick={() => handleDelete(perro.id)} className="me-2"> {/* Agrega margen a la derecha */}
+                                                <i className="fa-solid fa-trash"></i>
+                                              </Button>
+                                              <Button variant="warning" onClick={() => handleEdit(perro)}>
+                                                <i className="fa-solid fa-pencil-alt"></i>
+                                              </Button>
+                                            </div>
 
 
                                           </div>
