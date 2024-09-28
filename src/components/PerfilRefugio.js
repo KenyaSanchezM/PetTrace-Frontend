@@ -156,6 +156,7 @@ const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
+
           <div className="card-body">
             <h5 className="card-title">{nombre}</h5>
             <p className="card-text">
@@ -199,34 +200,35 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
 
 const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcion, telefono, instagram, facebook, cuenta, ciudad, estado }) => {
   const [activeButton, setActiveButton] = useState(''); // Maneja el botón activo
-  const defaultImage = "/path/to/default_image.jpg"; // Imagen predeterminada
+  const defaultImage = "/images/eventos.jpg"; // Imagen predeterminada
 
   return (
       <div>
           <section className='Head'>
+            
               <div className="container px-5">
                   <div className="row gx-5 align-items-center">
-                      <div id="carouselExampleInterval" className="carousel slide col-lg-6 order-1" data-bs-ride="carousel">
-                          <div className="carousel-inner">
-                              <div className="carousel-item active" data-bs-interval="3000">
-                                  <img src={image1 ? `http://localhost:8000${image1}` : defaultImage} className="d-block w-100" alt="..." />
-                              </div>
-                              <div className="carousel-item" data-bs-interval="3000">
-                                  <img src={image2 ? `http://localhost:8000${image2}` : defaultImage} className="d-block w-100" alt="..." />
-                              </div>
-                              <div className="carousel-item">
-                                  <img src={image3 ? `http://localhost:8000${image3}` : defaultImage} className="d-block w-100" alt="..." />
-                              </div>
-                          </div>
-                          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                  <div id="carouselExampleInterval" className="carousel slide col-lg-6 order-1" data-bs-ride="carousel">
+                            <div className="carousel-inner">
+                                <div className="carousel-item active" data-bs-interval="3000">
+                                    <img src={image1 ? `http://localhost:8000${image1}` : defaultImage} className="d-block w-100" alt="..." />
+                                </div>
+                                <div className="carousel-item" data-bs-interval="3000">
+                                    <img src={image2 ? `http://localhost:8000${image2}` : defaultImage} className="d-block w-100" alt="..." />
+                                </div>
+                                <div className="carousel-item">
+                                    <img src={image3 ? `http://localhost:8000${image3}` : defaultImage} className="d-block w-100" alt="..." />
+                                </div>
+                            </div>
+                            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
                               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                               <span className="visually-hidden">Previous</span>
-                          </button>
-                          <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                            </button>
+                            <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
                               <span className="carousel-control-next-icon" aria-hidden="true"></span>
                               <span className="visually-hidden">Next</span>
-                          </button>
-                      </div>
+                            </button>
+                        </div>
                       <div className="col-lg-6 order-2 ">
                           <div className="p-5" style={{ borderRadius: '10px', boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)', height: '420px' }}>
                               <h2 className="display-4"><img src={profile_image ? `http://localhost:8000${profile_image}` : defaultImage} className="rounded-circle me-3" alt="" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
@@ -251,10 +253,19 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
 
           <div className='AdditionalSection'>
               <div className="container px-5 mt-5">
-                  <div className="row justify-content-center">
-                      <button className={`btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>Perritos<i className="fa-solid fa-dog" style={{ marginLeft: '10px' }}></i></button>
-                      <button className={`btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>Eventos con Causa y Voluntariado</button>
-                  </div>
+              <div className="row justify-content-center">
+                <div className="col-auto">
+                    <button className={`btn btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>
+                        Perritos <i className="fa-solid fa-dog" style={{ marginLeft: '10px' }}></i>
+                    </button>
+                </div>
+                <div className="col-auto">
+                    <button className={`btn btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>
+                        Eventos con Causa y Voluntariado
+                    </button>
+                </div>
+            </div>
+
                   <hr />
                   {activeButton === 'eventos' ? (
                       <div className='row'>

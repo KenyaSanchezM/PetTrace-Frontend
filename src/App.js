@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -87,8 +89,7 @@ function App() {
           <Route path='/home' element={<HomeUser />} />
           <Route path='/eventos' element={<Eventos />} />
           <Route path="/ir-perfil-usuario/:userId" element={<IrPerfilUser />} />
-          <Route path="/present-ref" element={<PresentRef />} />
-
+          <Route path="/api/ir-perfil-refugio/:id" element={<PresentRef />} />
 
         </Routes>
         <Footer />

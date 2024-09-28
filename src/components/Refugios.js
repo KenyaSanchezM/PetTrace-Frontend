@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Refugios.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useNavigate } from 'react-router-dom';
 
 const Refugios = () => {
   const [refugios, setRefugios] = useState([]);
@@ -14,7 +15,6 @@ const Refugios = () => {
     const filtered = refugios.filter(refugio => {
       const matchesEstado = selectedEstado ? refugio.estado === selectedEstado : true;
   
-      // Asegúrate de que nombre y descripcion no sean nulos
       const nombre = refugio.nombre ? refugio.nombre.toLowerCase() : '';
       const descripcion = refugio.descripcion ? refugio.descripcion.toLowerCase() : '';
   
@@ -25,6 +25,8 @@ const Refugios = () => {
     });
     setFilteredRefugios(filtered);
   };
+  
+  
   
 
   // Llama a handleSearch cuando cambien el estado o el término de búsqueda
@@ -38,32 +40,45 @@ const Refugios = () => {
 
   const fetchRefugios = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/refugios/'); // Ajusta el endpoint a tu API
+      const response = await axios.get('http://localhost:8000/api/refugios/');
+      const refugios = response.data; // Suponiendo que 'response' es la respuesta de tu API
+        refugios.forEach(refugio => {
+            console.log("Refugio ID:", refugio.id); // Asegúrate de que 'id' sea el nombre correcto del campo
+        });
+
       console.log('Respuesta de la API:', response.data);
-      setRefugios(response.data); // Accede directamente a los datos
+      response.data.forEach(refugio => {
+        console.log('Refugio ID:', refugio.id); // Verifica que cada refugio tiene un ID
+      });
+      setRefugios(response.data);
     } catch (error) {
       console.error('Error al obtener los refugios:', error);
     }
   };
+  
 
-  const Tarjeta = ({ image1, nombre, descripcion, enlace, estado, ciudad }) => {
-    const defaultImage = "/images/eventos.jpg"; // Imagen predeterminada
-    return (
-      <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
-        <div className="card tarjeta" onClick={() => window.location.href = enlace}>
-          <img src={image1 ? `http://localhost:8000${image1}` : defaultImage} alt={nombre} className="card-img-top" />
-          <div className="card-body">
-            <h5 className="card-title">{nombre}</h5>
-            <p className="card-text">{descripcion}</p>
-            <div className="info-section">
-              <p className="card-text"><strong>Estado:</strong> {estado}</p>
-              <p className="card-text"><strong>Ciudad:</strong> {ciudad}</p>
-            </div>
+
+  const Tarjeta = ({ image1, nombre, descripcion, estado, ciudad, id }) => {
+      const navigate = useNavigate();
+      const defaultImage = "/images/eventos.jpg";
+
+      return (
+          <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
+              <div className="card tarjeta" onClick={() => navigate(`/api/ir-perfil-refugio/${id}`)}>
+                  <img src={image1 ? `http://localhost:8000${image1}` : defaultImage} alt={nombre} className="card-img-top" />
+                  <div className="card-body">
+                      <h5 className="card-title">{nombre}</h5>
+                      <p className="card-text">{descripcion}</p>
+                      <div className="info-section">
+                          <p className="card-text"><strong>Estado:</strong> {estado}</p>
+                          <p className="card-text"><strong>Ciudad:</strong> {ciudad}</p>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
-      </div>
-    );
+      );
   };
+
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Previene el comportamiento por defecto del formulario
@@ -135,10 +150,12 @@ const Refugios = () => {
           </div>
 
           <div className="tarjetas row text-center mt-5">
-            {(filteredRefugios.length > 0 ? filteredRefugios : refugios).map(refugio => (
-              <Tarjeta key={refugio.id} {...refugio} />
-            ))}
+          {(filteredRefugios.length > 0 ? filteredRefugios : refugios).map(refugio => (
+            <Tarjeta key={refugio.id} {...refugio} /> // Asegúrate de que el ID está presente
+          ))}
+
           </div>
+
         </div>
       </section>
     </div>

@@ -44,7 +44,9 @@ function Home() {
         console.log(response.data); // Verifica qué datos se están recibiendo
         if (Array.isArray(response.data) && response.data.length > 0) {
           setPerros(response.data);
-        } 
+        } else {
+          console.log('No hay perros disponibles en este momento.');
+        }
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
