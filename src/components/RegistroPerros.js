@@ -276,14 +276,17 @@ return (
                     />
                   </div>
                   </Form.Group>
-              <Form.Group controlId="fechaEncontrado" className="mb-3">
-                <Form.Label>Fecha en la que se encontró</Form.Label>
-                <Form.Control
-                  type="date"
-                  value={fecha}
-                  onChange={(e) => setFecha(e.target.value)}
-                />
-              </Form.Group>
+                  <Form.Group controlId="fechaEncontrado" className="mb-3">
+                    <Form.Label>Fecha en la que se encontró</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={fecha}
+                      onChange={(e) => setFecha(e.target.value)}
+                      min="2010-01-01"  // Fecha mínima es 1 de enero de 2010
+                      max={new Date().toISOString().split("T")[0]}  // Fecha máxima es hoy
+                    />
+                  </Form.Group>
+
               <Form.Group controlId="ubicacionEncontrado" className="mb-3">
                 <Form.Label>Ubicación</Form.Label>
                 <Form.Control
@@ -428,8 +431,11 @@ return (
                     type="date"
                     value={fecha}
                     onChange={(e) => setFecha(e.target.value)}
+                    min="2010-01-01"  // Fecha mínima es 1 de enero de 2010
+                    max={new Date().toISOString().split("T")[0]}  // Fecha máxima es hoy
                   />
                 </Form.Group>
+
                 <Form.Group controlId="ubicacionPerdido" className="mb-3">
                   <Form.Label>Última ubicación</Form.Label>
                   <Form.Control

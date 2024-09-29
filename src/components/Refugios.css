@@ -11001,6 +11001,8 @@ header.masthead .masthead-heading {
   justify-content: justify;
   color: #fff;
   transition: opacity 0.3s ease;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .tarjeta .title-underline {

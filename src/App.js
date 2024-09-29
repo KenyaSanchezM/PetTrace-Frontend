@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -20,6 +22,9 @@ import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
 import HomeUser from './components/HomeUser';
 import Eventos from './components/Eventos';
+import IrPerfilUser from './components/IrPerfilUser';
+import NuestraIA from './components/NuestraIA'
+
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -75,6 +80,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/registro-perros" element={<RegistroPerros />} />
           <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/NuestraIA" element={<NuestraIA />} />
           <Route path="/refugios" element={<Refugios />} />
           <Route path="/refugio" element={<PresentRef />} />
           <Route path='/perfil-refugio' element={<PerfilRefugio />} />
@@ -82,6 +88,9 @@ function App() {
           <Route path='/perfil-usuario' element={<PerfilUsuario />} />
           <Route path='/home' element={<HomeUser />} />
           <Route path='/eventos' element={<Eventos />} />
+          <Route path="/ir-perfil-usuario/:userId" element={<IrPerfilUser />} />
+          <Route path="/api/ir-perfil-refugio/:id" element={<PresentRef />} />
+
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />

@@ -1,42 +1,73 @@
-// Home.js
-import React from 'react';
-import { Card, Container, Row, Col, Carousel } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Card, Container, Row, Carousel } from 'react-bootstrap';
+import axios from 'axios';
 
+const TarjetaPerdidos = ({ image, nombre, caracteristicas, form_type }) => {
+  const defaultImage = "/path/to/default_image.jpg"; // Imagen predeterminada
 
-const TarjetaPerdidos = ({imagen, nombre, caracteristicas, estado }) => {
   return (
-      <div className="col-sm-12 col-md-6 col-lg-4 mb-4" style={{ height: '450px', marginTop: '20px'}}>
-        <div className="card h-100" style={{ width: '22rem' }}>
-          <div className="image-container" style={{ height: '250px', overflow: 'hidden' }}>
-            <img
-              src={imagen}
-              className="card-img-top"
-              alt="..."
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </div>
-          <div className="card-body">
-            <h5 className="card-title">{nombre}</h5>
-            <p className="card-text" style={{color: '#3f3f3f'}}>
-              <strong>{estado}</strong>
-              <br />
-              {caracteristicas}
-            </p>
-          </div>
+    <div className="col-sm-12 col-md-6 col-lg-4 mb-4" style={{ height: '450px', marginTop: '20px' }}>
+      <div className="card h-100" style={{ width: '22rem' }}>
+        <div className="image-container" style={{ height: '250px', overflow: 'hidden' }}>
+          <img
+            src={image ? `http://localhost:8000${image}` : defaultImage}
+            className="card-img-top"
+            alt={nombre ? nombre : "Nombre no disponible"}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+        <div className="card-body">
+          <h5 className="card-title">{nombre ? nombre : "Sin nombre"}</h5>
+          <p className="card-text" style={{ color: '#3f3f3f' }}>
+            <strong>{form_type}</strong>
+            <br />
+            {caracteristicas}
+          </p>
         </div>
       </div>
-    );
+    </div>
+  );
+};
 
+
+const getAbsoluteImageUrl = (url) => {
+  if (!url) return 'public/images/temporal.jpeg';
+  return url.startsWith('http://') || url.startsWith('https://') ? url : `http://localhost:8000${url}`;
 };
 
 function Home() {
+  const [perros, setPerros] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/perros-perdidos/')
+      .then(response => {
+        console.log(response.data); // Verifica qué datos se están recibiendo
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          setPerros(response.data);
+        } else {
+          console.log('No hay perros disponibles en este momento.');
+        }
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  
+
+  const firstGroup = perros.slice(0, 3);
+  const secondGroup = perros.slice(3, 6);
+
+  console.log(firstGroup, secondGroup); // Verifica que haya elementos
+
+  if (perros.length === 0) {
+    return <div>No hay perros disponibles en este momento.</div>;
+  }
+
   return (
     <div>
       {/* Head */}
       <header className="head">
         <div className="container">
           <div className="head-subheading">Encuentra a tu mascota mucho más rápido con nuestra</div>
-          <div className="head-heading text-uppercase">Inteligencia Artificial </div>
+          <div className="head-heading text-uppercase">Inteligencia artificial</div>
         </div>
       </header>
 
@@ -45,60 +76,42 @@ function Home() {
         <div className="section">
           <h2 className="section-title">¡Ayudálos a volver a casa!</h2>
           <Carousel id="carouselPerros">
-            {/* Primer grupo de 3 tarjetas */}
-            <Carousel.Item id='CarruselPerros'>
-              <div className='row'>
-                <TarjetaPerdidos 
-                  imagen="https://wl-genial.cf.tsp.li/resize/728x/jpg/3f9/338/0235fc55d28ecc98e84c084d11.jpg"
-                  nombre="Tamal"
-                  estado="Perdido"
-                  caracteristicas= "Soy un perro tranquilo y leal. Me encanta estar cerca de las personas, disfruto de los paseos largos y de acurrucarme en las tardes. ¡Estoy listo para ser tu mejor amigo!"
-                />
-                <TarjetaPerdidos
-                  imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCowggemriktOyf9Z4oonATWVQGIDWVPQMEA&s"
-                  nombre="Perro perdido 2"
-                  estado="Perdido"
-                  caracteristicas="Es un perro juguetón y energético, ideal para familias activas." 
-                />
-                <TarjetaPerdidos
-                  imagen="https://i.pinimg.com/originals/10/84/dc/1084dcdc104964d42df8f31d25a16d81.jpg"
-                  nombre="Perro perdido 3"
-                  estado="Perdido"
-                  caracteristicas="Tiene una mancha en la pata derecha, es muy dócil y amigable."
-                />
-              </div>
+            <Carousel.Item>
+              <Row>
+                {firstGroup.map(perro => (
+                  <TarjetaPerdidos 
+                    key={perro.id} 
+                    image={perro.image} 
+                    nombre={perro.nombre} 
+                    caracteristicas={perro.caracteristicas} 
+                    form_type={perro.form_type} 
+                  />
+                ))}
+              </Row>
             </Carousel.Item>
-            {/* Segundo grupo de 3 tarjetas */}
-            <Carousel.Item id='CarruselPerros'>
-              <div className='row'>
-                <TarjetaPerdidos
-                  imagen="https://i.pinimg.com/474x/c1/20/c3/c120c32d4255479eb59219f9d6f85f87.jpg"
-                  nombre="Perro perdido 4"
-                  estado="Perdido"
-                  caracteristicas="Es pequeño, de color negro, y se asusta fácilmente."
-                />
-                <TarjetaPerdidos
-                  imagen="https://cdn.wamiz.fr/cdn-cgi/image/format=auto,quality=80,width=1200,height=1200,fit=cover/article/main-picture/5ed69b045e42e229833431.jpg"
-                  nombre="Perro perdido 5"
-                  estado="Perdido"
-                  caracteristicas="Es un perro grande, muy cariñoso y amigable con los niños."
-                />
-                <TarjetaPerdidos
-                  imagen="https://wl-genial.cf.tsp.li/resize/728x/jpg/d70/7e6/c944a3545da3f8ffec3c7987b3.jpg"
-                  nombre="Perro perdido 6"
-                  estado="Perdido"
-                  caracteristicas="Tiene una correa roja y es muy juguetón."
-                />
-              </div>
+            <Carousel.Item>
+              <Row>
+                {secondGroup.map(perro => (
+                  <TarjetaPerdidos 
+                    key={perro.id} 
+                    image={perro.image} 
+                    nombre={perro.nombre} 
+                    caracteristicas={perro.caracteristicas} 
+                    form_type={perro.form_type} 
+                  />
+                ))}
+              </Row>
             </Carousel.Item>
           </Carousel>
         </div>
+        
+
 
       {/* Segunda sección */}
       <div className="section">
         <h2 className="section-title">Registra a tu mascota y nuestra IA hará el resto</h2>
         <div>
-          <img src="/images/FormularioProv.png" alt="Imagen de registro de mascotas" className="section-image" />
+          <img src="/images/IA.png" alt="Imagen de registro de mascotas" className="section-image" />
         </div>
       </div>
 
@@ -146,7 +159,15 @@ function Home() {
         </div>
       </div>
     </Container>
+
+    
     <style>
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+
 {`.section-title {
     text-align: center;
     margin-bottom: 2rem;
@@ -252,6 +273,7 @@ header.head .head-heading {
 }
   
 `}
+
     </style>
   </div>
   );

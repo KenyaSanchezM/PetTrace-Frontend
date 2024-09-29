@@ -1,0 +1,27 @@
+.filtros-razas-container {
+    position: sticky; /* Se queda fija mientras haces scroll */
+    top: 0; /* Se mantiene en la parte superior */
+    background-color: white;
+    z-index: 100; /* Para que esté por encima del contenido */
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-search {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-search:hover {
+    background-color: #218838;
+}

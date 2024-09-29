@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.css';
 
+
 const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick }) => {
 
   const getProfileLink = () => {
@@ -54,7 +55,7 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/refugios">Nuestra IA</a>
+              <a className="nav-link" href="/NuestraIA">Nuestra IA</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/contact">Contáctanos</a>

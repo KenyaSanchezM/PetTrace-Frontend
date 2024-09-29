@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Container, Row, Col, Modal, Form,Image } from 'react-bootstrap';
 import axios from 'axios';
 import RegistroPerros from './RegistroPerros';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNavigate
 
 const PerfilUsuario = () => {
@@ -21,6 +22,7 @@ const PerfilUsuario = () => {
   const navigate = useNavigate();  // Usa useNavigate
 
   useEffect(() => {
+    
     const fetchUserData = async () => {
       const token = localStorage.getItem('access_token');
       try {
@@ -88,7 +90,6 @@ const PerfilUsuario = () => {
     const dataToUpdate = { 
       ...editData,
       color: JSON.stringify(editData.color),  // Convertimos el arreglo a una cadena JSON
-      breeds: JSON.stringify(editData.breeds) // Convertimos el arreglo a una cadena JSON
     };
 
     // Eliminar campos no necesarios o solo de lectura
@@ -137,18 +138,6 @@ const PerfilUsuario = () => {
     });
   };
 
-  const handleBreedChange = (e) => {
-    const { name, checked } = e.target;
-    setEditData((prevData) => {
-      let newBreeds = [...prevData.breeds];
-      if (checked) {
-        newBreeds.push(name);
-      } else {
-        newBreeds = newBreeds.filter((breed) => breed !== name);
-      }
-      return { ...prevData, breeds: newBreeds };
-    });
-  };
 
   const handleSearchMatches = (perro) => {
     if (!perro.id) {
@@ -214,7 +203,7 @@ return (
                               <div className="card-body">
                                 <p className='p-name'>{perro.nombre}</p>
                                 <p className='text'>
-                                  <strong>Estado: </strong>{perro.form_type ? 'Perdido' : 'Encontrado'}<br />
+                                  <strong>Estado: </strong>{perro.form_type === 'perdido' ? 'Perdido' : 'Encontrado'}<br />
                                   <strong>Edad:</strong> {perro.edad}<br />
                                   <strong>Color:</strong> {perro.color}<br />
                                   <strong>Ubicación:</strong> {perro.ubicacion}<br />
@@ -223,20 +212,21 @@ return (
                                   <strong>Fecha:</strong> {perro.fecha}
                                 </p>
                               </div>
-                              <div className="card-footer">
-                              <Button variant="danger" onClick={() => handleDelete(perro.id)}>
-                                Elimin
-                              </Button>
-
+                              <div className="card-footer d-flex justify-content-end"style={{ backgroundColor: 'transparent' }}> {/* Alinea los botones a la derecha */}
+                                <Button variant="danger" onClick={() => handleDelete(perro.id)} className="me-2"> {/* Agrega margen a la derecha */}
+                                  <i className="fa-solid fa-trash"></i>
+                                </Button>
                                 <Button variant="warning" onClick={() => handleEdit(perro)}>
-                                    Editar 
+                                  <i className="fa-solid fa-pencil-alt"></i>
                                 </Button>
-                                <Button variant="info" onClick={() => handleSearchMatches(perro)}>
-                                    Coinci
+
+                                <Button style={{ backgroundColor: '#3498db', borderColor: '#3498db' }} onClick={() => handleSearchMatches(perro)}>
+                                  <i className="fa-solid fa-search"></i>
                                 </Button>
-                            </div>
-                              
-                            </div>
+     
+                              </div>
+                                
+                           </div>
                           </Col>
                         ))}
                       </Row>
@@ -488,6 +478,7 @@ return (
 
     </Container>
   );
+
 };
 
 export default PerfilUsuario;
