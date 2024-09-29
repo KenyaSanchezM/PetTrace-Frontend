@@ -24,7 +24,7 @@ import Eventos from './components/Eventos';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
+  const [showRegistrarEvento, setShowRegistrarEvento] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
@@ -87,6 +87,8 @@ function App() {
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
         <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
+        
+
       </div>
     </Router>
   );

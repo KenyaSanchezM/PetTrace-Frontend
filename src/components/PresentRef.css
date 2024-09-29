@@ -56,10 +56,10 @@
 }
 
 .btn-elect:hover{
-    color: #c55b03;
+    color: #ff8700;
 }
 .btn-elect.active {
-    color: #c55b03;
+    color: #ff8700;
   }
 
 .card-text{
@@ -77,4 +77,18 @@
 
 .card{
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-agregarEvento{
+    border: None;
+    background-color: #fff;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 20px;
+    color: #444444;
+    width: 250px;
+}
+
+.btn-agregarEvento:hover{
+    color: #ff8700;
 }

@@ -92,12 +92,12 @@ const Eventos = () => {
                   </ul>
                 </div>
               </div>
-              <form className="d-flex" role="search">
+              {/* <form className="d-flex" role="search">
                 <input className="form-control me-2 rounded-pill shadow-sm" type="search" placeholder="Buscar" aria-label="Search" />
                 <button className="btn rounded-pill btn-warning" type="submit" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700' }}>
                   <i className="bi bi-search " style={{ color: '#fff' }}></i>
                 </button>
-              </form>
+              </form>*/}
             </div>
           </div>
         </div>

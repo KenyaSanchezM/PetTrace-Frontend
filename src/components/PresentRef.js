@@ -60,7 +60,7 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
 
 };
 
-const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celular, instagram, facebook, cuenta, ciudad, estado}) => {
+const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celular, instagram, facebook, cuenta, ciudad, estado, onRegistrarEventoClick}) => {
     const [activeButton, setActiveButton] = useState('');
     return(
         <div >
@@ -112,6 +112,7 @@ const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celu
                     <hr />
                     {activeButton === 'eventos' ? (
                         <div className='row'>
+                            <button className='btn-agregarEvento' onClick={onRegistrarEventoClick}><i class="bi bi-plus-circle"></i> Agregar Evento</button>
                             <TarjetaEventos
                                 imagen = "https://www.diariodexalapa.com.mx/local/9mabtw-proyecto-permanente-de-esterilizacion-de-mascotas/ALTERNATES/LANDSCAPE_960/Proyecto-permanente-de-esterilizaci%C3%B3n-de-mascotas"
                                 nombre = "Campaña de esterilización"
@@ -163,7 +164,7 @@ const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celu
 const PresentRef = () => {
     return(
         <div>
-            <HeadSection
+            <HeadSection 
                 imagen1 = "https://www.elsoldemexico.com.mx/metropoli/cdmx/q618ku-lomitos-perritos.jpg/ALTERNATES/LANDSCAPE_768/lomitos-perritos.jpg"
                 imagen2 = "https://i0.wp.com/labcsa.org/wp-content/uploads/2022/09/10282995.jpg?resize=660%2C440&ssl=1"
                 imagen3 = "https://www.infobae.com/new-resizer/P4Xs1ME2kw8U5kJZuDkum-VV_Sg=/768x432/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/BNVX4NZFPU7F3SUTAXLEJZDABM.jpg"
@@ -177,6 +178,7 @@ const PresentRef = () => {
                 logo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s"
                 facebook=""
             />
+            
         </div>
     )
 }
