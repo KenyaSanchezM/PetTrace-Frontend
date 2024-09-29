@@ -24,6 +24,8 @@ import HomeUser from './components/HomeUser';
 import Eventos from './components/Eventos';
 import IrPerfilUser from './components/IrPerfilUser';
 import NuestraIA from './components/NuestraIA'
+import MatchForm from './components/MatchForm'
+import MatchResults from './components/MatchResults';
 
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showMatchForm, setShowMatchForm] = useState(false);
+
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -40,6 +44,10 @@ function App() {
 
   const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
   const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
+
+  const handleShowMatchForm = () => setShowMatchForm(true);
+  const handleCloseMatchForm = () => setShowMatchForm(false);
+
 
   useEffect(() => {
     // Verificar si el usuario está autenticado al cargar la aplicación
@@ -90,12 +98,16 @@ function App() {
           <Route path='/eventos' element={<Eventos />} />
           <Route path="/ir-perfil-usuario/:userId" element={<IrPerfilUser />} />
           <Route path="/api/ir-perfil-refugio/:id" element={<PresentRef />} />
+          <Route path="/api/match" element={<MatchForm />} />
+          <Route path="/match-resultados" element={<MatchResults />} />
+
 
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
         <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
+        <MatchForm show={showMatchForm} handleClose={handleCloseMatchForm} />
       </div>
     </Router>
   );

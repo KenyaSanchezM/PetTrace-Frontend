@@ -274,12 +274,24 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
           </Form.Group>
           <Form.Group controlId="formTemperamento" className="mb-3">
             <Form.Label>Temperamento</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Temperamento del perro"
-              value={temperamento}
-              onChange={(e) => setTemperamento(e.target.value)}
-            />
+                  <Form.Control
+                    as="select"
+                    name="temperamento"
+                    value={temperamento}
+                    onChange={(e) => setTemperamento(e.target.value)}
+                  >
+                    <option value="">Selecciona un temperamento</option>
+                    <option value="juguetón">Juguetón</option>
+                    <option value="tranquilo">Tranquilo</option>
+                    <option value="activo">Activo</option>
+                    <option value="noble">Noble</option>
+                    <option value="ansioso">Ansioso</option>
+                    <option value="miedoso">Miedoso</option>
+                    <option value="apegado">Apegado</option>
+                    <option value="hiperactivo">Hiperactivo</option>
+                    <option value="agradable">Agradable</option>
+                    <option value="desapegado">Desapegado</option>
+                  </Form.Control>
           </Form.Group>
           <Form.Group controlId="formVacunas" className="mb-3">
             <Form.Label>Vacunas</Form.Label>

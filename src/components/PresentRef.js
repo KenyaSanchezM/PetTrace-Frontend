@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Col } from 'react-bootstrap';
+import { Col ,Button} from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './PresentRef.css';
+import MatchForm from './MatchForm';
 
 const PresentRef = () => {
     const { id } = useParams();
@@ -12,6 +13,10 @@ const PresentRef = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeButton, setActiveButton] = useState('perritos');
+    const [showMatchForm, setShowMatchForm] = useState(false);
+
+    const handleShowMatchForm = () => setShowMatchForm(true);
+    const handleCloseMatchForm = () => setShowMatchForm(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -123,7 +128,13 @@ const PresentRef = () => {
                                 <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
                                 <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
                                 <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
-                                <button className="btn btn-warning btn-match text-light" href="#services">Match</button>
+                                <Button className="btn btn-warning btn-match text-light" onClick={handleShowMatchForm}>Haz match</Button>
+                                <MatchForm 
+                                    show={showMatchForm} 
+                                    handleClose={handleCloseMatchForm} 
+                                    shelterId={id}  // Pasa el ID del refugio aquí
+                                />
+                                
                             </div>
                         </div>
                     </div>

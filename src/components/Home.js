@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Container, Row, Carousel } from 'react-bootstrap';
 import axios from 'axios';
+import './home.css';
+
 
 const TarjetaPerdidos = ({ image, nombre, caracteristicas, form_type }) => {
   const defaultImage = "/path/to/default_image.jpg"; // Imagen predeterminada
@@ -37,11 +39,13 @@ const getAbsoluteImageUrl = (url) => {
 
 function Home() {
   const [perros, setPerros] = useState([]);
+  const [refugios, setRefugios] = useState([]);
+
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/perros-perdidos/')
       .then(response => {
-        console.log(response.data); // Verifica qué datos se están recibiendo
+        //console.log(response.data);  Verifica qué datos se están recibiendo
         if (Array.isArray(response.data) && response.data.length > 0) {
           setPerros(response.data);
         } else {
@@ -50,12 +54,26 @@ function Home() {
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/refugios-principal/')
+        .then(response => {
+            // console.log(response.data); Verifica qué datos se están recibiendo
+            if (Array.isArray(response.data) && response.data.length > 0) {
+                setRefugios(response.data); // Guarda los refugios en el estado
+            } else {
+                console.log('No hay refugios disponibles en este momento.');
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}, []);
+
   
 
   const firstGroup = perros.slice(0, 3);
   const secondGroup = perros.slice(3, 6);
 
-  console.log(firstGroup, secondGroup); // Verifica que haya elementos
+  //console.log(firstGroup, secondGroup); // Verifica que haya elementos
 
   if (perros.length === 0) {
     return <div>No hay perros disponibles en este momento.</div>;
@@ -72,92 +90,73 @@ function Home() {
       </header>
 
       <Container className="py-5">
-        {/* Segunda sección - Carrusel de React-Bootstrap */}
+    {/* Primera sección - Carrusel de React-Bootstrap */}
+    <div className="section" style={{ marginBottom: '100px' }}>
+        <h2 className="section-title">¡Ayudálos a volver a casa!</h2>
+        <Carousel id="carouselPerros" interval={3000} fade>
+          <Carousel.Item>
+              <Row>
+                  {firstGroup.map(perro => (
+                      <TarjetaPerdidos 
+                          key={perro.id} 
+                          image={perro.image} 
+                          nombre={perro.nombre} 
+                          caracteristicas={perro.caracteristicas} 
+                          form_type={perro.form_type} 
+                      />
+                  ))}
+              </Row>
+          </Carousel.Item>
+          <Carousel.Item>
+              <Row>
+                  {secondGroup.map(perro => (
+                      <TarjetaPerdidos 
+                          key={perro.id} 
+                          image={perro.image} 
+                          nombre={perro.nombre} 
+                          caracteristicas={perro.caracteristicas} 
+                          form_type={perro.form_type} 
+                      />
+                  ))}
+              </Row>
+          </Carousel.Item>
+      </Carousel>
+
+      
+    </div>
+
         <div className="section">
-          <h2 className="section-title">¡Ayudálos a volver a casa!</h2>
-          <Carousel id="carouselPerros">
-            <Carousel.Item>
-              <Row>
-                {firstGroup.map(perro => (
-                  <TarjetaPerdidos 
-                    key={perro.id} 
-                    image={perro.image} 
-                    nombre={perro.nombre} 
-                    caracteristicas={perro.caracteristicas} 
-                    form_type={perro.form_type} 
-                  />
-                ))}
-              </Row>
-            </Carousel.Item>
-            <Carousel.Item>
-              <Row>
-                {secondGroup.map(perro => (
-                  <TarjetaPerdidos 
-                    key={perro.id} 
-                    image={perro.image} 
-                    nombre={perro.nombre} 
-                    caracteristicas={perro.caracteristicas} 
-                    form_type={perro.form_type} 
-                  />
-                ))}
-              </Row>
-            </Carousel.Item>
-          </Carousel>
+            <h2 className="section-title">Registra a tu mascota y nuestra IA hará el resto</h2>
+            <div>
+                <img 
+                    src="/images/IA.png" 
+                    alt="Imagen de registro de mascotas" 
+                    className="section-image" 
+                    style={{ width: '100%', maxWidth: '1600px', height: 'auto' }} 
+                />
+            </div>
         </div>
-        
 
-
-      {/* Segunda sección */}
+      {/* Tercera sección */} 
       <div className="section">
-        <h2 className="section-title">Registra a tu mascota y nuestra IA hará el resto</h2>
-        <div>
-          <img src="/images/IA.png" alt="Imagen de registro de mascotas" className="section-image" />
-        </div>
-      </div>
-
-      {/* Tercera sección */}
-      <div className="section">
-        <h2 className="section-title">Conoce los refugios</h2>
-        <div className="container" style={{marginTop: '25px'}}>
-          <div className="row text-center">
-            <div className="col-6 col-md-3 mb-4">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s" 
-                className="imagen-refugio rounded-circle" alt="Refugio 1" 
-                style={{ width: '120px', height: '120px'}} 
-              />
-              <p style={{textAlign: 'center'}}>Refugio 1</p>
-            </div>
-            <div className="col-6 col-md-3 mb-4">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s" 
-                className="imagen-refugio rounded-circle" alt="Refugio 2" 
-                style={{ width: '120px', height: '120px' }} 
-              />
-              <p style={{textAlign: 'center'}} >Refugio 2</p>
-            </div>
-            <div className="col-6 col-md-3 mb-4">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s" 
-                className="imagen-refugio rounded-circle" alt="Refugio 3" 
-                style={{ width: '120px', height: '120px' }} 
-              />
-              <p style={{textAlign: 'center'}}>Refugio 3</p>
-            </div>
-            <div className="col-6 col-md-3 mb-4">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s" 
-                className="imagen-refugio rounded-circle" alt="Refugio 4" 
-                style={{ width: '120px', height: '120px' }} 
-              />
-              <p style={{textAlign: 'center'}}>Refugio 4</p>
-            </div>
-            <div className="col-6 col-md-3 mb-4">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s" 
-                className="imagen-refugio rounded-circle" alt="Refugio 4" 
-                style={{ width: '120px', height: '120px' }} 
-              />
-              <p style={{textAlign: 'center'}}>Refugio 5</p>
-            </div>
+          <h2 className="section-title">Conoce los refugios</h2>
+          <div className="container" style={{ marginTop: '25px' }}>
+              <div className="row text-center">
+                  {refugios.map(refugio => (
+                      <div className="col-6 col-md-3 mb-4" key={refugio.id}>
+                          <img 
+                              src={refugio.profile_image ? `http://localhost:8000${refugio.profile_image}` : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s"} 
+                              className="imagen-refugio rounded-circle" 
+                              alt={`Refugio ${refugio.nombre}`} 
+                              style={{ width: '120px', height: '120px' }} 
+                          />
+                          <p style={{ textAlign: 'center' }}>{refugio.nombre}</p>
+                      </div>
+                  ))}
+              </div>
           </div>
-        </div>
       </div>
+
     </Container>
 
     
