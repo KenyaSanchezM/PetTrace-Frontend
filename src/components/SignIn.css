@@ -1,56 +1,65 @@
-/* RegistroPerros.css */
-.my-5 {
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    align-items: center;
+/* SignIn.css */
+.modal-body {
+    display: flex;
+    flex-direction: column; /* Cambiar a columna para alinear los elementos verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    padding: 20px; /* Espaciado interno */
+    justify-content: center; /* Centrar horizontalmente */
 }
 
-h2 {
-    color: #343a40;
-    margin-bottom: 20px;
-    font-weight: bold;
+.modal-header {
+    border-bottom: none; /* Sin borde inferior */
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-label {
-    font-weight: 500;
-    color: #495057;
-}
-
-.form-control {
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-}
-
-.form-select {
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-}
-
-.custom-button {
+/* SignIn.css */
+.custom-button-SI {
     width: 100%;
-    background-color: #FF8700 !important;
-    border-color: #FF8700;
-    color: #fff;
+    background-color: transparent; /* Fondo transparente */
+    border: 2px solid #ffbb00; /* Borde naranja */
+    color: #ffbb00; /* Letra en color naranja */
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 30px; /* Bordes redondeados */
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transiciones para el color y fondo */
 }
 
-.custom-button:hover {
-    background-color: #FF8700;
-    border-color: #FF8700;
+.custom-button-SI:hover {
+    background-color: #ffbb00; /* Fondo amarillo al pasar el mouse */
+    color: #fff; /* Cambiar el color de la letra al blanco */
+}
+.custom-button-SI {
+    background-color: transparent !important; /* Fondo transparente */
+    border: 2px solid #ffbb00 !important; /* Borde naranja */
+    color: #ffbb00 !important; /* Letra en color naranja */
 }
 
-.custom-button:active {
-    background-color: white;
-    border-color: white;
+
+
+.modal-title {
+    text-align: center; /* Centrar el texto del título */
+    width: 100%; /* Asegúrate de que ocupe todo el ancho disponible */
 }
+
+.form-group {
+    width: 100%; /* Hacer que los grupos ocupen el ancho completo */
+    margin-bottom: 20px; /* Espacio entre los campos de entrada */
+}
+
+.form-label {
+    font-weight: bold; /* Hacer las etiquetas más prominentes */
+    color: #333; /* Color más oscuro para las etiquetas */
+}
+
+.text-danger {
+    text-align: center; /* Centrar el mensaje de error */
+    margin-top: 10px; /* Espacio arriba del mensaje de error */
+}
+
+/* Añadir margen inferior al botón */
+.btn {
+    margin-top: 15px; /* Espacio entre el último campo y el botón */
+}
+
+

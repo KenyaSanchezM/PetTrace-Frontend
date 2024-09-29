@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Button, Modal } from 'react-bootstrap';
+import { Form, Button, Modal, Container } from 'react-bootstrap';
 import axios from 'axios';
 import './RegistroPerrosRefugios.css';
+import Swal from 'sweetalert2';
+
 
 const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
   const [file, setFile] = useState(null);
@@ -16,6 +18,7 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
   const [temperamento, setTemperamento] = useState('');
   const [vacunas, setVacunas] = useState('');
   const [esterilizado, setEsterilizado] = useState('');
+  const [loading, setLoading] = useState(false); // Estado de cargaS
 
   const resetForm = () => {
     setFile(null);
@@ -35,6 +38,7 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
+
   const handleProfileImage1Change = (event) => {
     setProfileImage1(event.target.files[0]);
   };
@@ -52,92 +56,119 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let token = localStorage.getItem('token');
+    setLoading(true); // Iniciar carga
+    let token = localStorage.getItem('access_token');
 
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      const predictionResponse = await axios.post('http://localhost:8000/api/predict-breed/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      });
+        const predictionResponse = await axios.post('http://localhost:5000/predict-breed/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
 
-      const breeds = predictionResponse.data.top_10_breeds.join(',');
-      
-      formData.append('profile_image1', profileImage1);
-      formData.append('profile_image2', profileImage2);
-      formData.append('nombre', nombre);
-      formData.append('edad', edad);
-      formData.append('color', JSON.stringify(color));
-      formData.append('sexo', sexo);
-      formData.append('tamanio', tamanio);
-      formData.append('caracteristicas', caracteristicas);
-      formData.append('temperamento', temperamento);
-      formData.append('vacunas', vacunas);
-      formData.append('esterilizado', esterilizado);
-      formData.append('shelter_user', shelterUserId); // Usar el ID del usuario del refugio
-      formData.append('breeds', breeds);
-
-      if (file) {
-        formData.append('file', file); 
-      }
-
-      const response = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      console.log('Perro de refugio registrado:', response.data);
-      handleClose(); 
-      resetForm();
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        const refreshToken = localStorage.getItem('refresh_token');
+        const breeds = predictionResponse.data.breed.join(',');
         
-        if (refreshToken) {
-          try {
-            const refreshResponse = await axios.post('http://localhost:8000/api/token/refresh/', {
-              refresh: refreshToken
-            });
+        // Agregar imágenes y otros datos al formData
+        formData.append('profile_image1', profileImage1);
+        formData.append('profile_image2', profileImage2);
+        formData.append('nombre', nombre);
+        formData.append('edad', edad);
+        formData.append('color', JSON.stringify(color));
+        formData.append('sexo', sexo);
+        formData.append('tamanio', tamanio);
+        formData.append('caracteristicas', caracteristicas);
+        formData.append('temperamento', temperamento);
+        formData.append('vacunas', vacunas);
+        formData.append('esterilizado', esterilizado);
+        formData.append('shelter_user', shelterUserId);
+        formData.append('breeds', breeds);
 
-            token = refreshResponse.data.access;
-            localStorage.setItem('token', token);
+        // Ya no necesitas añadir file de nuevo aquí, ya que ya lo hiciste
+        // const response = await axios.post(...) se queda igual
 
-            const retryResponse = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
-              headers: {
+        const response = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
+            headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
-              }
-            });
+            }
+        });
 
-            console.log('Perro de refugio registrado:', retryResponse.data);
-            handleClose(); 
-            resetForm();
-          } catch (refreshError) {
-            console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
-            alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');
-          }
+        handleClose(); 
+        resetForm();
+
+        // Alerta de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: 'Tu perrito se ha registrado correctamente.',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+          window.location.reload(); // Recargar la página después de la alerta
+        });
+
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            // Manejo del token de refresco
+            const refreshToken = localStorage.getItem('refresh_token');
+            
+            if (refreshToken) {
+                try {
+                    const refreshResponse = await axios.post('http://localhost:8000/api/token/refresh/', {
+                        refresh: refreshToken
+                    });
+
+                    token = refreshResponse.data.access;
+                    localStorage.setItem('access_token', token); // Asegúrate de usar el nombre correcto
+
+                    const retryResponse = await axios.post('http://localhost:8000/api/registro-perros-refugios/', formData, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+
+                    handleClose(); 
+                    resetForm();
+
+                    // Alerta de éxito
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registro exitoso',
+                        text: 'Tu perrito se ha registrado correctamente.',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                      window.location.reload(); // Recargar la página después de la alerta
+                    });
+
+                } catch (refreshError) {
+                    console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
+                    alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');
+                }
+            } else {
+                console.error('Token de refresco no disponible.');
+                alert('No se pudo encontrar el token de refresco. Por favor, inicia sesión de nuevo.');
+            }
         } else {
-          console.error('Token de refresco no disponible.');
-          alert('No se pudo encontrar el token de refresco. Por favor, inicia sesión de nuevo.');
+            console.error('Error al registrar el perro de refugio:', error.response ? error.response.data : error.message);
+            alert('Hubo un problema al registrar el perro. Por favor, inténtalo de nuevo.');
         }
-      } else {
-        console.error('Error al registrar el perro de refugio:', error.response ? error.response.data : error.message);
-        alert('Hubo un problema al registrar el perro. Por favor, inténtalo de nuevo.');
-      }
+    } finally {
+        setLoading(false); // Finalizar carga
     }
-  };
+};
+
   
   return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }}>
       <Modal.Header closeButton>
         <Modal.Title>Registro de Perros de Refugio</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ maxHeight: '1400px', overflowY: 'auto' }}>
+
+        <Container>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Sube la imagen para la IA</Form.Label>
@@ -311,9 +342,10 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
             </Form.Select>
           </Form.Group>
           <Button variant="primary" type="submit">
-            Registrar Perro
+            Registrar un perro
           </Button>
         </Form>
+        </Container>
       </Modal.Body>
     </Modal>
   );

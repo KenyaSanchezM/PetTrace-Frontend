@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Modal, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import './Register.css';
+import Swal from 'sweetalert2';
+
 
 const estados = [
   'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 
@@ -99,7 +101,13 @@ const RegisterModal = ({ show, handleClose }) => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(response.data);
+      // Mostrar mensaje de éxito con 
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'Tu cuenta ha sido registrada correctamente.',
+          confirmButtonText: 'Aceptar'
+        });
       handleClose();
     } catch (error) {
       setError('Error al registrar usuario');

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import './SignIn.css';
 
@@ -8,8 +8,8 @@ const SignIn = ({ show, handleClose, onLoginSuccess }) => {
     email: '',
     password: '',
   });
-
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Estado para el loading
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -18,6 +18,7 @@ const SignIn = ({ show, handleClose, onLoginSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Iniciar loading
     const { email, password } = formData;
 
     try {
@@ -27,8 +28,6 @@ const SignIn = ({ show, handleClose, onLoginSuccess }) => {
       });
 
       console.log('Inicio de sesión exitoso:', response.data);
-
-      // Extraer tokens y user_type
       const { access, refresh, user_type } = response.data;
 
       if (access) {
@@ -42,25 +41,28 @@ const SignIn = ({ show, handleClose, onLoginSuccess }) => {
         // Redirige según el tipo de usuario
         if (user_type === 'shelter') {
           window.location.href = '/perfil-refugio';
-        } else  {
+        } else {
           window.location.href = '/perfil-usuario';
-        } 
+        }
       }
     } catch (error) {
       console.error('Error en el inicio de sesión:', error);
       setError('Correo electrónico o contraseña incorrectos.');
+    } finally {
+      setLoading(false); // Detener loading
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} centered>
+
       <Modal.Header closeButton>
-        <Modal.Title>Iniciar Sesión</Modal.Title>
+        <Modal.Title>INICIA SESIÓN</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Correo Electrónico</Form.Label>
+            <Form.Label>Correo electrónico</Form.Label>
             <Form.Control
               type="email"
               name="email"
@@ -85,8 +87,14 @@ const SignIn = ({ show, handleClose, onLoginSuccess }) => {
 
           {error && <p className="text-danger">{error}</p>}
 
-          <Button variant="primary" type="submit">
-            Iniciar Sesión
+          <Button className="custom-button-SI" type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <Spinner animation="border" size="sm" /> Iniciando...
+              </>
+            ) : (
+              'Iniciar'
+            )}
           </Button>
         </Form>
       </Modal.Body>
