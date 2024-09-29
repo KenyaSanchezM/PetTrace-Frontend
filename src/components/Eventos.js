@@ -1,58 +1,55 @@
 //Presentación de todos los eventos
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Row, Col, Container, Modal, Button } from 'react-bootstrap';
-
-const calcularTiempoTranscurrido = (fecha) => {
-  const ahora = new Date();
-  const diferenciaTiempo = Math.abs(ahora - fecha);
-  const diferenciaDias = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
-  
-  if (diferenciaDias === 0) return "Publicado hoy";
-  if (diferenciaDias === 1) return "Publicado hace 1 día";
-  return `Publicado hace ${diferenciaDias} días`;
-};
-
-//Constantes para sacar la fecha de publicación
-const fechaPublicacion = new Date('2024-08-04');  //variable que almacena la fecha obtenida de la fuente de datos.
-const publicadoHace = calcularTiempoTranscurrido(fechaPublicacion);
+import axios from 'axios';
 
 const Eventos = () => {
+  const [eventos, setEventos] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalInfo, setModalInfo] = useState({});
 
   // Función para abrir el modal con la información de la tarjeta seleccionada
   const handleCardClick = (info) => {
-    setModalInfo(info);
-    setShowModal(true);
+    // Actualiza modalInfo incluyendo la imagen
+    setModalInfo({
+      ...info, 
+    });
+    setShowModal(true); // Abre el modal
   };
 
   // Función para cerrar el modal
   const handleClose = () => setShowModal(false);
 
-  const eventos = [
-    {
-      id: 1,
-      img: 'https://www.dondeir.com/wp-content/uploads/2018/04/vuelve-adogtame-2018-una-feria-de-adopcion-canina-en-cdmx-02.jpg',
-      titulo: 'Evento de adopción',
-      descripcion: '¡Ven a nuestro evento de adopción y encuentra a tu nuevo mejor amigo!',
-      ubicacion: 'Avenida Solidaridad 456',
-      fecha: '24/08/2024',
-      anfitrion: 'Patitas felices',
-    },
-    {
-      id: 2,
-      img: 'https://images.reporteindigo.com/wp-content/uploads/2023/06/adoptafest-santa-catarina.jpg',
-      titulo: 'Evento de adopción',
-      descripcion: '¡Ven a nuestro evento de adopción y encuentra a tu nuevo mejor amigo!',
-      ubicacion: 'Avenida Solidaridad 456',
-      fecha: '24/08/2024',
-      anfitrion: 'Patitas felices',
-    },
-    // Agrega más eventos aquí si es necesario
-  ];
+  useEffect(() => {
+    fetchEventos();
+  }, []);
+
+  const fetchEventos = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/eventos/');
+      const eventos = response.data; // Suponiendo que 'response' es la respuesta de tu API
+
+        eventos.forEach(evento => {
+            console.log("Evento ID:", evento.id); // Asegúrate de que 'id' sea el nombre correcto del campo
+        });
+
+      console.log('Respuesta de la API:', response.data);
+      response.data.forEach(evento => {
+        console.log('Evento ID:', evento.id); // Verifica que cada refugio tiene un ID
+      });
+      
+      setEventos(response.data);
+    } catch (error) {
+      console.error('Error al obtener los eventos:', error);
+    }
+  };
+
+  const defaultImage = "/images/eventos.jpg";
+  console.log(eventos);
+
 
   return (
     <div>
@@ -107,38 +104,46 @@ const Eventos = () => {
       <Container className="mt-4">
         <div className='cont2'>
           <Row className="tarjetas d-flex justify-content-left">
-          {eventos.map((evento) => (
-              <Col md={4} className="mb-3" key={evento.id}>
-                <div className="card" onClick={() => handleCardClick(evento)}>
-                  <img src={evento.img} className="card-img-top" alt="perro"></img>
-                  <div className="card-body">
-                    <p className='p-name'>{evento.titulo}</p>
-                    <p className='text'>
-                      <strong>Ubicación:</strong> {evento.ubicacion} <br />
-                      <strong>Fecha del evento: </strong>{evento.fecha} <i className="bi bi-calendar"></i><br />
-                      <strong>Anfitrión:</strong> {evento.anfitrion} <br /><br />
-                      {publicadoHace}
-                    </p>
-                  </div>
-                </div>
-              </Col>
-            ))}
+          {eventos.length > 0 ? (
+              eventos.map((evento, index) => (
+                evento && evento.nombre_evento ? ( // Verificamos que 'evento' y 'nombre_evento' existan
+                  <Col md={4} className="mb-3" key={evento.id || index}> 
+                    <div className="card" onClick={() => handleCardClick(evento)}>
+                      <img src={evento.imagen_evento ? `http://localhost:8000${evento.imagen_evento}` : defaultImage} alt='evento' className="card-img-top" />
+                      <div className="card-body">
+                        <p className='p-name'>{evento.nombre_evento}</p>
+                        <p className='text'>
+                          <strong>Ubicación:</strong> {evento.lugar_evento || 'Ubicación no disponible'} <br />
+                          <strong>Fecha del evento:</strong> {evento.fecha_evento || 'Fecha no disponible'} <i className="bi bi-calendar"></i><br />
+                          <strong>Anfitrión:</strong> {evento.anfitrion_evento || 'Anfitrión no disponible'} <br />
+                          <strong>Hora:</strong>{evento.hora_evento || 'Hora no disponible'} <br />
+                        </p>
+                      </div>
+                    </div>
+                  </Col>
+                ) : (
+                  <p key={index}>Información del evento no disponible</p> // Si no existe 'nombre_evento', mostramos un mensaje
+                )
+              ))
+            ) : (
+              <p>No tienes eventos registrados.</p>
+            )}
           </Row>
-          <p>No tienes eventos registrados.</p>
         </div>
       </Container>
 
       {/* Modal */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{modalInfo.titulo}</Modal.Title>
+          <Modal.Title>{modalInfo.nombre_evento}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <img src={modalInfo.img} className="img-fluid" alt="Evento" />
-          <p className='text'><br />{modalInfo.descripcion}</p>
-          <p className='text'><strong>Ubicación:</strong> {modalInfo.ubicacion}<br />
-          <strong>Fecha del evento:</strong> {modalInfo.fecha}<br />
-          <strong>Anfitrión:</strong> {modalInfo.anfitrion}</p>
+          <img src={modalInfo.imagen_evento ? `http://localhost:8000${modalInfo.imagen_evento}` : defaultImage} className="img-fluid" alt="Evento" />
+          <p className='text'><br />{modalInfo.descripcion_evento}</p>
+          <p className='text'><strong>Ubicación:</strong> {modalInfo.lugar_evento}<br />
+          <strong>Fecha del evento:</strong> {modalInfo.fecha_evento}<br />
+          <strong>Anfitrión:</strong> {modalInfo.anfitrion_evento}<br />
+          <strong>Hora:</strong> {modalInfo.hora_evento}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -227,7 +232,7 @@ const Eventos = () => {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             width: 21rem; 
-            height: 30rem;
+            height: 26rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 

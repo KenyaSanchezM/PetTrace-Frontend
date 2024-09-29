@@ -14,8 +14,13 @@ const RegistrarEvento = ({ show, handleClose }) => {
     motivo: '',
     fecha_evento: '',
     hora_evento: '10:00',
+    imagen_evento: null
   });
   const [error, setError] = useState('');
+
+  const handleFileChange = (event) => {
+    setFormData({ ...formData, imagen_evento: event.target.files[0] });
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -35,6 +40,7 @@ const RegistrarEvento = ({ show, handleClose }) => {
       motivo: '',
       fecha_evento: '',
       hora_evento: '10:00',
+      imagen_evento: null,
     });
     setError(''); // Restablecer error también
   };
@@ -52,6 +58,9 @@ const RegistrarEvento = ({ show, handleClose }) => {
     formDataToSubmit.append('anfitrion_evento', formData.anfitrion_evento);
     formDataToSubmit.append('fecha_evento', formData.fecha_evento);
     formDataToSubmit.append('hora_evento', formData.hora_evento);
+    if (formData.imagen_evento) {
+      formDataToSubmit.append('imagen_evento', formData.imagen_evento);
+    }
 
     try {
       const response = await axios.post('http://localhost:8000/api/registrar-evento/', formDataToSubmit, {
@@ -65,13 +74,42 @@ const RegistrarEvento = ({ show, handleClose }) => {
       handleClose(); 
       resetForm();
     } catch (error) {
-      setError('Hubo un problema al registrar el evento. Por favor, inténtalo de nuevo.'); // Manejo de error
-      console.error('Error al registrar el evento:', error.response ? error.response.data : error.message);
+      // Lógica de reintento si el token expira
+      if (error.response && error.response.status === 401 && error.response.data.code === 'token_not_valid') {
+        try {
+          const refreshToken = localStorage.getItem('refresh_token');
+          const refreshResponse = await axios.post('http://localhost:8000/api/token/refresh/', {
+            refresh: refreshToken
+          });
+  
+          token = refreshResponse.data.access;
+          localStorage.setItem('token', token);
+  
+          // Reintentar la solicitud original con el nuevo token
+          const retryResponse = await axios.post('http://localhost:8000/api/registrar-evento/', formData, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+  
+          console.log('Perro registrado:', retryResponse.data);
+          handleClose();
+          resetForm();
+        } catch (refreshError) {
+          console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
+          alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');
+        }
+      } else {
+        console.error('Error al registrar el perro:', error.response ? error.response.data : error.message);
+        alert('Hubo un problema al registrar el perro. Por favor, inténtalo de nuevo.');
+      }
+    
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={() => { handleClose(); resetForm(); }}>
       <Modal.Header closeButton>
         <Modal.Title>Registra tu evento</Modal.Title>
       </Modal.Header>
@@ -88,6 +126,13 @@ const RegistrarEvento = ({ show, handleClose }) => {
                 onChange={handleInputChange}
               />
             </Form.Group>
+            <Form.Group controlId="imagen_evento" className="mb-3">
+                  <Form.Label>Imagen del evento</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Form.Group>
             <Form.Group controlId="lugarEvento" className="mb-3">
               <Form.Label>Lugar del evento</Form.Label>
               <Form.Control
