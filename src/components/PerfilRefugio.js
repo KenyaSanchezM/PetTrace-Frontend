@@ -84,6 +84,28 @@ const PerfilUsuarioRefugio = () => {
     }
   };
 
+  //Eliminar evento
+  const handleDeleteEvent = async (id) => {
+    if (!id) {
+      alert('ID de publicación no válido.');
+      return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    try {
+      await axios.delete(`http://localhost:8000/api/event/${id}/delete/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setEventos((prevData) => prevData.filter((evento) => evento.id !== id));
+      alert('Publicación eliminada con éxito.');
+    } catch (error) {
+      console.error('Error al eliminar la publicación:', error);
+      alert('Hubo un problema al eliminar la publicación.');
+    }
+  };
+
   const handleEdit = (perro) => {
     setEditData({
       ...perro,
@@ -179,7 +201,7 @@ const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
 
 };
 
-const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora}) => {
+const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora, footer}) => {
   return(
       //Poner la fecha en la que se publicó o cuanto tiempo pasó desde su publicación
       <div className="row">
@@ -189,14 +211,19 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora}) =
                   <img src={imagen} className="img-fluid rounded-start" alt="..." style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
                   </div>
                   <div className="col-md-8">
-                  <div className="card-body">
-                      <h5 className="card-title">{nombre} </h5>
-                      <p className="card-text">{descripcion}<br/>
-                          <b>Ubicación: </b>{ubicacion}<br/>
-                          <b>Hora: </b>{hora}<br/>
-                          <b>Fecha del evento: </b>{fecha}
-                      </p>
-                  </div>
+                    <div className="card-body">
+                        <h5 className="card-title">{nombre} </h5>
+                        <p className="card-text">{descripcion}<br/>
+                            <b>Ubicación: </b>{ubicacion}<br/>
+                            <b>Hora: </b>{hora}<br/>
+                            <b>Fecha del evento: </b>{fecha}   
+                        </p>
+                    </div>
+                    {footer && (
+                      <div className="card-footer">
+                        {footer}
+                      </div>
+                    )}
                   </div>
               </div>
           </div>
@@ -282,17 +309,24 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                               fecha={evento.fecha_evento}
                               ubicacion={evento.lugar_evento}
                               hora={evento.hora_evento}
-                            />
+                              footer={
+                                <div className="d-flex justify-content-end" style={{ backgroundColor: 'transparent' }}>
+                                  <Button variant="danger" onClick={() => handleDeleteEvent(evento.id)} className="me-2">
+                                    <i className="fa-solid fa-trash"></i>
+                                  </Button>
+                                </div>
+                              }
+                             />
                           ))}
                       </div>
                   ) : (
                       <div className='row'>
+                        <div>
+                          <Button className="btn-regperr" variant="primary" onClick={handleShowRegistro}><i class="bi bi-plus-circle"> Agregar Perro</i> 
+                          </Button>
+                        </div>
                           {userData && userData.predictions && userData.predictions.map((perro) => (
                               <Col md={4} key={perro.id} className="mb-4">
-                                  <div>
-                                    <Button className="btn-regperr" variant="primary" onClick={handleShowRegistro}><i class="bi bi-plus-circle"> Agregar Perro</i> 
-                                    </Button>
-                                  </div>
                                   <TarjetaPerros
                                       imagen={`http://localhost:8000${perro.image}`} // Asumiendo que tu API devuelve la imagen con un prefijo de URL
                                       nombre={perro.nombre}
