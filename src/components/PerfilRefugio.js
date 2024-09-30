@@ -3,8 +3,10 @@ import { Button, Card, Container, Row, Col, Modal, Form } from 'react-bootstrap'
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import RegistroPerrosRefugio from './RegistroPerrosRefugios';
+import RegistrarEvento from './RegistrarEvento';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import './PerfilRefugio.css'
 
 
 const PerfilUsuarioRefugio = () => {
@@ -12,6 +14,8 @@ const PerfilUsuarioRefugio = () => {
   const [error, setError] = useState(null);
   const [showRegistro, setShowRegistro] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showRegistrarEvento, setShowRegistrarEvento] =useState(false);
+  const [eventos, setEventos] = useState([]);
   const [editData, setEditData] = useState({
     nombre: '',
     edad: '',
@@ -22,8 +26,7 @@ const PerfilUsuarioRefugio = () => {
     esterilizado: '',
     tamanio: '',
   });
-  const [eventos, setEventos] = useState([]);
-  const [perros, setPerros] = useState([]);
+  
 
 
   useEffect(() => {
@@ -40,6 +43,7 @@ const PerfilUsuarioRefugio = () => {
 
         console.log('User Data:', response.data);
         setUserData(response.data);
+        setEventos(response.data.events); // Establecer los eventos
       } catch (error) {
         console.error('Error fetching user data:', error.response ? error.response.data : error.message);
         setError('Hubo un problema al cargar los datos del usuario. Por favor, inténtalo de nuevo.');
@@ -52,6 +56,9 @@ const PerfilUsuarioRefugio = () => {
 
   const handleShowRegistro = () => setShowRegistro(true);
   const handleCloseRegistro = () => setShowRegistro(false);
+
+  const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
+  const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
 
   const handleDelete = async (id) => {
     if (!id) {
@@ -172,7 +179,7 @@ const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
 
 };
 
-const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
+const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora}) => {
   return(
       //Poner la fecha en la que se publicó o cuanto tiempo pasó desde su publicación
       <div className="row">
@@ -186,6 +193,7 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
                       <h5 className="card-title">{nombre} </h5>
                       <p className="card-text">{descripcion}<br/>
                           <b>Ubicación: </b>{ubicacion}<br/>
+                          <b>Hora: </b>{hora}<br/>
                           <b>Fecha del evento: </b>{fecha}
                       </p>
                   </div>
@@ -200,11 +208,11 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion}) => {
 const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcion, telefono, instagram, facebook, cuenta, ciudad, estado }) => {
   const [activeButton, setActiveButton] = useState(''); // Maneja el botón activo
   const defaultImage = "/images/eventos.jpg"; // Imagen predeterminada
+  
 
   return (
       <div>
           <section className='Head'>
-            
               <div className="container px-5">
                   <div className="row gx-5 align-items-center">
                   <div id="carouselExampleInterval" className="carousel slide col-lg-6 order-1" data-bs-ride="carousel">
@@ -231,17 +239,12 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                       <div className="col-lg-6 order-2 ">
                           <div className="p-5" style={{ borderRadius: '10px', boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)', height: '420px' }}>
                               <h2 className="display-4"><img src={profile_image ? `http://localhost:8000${profile_image}` : defaultImage} className="rounded-circle me-3" alt="" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
-                              <h5 className="font-weight-light"><i className="fas fa-paw" style={{ marginLeft: '10px' }}></i>{descripcion}</h5>
+                              <h5 className="font-weight-light"><i className="fas fa-paw" style={{ marginLeft: '10px', textAlign:'justify', alignItems: 'justify' }}></i>{descripcion}</h5>
                               <h5 className="font-weight-light"><i className="bi bi-geo-alt"></i> {ciudad}, {estado}</h5>
                               <h5 className="font-weight-light"><i className="bi bi-telephone"></i> {telefono}</h5>
                               <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
                               <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
                               <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
-                              <div>
-                                <Button variant="primary" onClick={handleShowRegistro}>
-                                  Registrar Perro
-                                </Button>
-                              </div>
                               
                           </div>
                       </div>
@@ -249,7 +252,6 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                   
               </div>
           </section>
-
           <div className='AdditionalSection'>
               <div className="container px-5 mt-5">
               <div className="row justify-content-center">
@@ -268,25 +270,29 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                   <hr />
                   {activeButton === 'eventos' ? (
                       <div className='row'>
-                          <TarjetaEventos
-                              imagen="https://www.diariodexalapa.com.mx/local/9mabtw-proyecto-permanente-de-esterilizacion-de-mascotas/ALTERNATES/LANDSCAPE_960/Proyecto-permanente-de-esterilizaci%C3%B3n-de-mascotas"
-                              nombre="Campaña de esterilización"
-                              descripcion="Trae a tu perro y asegúrate de que reciban atención médica de calidad de la mano de profesionales. Además, estaremos brindando pláticas informativas sobre el cuidado responsable de los animales y cómo podemos contribuir a un mejor futuro para ellos."
-                              fecha="24/08/2022"
-                              ubicacion="Calle Luna 123, Colonia Esperanza"
-                          />
-                          <TarjetaEventos
-                              imagen="https://static.mercadonegro.pe/wp-content/uploads/2022/12/01162745/WXEY6TVZ2RD2RKAZJB7U7JGXFU.jpg"
-                              nombre="Evento de Adopción"
-                              descripcion="¡Ven a nuestro evento de adopción y encuentra a tu nuevo mejor amigo! Tendremos muchos perritos buscando un hogar lleno de amor. Conoce a nuestras adorables mascotas, cada una con una historia única y lista para ser parte de tu familia."
-                              fecha="24/08/2022"
-                              ubicacion="Avenida Solidaridad 456"
-                          />
+                          <div>
+                            <Button className="btn-regevent" variant="primary" onClick={handleShowRegistrarEvento}><i class="bi bi-plus-circle"> Agregar Evento</i> 
+                            </Button>
+                          </div>
+                          {eventos.map((evento) => (
+                            <TarjetaEventos
+                              imagen={evento.imagen_evento ? `http://localhost:8000${evento.imagen_evento}` : defaultImage}
+                              nombre={evento.nombre_evento}
+                              descripcion={evento.descripcion_evento}
+                              fecha={evento.fecha_evento}
+                              ubicacion={evento.lugar_evento}
+                              hora={evento.hora_evento}
+                            />
+                          ))}
                       </div>
                   ) : (
                       <div className='row'>
                           {userData && userData.predictions && userData.predictions.map((perro) => (
                               <Col md={4} key={perro.id} className="mb-4">
+                                  <div>
+                                    <Button className="btn-regperr" variant="primary" onClick={handleShowRegistro}><i class="bi bi-plus-circle"> Agregar Perro</i> 
+                                    </Button>
+                                  </div>
                                   <TarjetaPerros
                                       imagen={`http://localhost:8000${perro.image}`} // Asumiendo que tu API devuelve la imagen con un prefijo de URL
                                       nombre={perro.nombre}
@@ -355,6 +361,7 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
       </Row>     
 
       <RegistroPerrosRefugio show={showRegistro} handleClose={handleCloseRegistro} userId={userData ? userData.shelter_user.id : null} />
+      <RegistrarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} userId={userData ? userData.shelter_user.id : null} />
 
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>

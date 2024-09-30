@@ -37,6 +37,7 @@ const getAbsoluteImageUrl = (url) => {
 
 function Home() {
   const [perros, setPerros] = useState([]);
+  
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/perros-perdidos/')

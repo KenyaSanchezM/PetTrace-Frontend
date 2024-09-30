@@ -18,7 +18,7 @@ import RegistroPerrosRefugios from './components/RegistroPerrosRefugios';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 import './App.css'; 
 import PerfilUsuario from './components/PerfilUsuario';
-import RegistarEvento from './components/RegistrarEvento';
+import RegistrarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
 import HomeUser from './components/HomeUser';
 import Eventos from './components/Eventos';
@@ -29,7 +29,6 @@ import NuestraIA from './components/NuestraIA'
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showRegistrarEvento, setShowRegistrarEvento] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
@@ -37,9 +36,6 @@ function App() {
 
   const handleShowRegisterModal = () => setShowRegisterModal(true);
   const handleCloseRegisterModal = () => setShowRegisterModal(false);
-
-  const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
-  const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
 
   useEffect(() => {
     // Verificar si el usuario está autenticado al cargar la aplicación
@@ -72,7 +68,6 @@ function App() {
           onSignInClick={handleShowModal}
           onLogoutClick={handleLogout}
           onRegisterClick={handleShowRegisterModal}
-          onRegistrarEventoClick={handleShowRegistrarEvento}
         />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -90,12 +85,12 @@ function App() {
           <Route path='/eventos' element={<Eventos />} />
           <Route path="/ir-perfil-usuario/:userId" element={<IrPerfilUser />} />
           <Route path="/api/ir-perfil-refugio/:id" element={<PresentRef />} />
+          <Route path='/registro-eventos' element={<RegistrarEvento />} />
 
         </Routes>
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
-        <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
         
 
       </div>
