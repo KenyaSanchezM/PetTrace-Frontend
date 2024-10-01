@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import './RegistroPerros.css';
+import Swal from 'sweetalert2';
+
 
 const RegistroPerros = ({ show, handleClose, user_id }) => {
   const [file, setFile] = useState(null);
@@ -59,17 +61,16 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
     predictionFormData.append('file', file);
   
     try {
-      const predictionResponse = await axios.post('http://localhost:8000/api/predict-breed/', predictionFormData, {
+      const predictionResponse = await axios.post('http://localhost:5000/predict-breed/', predictionFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
-  
-      const breeds = predictionResponse.data.top_10_breeds.join(',');
+     
+      const breeds = predictionResponse.data.breed.join(',');
   
       // Verifica el valor de user_id
-      console.log('User ID:', user_id); 
-  
+     
       formData.append('profile_image1', profileImage1);
       formData.append('profile_image2', profileImage2);
       formData.append('nombre', nombre);
@@ -94,9 +95,18 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
         },
       });
   
-      console.log('Perro registrado:', response.data);
       handleClose(); 
       resetForm();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: 'Tu perrito se ha registrado correctamente.',
+        confirmButtonText: 'Aceptar'
+    }).then(() => {
+      window.location.reload(); // Recargar la página después de la alerta
+    });
+
     } catch (error) {
       // Lógica de reintento si el token expira
       if (error.response && error.response.status === 401 && error.response.data.code === 'token_not_valid') {
@@ -117,9 +127,18 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
             },
           });
   
-          console.log('Perro registrado:', retryResponse.data);
+          
           handleClose();
           resetForm();
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: 'Tu perrito se ha registrado correctamente.',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+          window.location.reload(); // Recargar la página después de la alerta
+        });
         } catch (refreshError) {
           console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
           alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');
@@ -138,7 +157,7 @@ return (
       <Modal.Header closeButton>
         <Modal.Title>Registro de Perros</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ maxHeight: '1400px', overflowY: 'auto' }}> {/* Agregar estilos aquí */}
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Sube la imagen para la IA</Form.Label>
@@ -461,7 +480,7 @@ return (
               </>
             )}
             <Button variant="primary" type="submit">
-            Registrar Perro
+            Registrar un perro
             </Button>
           </Form>
         </Modal.Body>

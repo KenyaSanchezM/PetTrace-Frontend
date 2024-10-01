@@ -8,8 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './PerfilRefugio.css';
 import TimePicker from 'react-time-picker'; 
-
-
+import { Toast } from 'react-bootstrap';
 
 const PerfilUsuarioRefugio = () => {
   const [userData, setUserData] = useState(null);
@@ -40,7 +39,8 @@ const PerfilUsuarioRefugio = () => {
     hora_evento:'',
   });
   
-
+  const [perros, setPerros] = useState([]);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -90,7 +90,15 @@ const PerfilUsuarioRefugio = () => {
         ...prevData,
         predictions: prevData.predictions.filter((perro) => perro.id !== id)
       }));
-      alert('Publicación eliminada con éxito.');
+
+      // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
+
     } catch (error) {
       console.error('Error al eliminar la publicación:', error);
       alert('Hubo un problema al eliminar la publicación.');
@@ -168,7 +176,14 @@ const PerfilUsuarioRefugio = () => {
         )
       }));
       setShowEditModal(false);
-      alert('Publicación actualizada con éxito.');
+      // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
+
     } catch (error) {
       if (error.response && error.response.data) {
         console.error('Error al actualizar la publicación:', error.response.data);
@@ -225,6 +240,7 @@ const PerfilUsuarioRefugio = () => {
 
 const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
   return (
+      
       <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
         <div className="card h-100" style={{ width: '18rem' }}>
           <div className="image-container" style={{ height: '200px', overflow: 'hidden' }}>
@@ -287,8 +303,6 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora, fo
 const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcion, telefono, instagram, facebook, cuenta, ciudad, estado }) => {
   const [activeButton, setActiveButton] = useState(''); // Maneja el botón activo
   const defaultImage = "/images/eventos.jpg"; // Imagen predeterminada
-  
-
   return (
       <div>
           <section className='Head'>
@@ -324,13 +338,29 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                               <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
                               <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
                               <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
-                              
+                              <div>
+                                <Button variant="primary" onClick={handleShowRegistro}>
+                                  Registrar un perro
+                                </Button>
+                              </div>  
                           </div>
                       </div>
                   </div>
                   
               </div>
           </section>
+
+          {/* Aquí se coloca el Toast */}
+            <Toast 
+              onClose={() => setShowToast(false)} 
+              show={showToast} 
+              delay={3000} 
+              autohide 
+              className="bg-success text-white"
+              style={{ position: 'fixed', bottom: '20px', right: '20px' }}
+            >
+              <Toast.Body>¡Publicación actualizada/eliminada con éxito!</Toast.Body>
+            </Toast>
           <div className='AdditionalSection'>
               <div className="container px-5 mt-5">
               <div className="row justify-content-center">
@@ -490,12 +520,25 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
               </div>
             </Form.Group>
             <Form.Group controlId="formTemperamento">
-              <Form.Label>Temperamento</Form.Label>
+            <Form.Label>Temperamento</Form.Label>
               <Form.Control
-                type="text"
-                value={editData.temperamento || ''}
-                onChange={(e) => setEditData({ ...editData, temperamento: e.target.value })}
-              />
+                    as="select"
+                    name="temperamento"
+                    value={editData.temperamento || ''}
+                    onChange={(e) => setEditData({ ...editData, temperamento: e.target.value })}
+                  >
+                    <option value="">Selecciona un temperamento</option>
+                    <option value="juguetón">Juguetón</option>
+                    <option value="tranquilo">Tranquilo</option>
+                    <option value="activo">Activo</option>
+                    <option value="noble">Noble</option>
+                    <option value="ansioso">Ansioso</option>
+                    <option value="miedoso">Miedoso</option>
+                    <option value="apegado">Apegado</option>
+                    <option value="hiperactivo">Hiperactivo</option>
+                    <option value="agradable">Agradable</option>
+                    <option value="desapegado">Desapegado</option>
+                  </Form.Control>
             </Form.Group>
             <Form.Group controlId="formVacunas">
               <Form.Label>Vacunas</Form.Label>

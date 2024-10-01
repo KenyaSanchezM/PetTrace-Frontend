@@ -49,7 +49,6 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
                 Refugios
               </a>
               <ul className="dropdown-menu" aria-labelledby="refugiosDropdown">
-                <li><a className="dropdown-item" href="/refugio1">Match de perritos</a></li>
                 <li><a className="dropdown-item" href="/refugios">Conocer refugios</a></li>
                 <li><a className="dropdown-item" href="/eventos">Eventos con causa</a></li>
               </ul>

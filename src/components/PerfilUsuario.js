@@ -4,6 +4,7 @@ import axios from 'axios';
 import RegistroPerros from './RegistroPerros';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNavigate
+import { Toast } from 'react-bootstrap';
 
 const PerfilUsuario = () => {
   const [userData, setUserData] = useState(null);
@@ -20,6 +21,7 @@ const PerfilUsuario = () => {
     breeds: []  // Añadido para razas
   });
   const navigate = useNavigate();  // Usa useNavigate
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     
@@ -59,7 +61,15 @@ const PerfilUsuario = () => {
         ...prevData,
         predictions: prevData.predictions.filter((perro) => perro.id !== id)
       }));
-      alert('Publicación eliminada con éxito.');
+      // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
+
+
     } catch (error) {
       console.error('Error al eliminar la publicación:', error);
       alert('Hubo un problema al eliminar la publicación.');
@@ -113,7 +123,13 @@ const PerfilUsuario = () => {
         )
       }));
       setShowEditModal(false);
-      alert('Publicación actualizada con éxito.');
+      // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
     } catch (error) {
       if (error.response && error.response.data) {
         console.error('Error al actualizar la publicación:', error.response.data);
@@ -159,12 +175,13 @@ const PerfilUsuario = () => {
 
 return (
   <Container>
+    
     <Row className="my-4">
       <Col>
         {userData ? (
           <>
             <Container className="mt-4">
-
+              
 
               <Card.Body>
                 <Row className="cont1 align-items-center mb-4">
@@ -181,16 +198,26 @@ return (
                     <h2>{userData.user.nombre}</h2>
                     <p>Email: {userData.user.email}<br />Teléfono: {userData.user.telefono}</p>
                     <Button className='btn-registrar-perro' variant="warning" onClick={handleShowRegistro}>
-                      Registrar Perro
+                      Registrar un perro
                     </Button>
                   </Col>
                 </Row>
               </Card.Body>
-
+              {/* Aquí se coloca el Toast */}
+                <Toast 
+                  onClose={() => setShowToast(false)} 
+                  show={showToast} 
+                  delay={3000} 
+                  autohide 
+                  className="bg-success text-white"
+                  style={{ position: 'fixed', bottom: '20px', right: '20px' }}
+                >
+                  <Toast.Body>¡Publicación actualizada/eliminada con éxito!</Toast.Body>
+                </Toast>
               <div className='cont2'> 
                 <Row>
                   <Col>
-                    <h3>Perros Registrados</h3>
+                    <h3>Perros registrados</h3>
                     <hr className="mb-4" />
                     {userData.predictions.length > 0 ? (
                       <Row className='tarjetas'>

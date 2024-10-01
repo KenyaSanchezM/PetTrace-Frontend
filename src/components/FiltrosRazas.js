@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './FiltrarRazas.css'; // Asegúrate de importar tu archivo CSS
+
 
 const FiltrosRazas = ({ onFilterSubmit }) => {
     const [selectedBreeds, setSelectedBreeds] = useState([]);
@@ -9,6 +11,8 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
     const [selectedStatus, setSelectedStatus] = useState('');
     
     const [showFilters, setShowFilters] = useState(false);
+    const [showBreeds, setShowBreeds] = useState(false);
+    const [showColors, setShowColors] = useState(false);
 
     const availableBreeds = ['Afgano', 'Akita', 'Alaskan Malamute',  'Basenji', 'Basset Hound',
         'Beagle', 'Bearded Collie', 'Bichon Frise', 'Border Collie', 'Border Terrier',
@@ -68,17 +72,19 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
     };
     
     return (
-        <div>
-            <button onClick={() => setShowFilters(!showFilters)}>
-                {showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'}
+        <div className="filtros-container">
+            <button className="toggle-filters" onClick={() => setShowFilters(!showFilters)}>
+                {showFilters ? 'Ocultar filtros' : 'Mostrar filtros'}
             </button>
 
             {showFilters && (
                 <div style={{ marginTop: '10px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                    <h4>Filtrar por raza</h4>
-                    {availableBreeds.map(breed => (
-                        <div key={breed}>
-                            <label>
+                    <div className="filter-section">
+                        <h4 onClick={() => setShowBreeds(!showBreeds)} style={{ cursor: 'pointer' }}>
+                            Filtrar por raza {showBreeds ? '▲' : '▼'}
+                        </h4>
+                        {showBreeds && availableBreeds.map(breed => (
+                            <label key={breed}>
                                 <input
                                     type="checkbox"
                                     value={breed}
@@ -86,13 +92,15 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
                                 />
                                 {breed}
                             </label>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
 
-                    <h4>Filtrar por color</h4>
-                    {availableColors.map(color => (
-                        <div key={color}>
-                            <label>
+                    <div className="filter-section">
+                        <h4 onClick={() => setShowColors(!showColors)} style={{ cursor: 'pointer' }}>
+                            Filtrar por color {showColors ? '▲' : '▼'}
+                        </h4>
+                        {showColors && availableColors.map(color => (
+                            <label key={color}>
                                 <input
                                     type="checkbox"
                                     value={color}
@@ -100,35 +108,42 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
                                 />
                                 {color}
                             </label>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
 
-                    <h4>¿Es mío o no?</h4>
-                    <select onChange={(e) => setIsMine(e.target.value === '1' ? true : e.target.value === '0' ? false : null)}>
-                        <option value="">Ambos</option>    {/* Se envía null si el usuario no elige ninguna opción */}
-                        <option value={1}>Mío</option>     {/* Cambiar a '1' para representar true */}
-                        <option value={0}>No mío</option>  {/* Cambiar a '0' para representar false */}
-                    </select>
+                    <div className="filter-section">
+                        <h4>¿Es mío o no?</h4>
+                        <select onChange={(e) => setIsMine(e.target.value === '1' ? true : e.target.value === '0' ? false : null)}>
+                            <option value="">Ambos</option>
+                            <option value={1}>Mío</option>
+                            <option value={0}>No mío</option>
+                        </select>
+                    </div>
 
-                    <h4>Filtrar por sexo</h4>
-                    <select onChange={(e) => setSelectedSex(e.target.value)}>
-                        <option value="">Ambos</option>
-                        <option value="Macho">Macho</option>
-                        <option value="Hembra">Hembra</option>
-                    </select>
+                    <div className="filter-section">
+                        <h4>Filtrar por sexo</h4>
+                        <select onChange={(e) => setSelectedSex(e.target.value)}>
+                            <option value="">Ambos</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Hembra">Hembra</option>
+                        </select>
+                    </div>
 
-                    <h4>Filtrar por fecha</h4>
-                    <input type="date" onChange={(e) => setSelectedDate(e.target.value)} />
+                    <div className="filter-section">
+                        <h4>Filtrar por fecha</h4>
+                        <input type="date" onChange={(e) => setSelectedDate(e.target.value)} />
+                    </div>
 
-                    <h4>Estatus</h4>
-                    <select onChange={(e) => setSelectedStatus(e.target.value)}>
-                        <option value="">Selecciona</option>
-                        <option value="perdido">Perdido</option>
-                        <option value="encontrado">Encontrado</option>
-                    </select>
+                    <div className="filter-section">
+                        <h4>Estatus</h4>
+                        <select onChange={(e) => setSelectedStatus(e.target.value)}>
+                            <option value="">Selecciona</option>
+                            <option value="perdido">Perdido</option>
+                            <option value="encontrado">Encontrado</option>
+                        </select>
+                    </div>
 
-
-                    <button onClick={handleSearchClick}>Buscar</button>
+                    <button className="search-button" onClick={handleSearchClick}>Buscar</button>
                 </div>
             )}
         </div>

@@ -1,27 +1,66 @@
-.filtros-razas-container {
-    position: sticky; /* Se queda fija mientras haces scroll */
-    top: 0; /* Se mantiene en la parte superior */
-    background-color: white;
-    z-index: 100; /* Para que esté por encima del contenido */
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.filtros-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Alinear a la derecha */
+    margin: 20px;
 }
 
-.dropdown-select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.btn-search {
-    background-color: #28a745;
+.toggle-filters {
+    background-color: #ffbf00;
     color: white;
-    padding: 10px 15px;
     border: none;
-    cursor: pointer;
+    padding: 10px 20px;
     border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.btn-search:hover {
-    background-color: #218838;
+.toggle-filters:hover {
+    background-color: #bd951d;
+}
+
+.filters {
+    width: 250px; /* Ajustar el ancho según sea necesario */
+    padding: 10px;
+    background-color: #f9f9f9; /* Fondo claro */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 10px;
+    display: none; /* Ocultar por defecto */
+}
+
+.filter-section {
+    margin-bottom: 5px; /* Reducir el espacio entre secciones */
+}
+
+h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    
+}
+
+label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px; /* Reducir el espacio entre etiquetas */
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.search-button {
+    background-color: #ffbf00;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-self: center;
+}
+
+.search-button:hover {
+    background-color: #bd951d;
 }

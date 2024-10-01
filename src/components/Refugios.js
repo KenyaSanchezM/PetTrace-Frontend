@@ -91,7 +91,6 @@ const Refugios = () => {
       <header className="masthead">
         <div className="container">
           <div className="masthead-heading text-uppercase">Refugios</div>
-          <a className="btn btn-warning btn-xl text-light" href="#services">Haz Match</a>
         </div>
       </header>
 
