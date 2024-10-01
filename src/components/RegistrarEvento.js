@@ -3,7 +3,6 @@ import { Modal, Button, Form, Container } from 'react-bootstrap';
 import './RegistrarEvento.css';
 import TimePicker from 'react-time-picker';
 import axios from 'axios';
-import 'react-time-picker/dist/TimePicker.css';
 
 const RegistrarEvento = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({

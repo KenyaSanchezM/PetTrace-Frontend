@@ -12,6 +12,8 @@ const PresentRef = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeButton, setActiveButton] = useState('perritos');
+    const [eventos, setEventos] = useState([]);
+    const defaultImage = "/images/eventos.jpg"; // Imagen predeterminada
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,6 +22,7 @@ const PresentRef = () => {
                 const response = await axios.get(`http://localhost:8000/api/ir-perfil-refugio/${id}/`);
                 console.log("Datos del refugio:", response.data); // Verifica la respuesta del backend
                 setRefugioData(response.data);
+                setEventos(response.data.eventos);
             } catch (err) {
                 setError(err.response?.data?.message || 'Error al obtener datos');
             } finally {
@@ -61,7 +64,7 @@ const PresentRef = () => {
         );
     };
 
-    const TarjetaEventos = ({ imagen, nombre, descripcion, fecha, ubicacion }) => {
+    const TarjetaEventos = ({ imagen, nombre, descripcion, fecha, ubicacion,hora }) => {
         return (
             <div className="row">
                 <div className="card mb-3" style={{ marginTop: '10px' }}>
@@ -71,14 +74,12 @@ const PresentRef = () => {
                         </div>
                         <div className="col-md-8">
                             <div className="card-body">
-                                <h5 className="card-title">{nombre}</h5>
-                                <p className="card-text">
-                                    {descripcion}
-                                    <br />
-                                    <b>Ubicación: </b>{ubicacion}
-                                    <br />
-                                    <b>Fecha del evento: </b>{fecha}
-                                </p>
+                            <h5 className="card-title">{nombre} </h5>
+                            <p className="card-text">{descripcion}<br/>
+                                <b>Ubicación: </b>{ubicacion}<br/>
+                                <b>Hora: </b>{hora}<br/>
+                                <b>Fecha del evento: </b>{fecha}   
+                            </p>
                             </div>
                         </div>
                     </div>
@@ -157,20 +158,15 @@ const PresentRef = () => {
                     <hr />
                     {activeButton === 'eventos' ? (
                       <div className='row'>
-                          <TarjetaEventos
-                              imagen="https://www.diariodexalapa.com.mx/local/9mabtw-proyecto-permanente-de-esterilizacion-de-mascotas/ALTERNATES/LANDSCAPE_960/Proyecto-permanente-de-esterilizaci%C3%B3n-de-mascotas"
-                              nombre="Campaña de esterilización"
-                              descripcion="Trae a tu perro y asegúrate de que reciban atención médica de calidad de la mano de profesionales. Además, estaremos brindando pláticas informativas sobre el cuidado responsable de los animales y cómo podemos contribuir a un mejor futuro para ellos."
-                              fecha="24/08/2022"
-                              ubicacion="Calle Luna 123, Colonia Esperanza"
-                          />
-                          <TarjetaEventos
-                              imagen="https://static.mercadonegro.pe/wp-content/uploads/2022/12/01162745/WXEY6TVZ2RD2RKAZJB7U7JGXFU.jpg"
-                              nombre="Evento de Adopción"
-                              descripcion="¡Ven a nuestro evento de adopción y encuentra a tu nuevo mejor amigo! Tendremos muchos perritos buscando un hogar lleno de amor. Conoce a nuestras adorables mascotas, cada una con una historia única y lista para ser parte de tu familia."
-                              fecha="24/08/2022"
-                              ubicacion="Avenida Solidaridad 456"
-                          />
+                          {eventos.map((evento) => (
+                            <TarjetaEventos
+                              imagen={evento.imagen_evento ? `http://localhost:8000${evento.imagen_evento}` : defaultImage}
+                              nombre={evento.nombre_evento}
+                              descripcion={evento.descripcion_evento}
+                              fecha={evento.fecha_evento}
+                              ubicacion={evento.lugar_evento}
+                             />
+                          ))}
                       </div>
                   ) : (
                       <div className='row'>

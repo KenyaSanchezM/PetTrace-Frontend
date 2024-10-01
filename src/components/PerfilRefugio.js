@@ -6,7 +6,9 @@ import RegistroPerrosRefugio from './RegistroPerrosRefugios';
 import RegistrarEvento from './RegistrarEvento';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './PerfilRefugio.css'
+import './PerfilRefugio.css';
+import TimePicker from 'react-time-picker'; 
+
 
 
 const PerfilUsuarioRefugio = () => {
@@ -16,6 +18,7 @@ const PerfilUsuarioRefugio = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showRegistrarEvento, setShowRegistrarEvento] =useState(false);
   const [eventos, setEventos] = useState([]);
+  const [showEditEventoModal, setShowEditEventoModal] = useState(false);
   const [editData, setEditData] = useState({
     nombre: '',
     edad: '',
@@ -25,6 +28,16 @@ const PerfilUsuarioRefugio = () => {
     caracteristicas: '',
     esterilizado: '',
     tamanio: '',
+  });
+
+  const [editEventoData, setEditEventoData] = useState({
+    nombre_evento: '',
+    descripcion_evento: '',
+    lugar_evento:'',
+    //motivo:'',
+    anfitrion_evento:'',
+    fecha_evento:'',
+    hora_evento:'',
   });
   
 
@@ -106,6 +119,8 @@ const PerfilUsuarioRefugio = () => {
     }
   };
 
+  //Editar perro
+
   const handleEdit = (perro) => {
     setEditData({
       ...perro,
@@ -113,6 +128,12 @@ const PerfilUsuarioRefugio = () => {
     });
     setShowEditModal(true);
   };
+
+  const handleEditEvento = (evento) => {
+    setEditEventoData(evento);
+    setShowEditEventoModal(true);
+  };
+  
 
   const handleUpdate = async () => {
     if (!editData.id) {
@@ -132,7 +153,7 @@ const PerfilUsuarioRefugio = () => {
     delete dataToUpdate.image;
     delete dataToUpdate.profile_image1;
     delete dataToUpdate.profile_image2;
-    delete dataToUpdate.sexo;
+    delete dataToUpdate.sexo; 
   
     try {
       const response = await axios.put(`http://localhost:8000/api/dog-predictions-shelter/${editData.id}/update/`, dataToUpdate, {
@@ -172,6 +193,36 @@ const PerfilUsuarioRefugio = () => {
     });
   };
 
+  // Función para actualizar evento
+  const handleUpdateEvento = async () => {
+    if (!editEventoData.id) {
+      alert('ID de evento no válido.');
+      return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    
+    try {
+      const response = await axios.put(`http://localhost:8000/api/eventos/${editEventoData.id}/update/`, editEventoData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      setUserData((prevData) => ({
+        ...prevData,
+        eventos: prevData.eventos.map((evento) =>
+          evento.id === editEventoData.id ? response.data : evento
+        )
+      }));
+
+      setShowEditEventoModal(false);
+      alert('Evento actualizado con éxito.');
+    } catch (error) {
+      // Manejo de errores
+    }
+  };
+
 const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
   return (
       <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -201,9 +252,10 @@ const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
 
 };
 
+
+
 const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora, footer}) => {
   return(
-      //Poner la fecha en la que se publicó o cuanto tiempo pasó desde su publicación
       <div className="row">
           <div className="card mb-3" style={{marginTop: '10px'}}>
               <div className="row g-0">
@@ -308,11 +360,14 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                               descripcion={evento.descripcion_evento}
                               fecha={evento.fecha_evento}
                               ubicacion={evento.lugar_evento}
-                              hora={evento.hora_evento}
+                              
                               footer={
                                 <div className="d-flex justify-content-end" style={{ backgroundColor: 'transparent' }}>
                                   <Button variant="danger" onClick={() => handleDeleteEvent(evento.id)} className="me-2">
                                     <i className="fa-solid fa-trash"></i>
+                                  </Button>
+                                  <Button variant="warning" /*onClick={() => handleEditEvento(evento)}*/>
+                                    <i className="fa-solid fa-pencil-alt"></i>
                                   </Button>
                                 </div>
                               }
@@ -481,6 +536,63 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                 </Button>
               </Form>
             </Modal.Body>
+          </Modal>
+
+          <Modal show={showEditEventoModal} onHide={() => setShowEditEventoModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Editar Evento</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="nombre_evento">
+                  <Form.Label>Nombre</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editEventoData.nombre_evento || ''}
+                    onChange={(e) => setEditEventoData({ ...editEventoData, nombre_evento: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="descripcion_evento">
+                  <Form.Label>Descripción</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editEventoData.descripcion_evento || ''}
+                    onChange={(e) => setEditEventoData({ ...editEventoData, descripcion_evento: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="lugar_evento">
+                  <Form.Label>Ubicación</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editEventoData.lugar_evento || ''}
+                    onChange={(e) => setEditEventoData({ ...editEventoData, lugar_evento: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="anfitrion">
+                  <Form.Label>Anfitrión</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editEventoData.anfitrion_evento || ''}
+                    onChange={(e) => setEditEventoData({ ...editEventoData,
+                      anfitrion_evento: e.target.value })}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="fecha_evento" className="mb-3">
+                      <Form.Label>Fecha</Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="fecha_evento"
+                        value={editEventoData.fecha_evento || ''}
+                        onChange={(e) => setEditEventoData({ ...editEventoData,
+                          fecha_evento: e.target.value })}
+                      />
+                    </Form.Group>
+                    
+                    <Button variant="primary" onClick={handleUpdateEvento}>
+                      Actualizar
+                    </Button>
+                  </Form>
+                </Modal.Body>
           </Modal>
         </Container>
       );
