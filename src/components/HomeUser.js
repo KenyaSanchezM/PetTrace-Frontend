@@ -173,10 +173,12 @@ const HomeUser = () => {
                                         getAbsoluteImageUrl(result.profile_image1),
                                         getAbsoluteImageUrl(result.profile_image2)
                                     ]}
-                                    texts={[result.caracteristicas, result.nombre, result.form_type, result.esatdo, result.ciudad, result.direccion, result.breeds]}
+                                    texts={[result.caracteristicas, result.nombre, result.form_type, result.estado, result.ciudad, result.direccion, result.breeds,result.id,result.sexo]}
                                     userName={result.user ? result.user.nombre : 'Nombre no disponible'}
                                     userImage={result.user ? getAbsoluteImageUrl(result.user.profile_image) : 'default-image-url'}
                                     dogId={result.id}
+                                    userType={userType}
+                                    userId={result.user_id}
                                 />
                             ))
                         ) : (

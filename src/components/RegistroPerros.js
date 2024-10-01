@@ -509,13 +509,13 @@ return (
                     type="date"
                     value={fecha}
                     onChange={(e) => setFecha(e.target.value)}
-                    min="2010-01-01"  // Fecha mínima es 1 de enero de 2010
+                    min="2018-01-01"  // Fecha mínima es 1 de enero de 2010
                     max={new Date().toISOString().split("T")[0]}  // Fecha máxima es hoy
                   />
                 </Form.Group>
                 
                 <Form.Group controlId="estadoPerdido" className="mb-3">
-                  <Form.Label>Estado dónde se encontró</Form.Label>
+                  <Form.Label>Estado donde se perdió</Form.Label>
                   <Form.Control
                     as="select"
                     placeholder="Selecciona una opcion"

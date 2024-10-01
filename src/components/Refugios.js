@@ -58,14 +58,14 @@ const Refugios = () => {
   
 
 
-  const Tarjeta = ({ image1, nombre, descripcion, estado, ciudad, id }) => {
+  const Tarjeta = ({ profile_image, nombre, descripcion, estado, ciudad, id }) => {
       const navigate = useNavigate();
       const defaultImage = "/images/eventos.jpg";
 
       return (
           <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
               <div className="card tarjeta" onClick={() => navigate(`/api/ir-perfil-refugio/${id}`)}>
-                  <img src={image1 ? `http://localhost:8000${image1}` : defaultImage} alt={nombre} className="card-img-top" />
+                  <img src={profile_image ? `http://localhost:8000${profile_image}` : defaultImage} alt={nombre} className="card-img-top" />
                   <div className="card-body">
                       <h5 className="card-title">{nombre}</h5>
                       <p className="card-text">{descripcion}</p>
