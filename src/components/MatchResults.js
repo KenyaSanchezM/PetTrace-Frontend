@@ -9,7 +9,7 @@ const MatchResults = () => {
   const defaultImage = "/images/eventos.jpg";
 
   // Tarjeta de cada perro
-  const TarjetaPerrosMatch = ({ imagen, nombre, edad, tamanio, descripcion, breed }) => {
+  const TarjetaPerrosMatch = ({ imagen, nombre, edad, tamanio, descripcion, breed, temperamento }) => {
     return (
       <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center">
         <div className="card h-100 shadow border-0" style={{ width: '60rem' }}>
@@ -29,6 +29,8 @@ const MatchResults = () => {
               <span><FaRuler /> <b>Tamaño:</b> {tamanio}</span>
               <br />
               <span><FaPalette /> <b>Razas:</b> {breed}</span>
+              <br />
+              <span> <b>Temperamento:</b> {temperamento}</span>
               <br />
               <span><b>Color:</b> {descripcion}</span>
             </p>
@@ -57,6 +59,7 @@ const MatchResults = () => {
                 tamanio={dog.tamanio}
                 breed={breed}
                 descripcion={color}
+                temperamento={dog.temperamento}
               />
             );
           })

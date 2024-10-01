@@ -499,10 +499,17 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
             <Form.Group controlId="formEdad">
               <Form.Label>Edad</Form.Label>
               <Form.Control
-                type="text"
-                value={editData.edad || ''}
-                onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
-              />
+                    as="select"
+                    name="Edad"
+                    value={editData.edad || ''}
+                    onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
+                  >
+                    <option value="">Selecciona un tamaño</option>
+                    <option value="cachorro">Cachorro</option>
+                    <option value="joven">Joven</option>
+                    <option value="adulto">Adulto</option>
+                    <option value="anciano">Anciano</option>
+                  </Form.Control>
             </Form.Group>
             <Form.Group controlId="colorEncontrado" className="mb-3">
               <Form.Label>Colores</Form.Label>

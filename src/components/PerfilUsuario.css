@@ -40,17 +40,23 @@
     }
     }
 
-.btn-registrar-perro{
-    margin-top: 30px;
-    background-color: #ff8700;
+.mi-boton-personalizado2{
+    background-color: #fff;
+    border-radius: 4px;
+    border-color: rgb(138, 133, 133);
+    width: 500px;
+    color: rgb(112, 111, 111);
+    margin-right: 48px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mi-boton-personalizado2:hover {
+    background-color: transparent;
+    color: rgb(112, 111, 111);
     border-color: #ff8700;
 }
 
-.btn-registrar-perro:hover {
-    border-color: #c55b03;
-    background-color: #c55b03;
-    color: #fff;
-}
+
 .cont1{
     margin-left: 70px;
 }

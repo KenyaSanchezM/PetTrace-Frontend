@@ -18,7 +18,8 @@ const HomeUser = () => {
         is_mine: null,
         sex: '',
         date: '',
-        status: ''
+        status: '', 
+        estado: ''
     });
 
     const userType = localStorage.getItem('user_type');
@@ -84,6 +85,8 @@ const HomeUser = () => {
                     sex: filters.sex,
                     date: filters.date,
                     status: filters.status,
+                    estado: filters.estado,
+                    
                 },
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -145,7 +148,7 @@ const HomeUser = () => {
                                         getAbsoluteImageUrl(dog.profile_image1),
                                         getAbsoluteImageUrl(dog.profile_image2)
                                     ]}
-                                    texts={[dog.caracteristicas, dog.nombre, dog.form_type, dog.ubicacion, dog.breeds,dog.id,dog.sexo]}
+                                    texts={[dog.caracteristicas, dog.nombre, dog.form_type, dog.estado,dog.ciudad,dog.direccion, dog.breeds,dog.id,dog.sexo]}
                                     userName={dog.user ? dog.user.nombre : 'Nombre no disponible'}
                                     userImage={dog.user ? getAbsoluteImageUrl(dog.user.profile_image) : 'default-image-url'}
                                     dogId={dog.id}
@@ -170,7 +173,7 @@ const HomeUser = () => {
                                         getAbsoluteImageUrl(result.profile_image1),
                                         getAbsoluteImageUrl(result.profile_image2)
                                     ]}
-                                    texts={[result.caracteristicas, result.nombre, result.form_type, result.ubicacion, result.breeds]}
+                                    texts={[result.caracteristicas, result.nombre, result.form_type, result.esatdo, result.ciudad, result.direccion, result.breeds]}
                                     userName={result.user ? result.user.nombre : 'Nombre no disponible'}
                                     userImage={result.user ? getAbsoluteImageUrl(result.user.profile_image) : 'default-image-url'}
                                     dogId={result.id}

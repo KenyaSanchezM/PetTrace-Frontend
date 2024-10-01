@@ -31,12 +31,12 @@
 }
 
 .display-4 {
-    color: #333333;
+    color: white;
     font-size: 42px;
 }
 
 .font-weight-light{
-    color: #333333;
+    color: white;
 }
 
 .btn-match {
@@ -56,7 +56,7 @@
 }
 
 .btn-elect{
-    color: #2d3340;
+    color: white;
     font-size: 20px;
     width: 400px;
     border-color: transparent;
@@ -76,7 +76,7 @@
 }
 
 .info{
-    border-color: #2d3340;
+    border-color: white;
 }
 
 .card:hover{

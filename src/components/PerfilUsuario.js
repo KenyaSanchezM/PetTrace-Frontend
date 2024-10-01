@@ -5,6 +5,8 @@ import RegistroPerros from './RegistroPerros';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNavigate
 import { Toast } from 'react-bootstrap';
+import './PerfilUsuario'
+
 
 const PerfilUsuario = () => {
   const [userData, setUserData] = useState(null);
@@ -14,7 +16,9 @@ const PerfilUsuario = () => {
     nombre: '',
     edad: '',
     color: [],
-    ubicacion: '',
+    estado: '',
+    ciudad: '',
+    direccion: '',
     tieneCollar: '',
     caracteristicas: '',
     fecha: '',
@@ -40,6 +44,14 @@ const PerfilUsuario = () => {
     };
     fetchUserData();
   }, []);
+
+  const estados = [
+    'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 
+    'Coahuila', 'Colima', 'Chiapas', 'Chihuahua', 'Durango', 'Distrito Federal', 
+    'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán', 
+    'Morelos', 'Nayarit', 'Oaxaca', 'Quintana Roo', 'San Luis Potosí', 
+    'Sonora', 'Yucatán'
+  ];
 
   const handleShowRegistro = () => setShowRegistro(true);
   const handleCloseRegistro = () => setShowRegistro(false);
@@ -197,9 +209,23 @@ return (
                   <Col xs={12} md={8}>
                     <h2>{userData.user.nombre}</h2>
                     <p>Email: {userData.user.email}<br />Teléfono: {userData.user.telefono}</p>
-                    <Button className='btn-registrar-perro' variant="warning" onClick={handleShowRegistro}>
+                    <Button
+                      onClick={handleShowRegistro}
+                      style={{
+
+                        backgroundColor:' #fff',
+                        borderRadius: '4px',
+                        borderColor: '#ff8700',
+                        width: '300px',
+                        color: '#ff8700',
+                        marginRight: '48px',
+                        boxShadow:' 0 4px 8px rgba(0, 0, 0, 0.2)',
+                       
+                      }}
+                    >
                       Registrar un perro
                     </Button>
+
                   </Col>
                 </Row>
               </Card.Body>
@@ -230,10 +256,12 @@ return (
                               <div className="card-body">
                                 <p className='p-name'>{perro.nombre}</p>
                                 <p className='text'>
-                                  <strong>Estado: </strong>{perro.form_type === 'perdido' ? 'Perdido' : 'Encontrado'}<br />
+                                  <strong>Estatus: </strong>{perro.form_type === 'perdido' ? 'Perdido' : 'Encontrado'}<br />
                                   <strong>Edad:</strong> {perro.edad}<br />
                                   <strong>Color:</strong> {perro.color}<br />
-                                  <strong>Ubicación:</strong> {perro.ubicacion}<br />
+                                  <strong>Estado:</strong> {perro.estado}<br />
+                                  <strong>Ciudad:</strong> {perro.ciudad}<br />
+                                  <strong>Direccion:</strong> {perro.direccion}<br />
                                   <strong>¿Tiene collar?:</strong> {perro.tieneCollar ? 'Sí' : 'No'}<br />
                                   <strong>Características:</strong> {perro.caracteristicas}<br />
                                   <strong>Fecha:</strong> {perro.fecha}
@@ -286,10 +314,17 @@ return (
                   <Form.Group controlId="formEdad">
                     <Form.Label>Edad</Form.Label>
                     <Form.Control
-                      type="text"
-                      value={editData.edad || ''}
-                      onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
-                    />
+                    as="select"
+                    name="Edad"
+                    value={editData.edad || ''}
+                    onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
+                  >
+                    <option value="">Selecciona un tamaño</option>
+                    <option value="cachorro">Cachorro</option>
+                    <option value="joven">Joven</option>
+                    <option value="adulto">Adulto</option>
+                    <option value="anciano">Anciano</option>
+                  </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="colorEncontrado" className="mb-3">
                     <Form.Label>Colores</Form.Label>
@@ -306,12 +341,35 @@ return (
                       ))}
                     </div>
                   </Form.Group>
-                  <Form.Group controlId="formUbicacion">
-                    <Form.Label>Ubicación</Form.Label>
+                  <Form.Group controlId="formEstado">
+                    <Form.Label>Estado</Form.Label>
+                    <Form.Select
+                      value={editData.estado || ''} // Asegura que haya un valor seleccionado o vacío
+                      onChange={(e) => setEditData({ ...editData, estado: e.target.value })}
+                    >
+                      <option value="">Seleccione un estado</option>
+                      {estados.map((estado, index) => (
+                        <option key={index} value={estado}>
+                          {estado}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group controlId="formCiudad">
+                    <Form.Label>Ciudad</Form.Label>
                     <Form.Control
                       type="text"
-                      value={editData.ubicacion || ''}
-                      onChange={(e) => setEditData({ ...editData, ubicacion: e.target.value })}
+                      value={editData.ciudad || ''}
+                      onChange={(e) => setEditData({ ...editData, ciudad: e.target.value })}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formDireccion">
+                    <Form.Label>Direccion</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={editData.direccion || ''}
+                      onChange={(e) => setEditData({ ...editData, direccion: e.target.value })}
                     />
                   </Form.Group>
                   <Form.Group controlId="formTieneCollar">
@@ -437,7 +495,7 @@ return (
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             width: 18rem; 
-            height: 36rem;
+            height: 40rem;
         }
 
         .card-body {

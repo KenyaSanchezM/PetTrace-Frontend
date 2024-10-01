@@ -17,7 +17,23 @@
     border-color: #c55b03;
 }
 
-.btn-regperr:hover{
-    background-color: #c55b03;
-    border-color: #c55b03;
+.btn-elect{
+    color: #2d3340;
+    font-size: 20px;
+    width: 400px;
+    border-color: transparent;
+    background-color: transparent;
+    margin-top: 20px;
 }
+
+.btn-elect:hover{
+    color: #c55b03;
+}
+.btn-elect.active {
+    color: #c55b03;
+  }
+
+.card-text{
+    text-align: justify;
+}
+

@@ -95,9 +95,9 @@ return (
                         style={{ width: '50px', height: '50px' }}
                     />
                     <span className="username">
-                        <a className="user" href='/perfil-usuario'>
-                            {userName || 'Nombre no disponible'}
-                        </a>
+                    <Link className="user" to={`/ir-perfil-usuario/${userId}`}>
+                        {userName || 'Nombre no disponible'}
+                    </Link>
                     </span>
                 </div>
                 <button className='settings' onClick={toggleMenu}>
