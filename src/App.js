@@ -105,12 +105,11 @@ function App() {
         <Footer />
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
-        <RegistarEvento show={showRegistrarEvento} handleClose={handleCloseRegistrarEvento} />
         <MatchForm show={showMatchForm} handleClose={handleCloseMatchForm} />
 
       </div>
     </Router>
-  );
+  ); 
 }
 
 export default App;
