@@ -1,168 +1,285 @@
-import React, { useState } from 'react';
-import './PerfilRefugio.css'
-import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Button, Card, Container, Row, Col, Modal, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import RegistroPerrosRefugio from './RegistroPerrosRefugios';
 
-const TarjetaPerros = ({imagen, nombre, edad, tamano, descripcion}) => {
-    return(
-        <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <div class="card h-100" style={{width: '18rem'}}>
-                <img src={imagen} class="card-img-top" alt="..."/>
-                <div class="card-body">
-                    <h5 class="card-title">{nombre}</h5>
-                    <p class="card-text">
-                        <b>Edad: </b> {edad}<br/>
-                        <b>Tamaño: </b> {tamano}<br/>
-                        {descripcion}
-                    </p>
-                </div>
-            </div>
-        </div>
-    );
+const PerfilUsuarioRefugio = () => {
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+  const [showRegistro, setShowRegistro] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState({
+    nombre: '',
+    edad: '',
+    color: [],
+    temperamento: '',
+    vacunas: '',
+    caracteristicas: '',
+    esterilizado: '',
+    tamanio: '',
+  });
 
-};
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('access_token');
+      console.log('Token en el frontend:', token);
 
-const TarjetaEventos = ({imagen, nombre, descripcion, fecha}) => {
-    return(
-        //Poner la fecha en la que se publicó o cuanto tiempo pasó desde su publicación
-        <div className="row">
-            <div className="card mb-3" style={{marginTop: '10px'}}>
-                <div className="row g-0">
-                    <div className="col-md-4">
-                    <img src={imagen} className="img-fluid rounded-start" alt="..."/>
-                    </div>
-                    <div className="col-md-8">
-                    <div className="card-body">
-                        <h5 className="card-title">{nombre} </h5>
-                        <p className="card-text">{descripcion}<br/>
-                            <b>Fecha del evento: </b>{fecha}
-                        </p>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+      try {
+        const response = await axios.get('http://localhost:8000/api/perfil-refugio/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-};
+        console.log('User Data:', response.data);
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error.response ? error.response.data : error.message);
+        setError('Hubo un problema al cargar los datos del usuario. Por favor, inténtalo de nuevo.');
+      }
+    };
 
-const HeadSection = ({logo, imagen1, imagen2, imagen3, titulo, descripcion, celular, instagram, facebook, cuenta, ciudad, estado}) => {
-    const [activeButton, setActiveButton] = useState('');
-    return(
-        <div>
-            <section className='Head'>
-                <div className="container px-5">
-                <div className="row gx-5 align-items-center">
-                    <div id="carouselExampleFade" class="carousel slide carousel-fade col-lg-6 order-1">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                            <img src={imagen1} class="d-block w-100" alt="..."/>
-                            </div>
-                            <div class="carousel-item">
-                            <img src={imagen2} class="d-block w-100" alt="..."/>
-                            </div>
-                            <div class="carousel-item">
-                            <img src={imagen3} class="d-block w-100" alt="..."/>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                    <div className="col-lg-6 order-2">
-                    <div className="p-5">
-                        <h2 className="display-4"><img src={logo} className="rounded-circle me-3" alt="Logo" style={{ width: '52px', height: '52px' }} />{titulo}</h2>
-                        <h5 className="font-weight-light">{descripcion}<i className="fas fa-paw" style={{ marginLeft: '10px'}}></i></h5>
-                        <h5 className="font-weight-light"><i class="bi bi-geo-alt" style={{color: '#c55b03'}}></i> {ciudad}, {estado}</h5>
-                        <h5 className="font-weight-light"><i class="bi bi-telephone" style={{color: '#c55b03'}}></i> {celular}</h5>
-                        <h5 className="font-weight-light"><i class="fa-solid fa-piggy-bank" style={{color: '#c55b03'}}></i> {cuenta}</h5>
-                        <a href={facebook}><i class="fa-brands fa-facebook" style={{ marginTop: '20px', color: '#c55b03', fontSize: '1.5rem' }}></i></a>
-                        <a href={instagram}><i class="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft:'20px', color: '#c55b03', fontSize: '1.5rem' }}></i></a>
-                        <button className="btn btn-warning btn-match text-light" href="#services">Match</button>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </section>
-            <div className='AdditionalSection'>
-                <div className="container px-5 mt-5">
-                    <div className="row justify-content-center">
-                        <button className={`btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>Perritos<i class="fa-solid fa-dog" style={{marginLeft: '10px'}}></i></button>
-                        <button className={`btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>Eventos con Causa y Voluntariado</button>
-                    </div>
-                    <hr />
-                    {activeButton === 'eventos' ? (
-                        <div className='row'>
-                            <TarjetaEventos
-                                imagen = "https://www.tiendanimal.es/articulos/wp-content/uploads/2020/09/senderismo-perro-1200x900.jpg"
-                                nombre = "Evento de Adopción"
-                                descripcion= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sagittis libero ac velit pretium, ut sodales neque vulputate. Nulla cursus turpis quam, at lacinia dui ultrices et. Nulla luctus venenatis sem nec placerat. Suspendisse sed mattis diam. Nunc ultrices ex ac pellentesque condimentum. Donec aliquam, ipsum quis tristique feugiat,"
-                                fecha = "24/08/2022"
-                            />
-                            <TarjetaEventos
-                                imagen = "https://www.tiendanimal.es/articulos/wp-content/uploads/2020/09/senderismo-perro-1200x900.jpg"
-                                nombre = "Evento de Adopción"
-                                descripcion= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sagittis libero ac velit pretium, ut sodales neque vulputate. Nulla cursus turpis quam, at lacinia dui ultrices et. Nulla luctus venenatis sem nec placerat. Suspendisse sed mattis diam. Nunc ultrices ex ac pellentesque condimentum. Donec aliquam, ipsum quis tristique feugiat,"
-                                fecha = "24/08/2022"
-                            />
-                        </div>
-                    ) : (
-                        <div className='row'>
-                            <TarjetaPerros
-                                imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwWRH-oXGeRDRQxDcmt1EgAt-FzSg_qAQFBA&s"
-                                nombre="Roxy"
-                                edad="2 años"
-                                tamano = "mediano"
-                                descripcion= "Soy una perrita activa, juguetona y amorosa"
-                            />
-                            <TarjetaPerros
-                                imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwWRH-oXGeRDRQxDcmt1EgAt-FzSg_qAQFBA&s"
-                                nombre="Roxy"
-                                edad="2 años"
-                                tamano = "mediano"
-                                descripcion= "Soy una perrita activa, juguetona y amorosa"
-                            />
-                            <TarjetaPerros
-                                imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwWRH-oXGeRDRQxDcmt1EgAt-FzSg_qAQFBA&s"
-                                nombre="Roxy"
-                                edad="2 años"
-                                tamano = "mediano"
-                                descripcion= "Soy una perrita activa, juguetona y amorosa"
-                            />
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+    fetchUserData();
+  }, []);
 
-    );
-  
+  const handleShowRegistro = () => setShowRegistro(true);
+  const handleCloseRegistro = () => setShowRegistro(false);
+
+  const handleDelete = async (id) => {
+    if (!id) {
+      alert('ID de publicación no válido.');
+      return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    try {
+      await axios.delete(`http://localhost:8000/api/dog-predictions-shelter/${id}/delete/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setUserData((prevData) => ({
+        ...prevData,
+        predictions: prevData.predictions.filter((perro) => perro.id !== id)
+      }));
+      alert('Publicación eliminada con éxito.');
+    } catch (error) {
+      console.error('Error al eliminar la publicación:', error);
+      alert('Hubo un problema al eliminar la publicación.');
+    }
   };
 
-const PresentRef = () => {
-    return(
-        <div>
-            <HeadSection
-                imagen1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz1TGpr1fd7bC7qZer2p4bXnMdYyZxBb_ryA&s"
-                imagen2 = "https://i0.wp.com/labcsa.org/wp-content/uploads/2022/09/10282995.jpg?resize=660%2C440&ssl=1"
-                imagen3 = "https://www.eloccidental.com.mx/incoming/x11dqk-refugio-buenos-chicos-instagram-2.jpeg/alternates/FREE_720/Refugio%20Buenos%20Chicos%20Instagram%20(2).jpeg"
-                titulo= "Buenos chicos"
-                descripcion= "Somos una asociación con 220 perritos rescatados"
-                cuenta = "5579 1002 9337 4193"
-                celular ="3315689487"
-                ciudad = "Guadalajara"
-                estado = "Jal"
-                instagram= "https://www.instagram.com/refugiobuenoschicos/?hl=es"
-                logo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s"
-            />
-        </div>
-    )
-}
-export default PresentRef
+  const handleEdit = (perro) => {
+    setEditData({
+      ...perro,
+      color: Array.isArray(perro.color) ? perro.color : JSON.parse(perro.color),
+    });
+    setShowEditModal(true);
+  };
+
+  const handleUpdate = async () => {
+    if (!editData.id) {
+      alert('ID de publicación no válido.');
+      return;
+    }
+  
+    const token = localStorage.getItem('access_token');
+    
+    const dataToUpdate = { 
+      ...editData,
+      color: JSON.stringify(editData.color),
+    };
+
+    // Eliminar campos no necesarios o solo de lectura
+    delete dataToUpdate.user;
+    delete dataToUpdate.image;
+    delete dataToUpdate.profile_image1;
+    delete dataToUpdate.profile_image2;
+    delete dataToUpdate.sexo;
+  
+    try {
+      const response = await axios.put(`http://localhost:8000/api/dog-predictions-shelter/${editData.id}/update/`, dataToUpdate, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setUserData((prevData) => ({
+        ...prevData,
+        predictions: prevData.predictions.map((perro) => 
+          perro.id === editData.id ? response.data : perro
+        )
+      }));
+      setShowEditModal(false);
+      alert('Publicación actualizada con éxito.');
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.error('Error al actualizar la publicación:', error.response.data);
+        alert('Hubo un problema al actualizar la publicación: ' + JSON.stringify(error.response.data));
+      } else {
+        console.error('Error al actualizar la publicación:', error);
+        alert('Hubo un problema al actualizar la publicación.');
+      }
+    }
+  };
+
+  const handleColorChange = (e) => {
+    const { name, checked } = e.target;
+    setEditData((prevData) => {
+      let newColors = [...prevData.color];
+      if (checked) {
+        newColors.push(name);
+      } else {
+        newColors = newColors.filter((color) => color !== name);
+      }
+      return { ...prevData, color: newColors };
+    });
+  };
+
+  return (
+    <Container>
+      <Row className="my-4">
+        <Col>
+          {error && <p className="text-danger">{error}</p>}
+          {userData ? (
+            <>
+              <Card>
+                <Card.Header>{userData.shelter_user.nombre || 'Nombre no disponible'} - Perfil de Refugio</Card.Header>
+                <Card.Body>
+                  <Card.Text>Email: {userData.shelter_user.email || 'Email no disponible'}</Card.Text>
+                  <Card.Text>Teléfono: {userData.shelter_user.telefono || 'Teléfono no disponible'}</Card.Text>
+                  <Button variant="primary" onClick={handleShowRegistro}>
+                    Registrar Perro
+                  </Button>
+                </Card.Body>
+              </Card>
+              <h3>Perros Registrados</h3>
+              {userData.predictions && userData.predictions.length > 0 ? (
+                <Row>
+                  {userData.predictions.map((perro, index) => (
+                    <Col md={4} key={index} className="mb-3">
+                      <Card>
+                        {perro.image && (
+                          <Card.Img variant="top" src={`http://localhost:8000${perro.image}`} />
+                        )}
+                        <Card.Body>
+                          <Card.Title>{perro.nombre || 'Nombre no disponible'}</Card.Title>
+                          <Card.Text>
+                            Edad: {perro.edad || 'Edad no disponible'}<br />
+                            Tamaño: {perro.tamanio || 'Tamaño no disponible'}<br />
+                            Descripción: {perro.caracteristicas || 'Descripción no disponible'}<br />
+                          </Card.Text>
+                          <Button variant="danger" onClick={() => handleDelete(perro.id)}>
+                            Eliminar Publicación
+                          </Button>
+                          <Button variant="warning" className="ml-2" onClick={() => handleEdit(perro)}>
+                            Editar Publicación
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <p></p>
+              )}
+            </>
+          ) : (
+            <p>Cargando datos del refugio...</p>
+          )}
+        </Col>
+      </Row>
+
+      <RegistroPerrosRefugio show={showRegistro} handleClose={handleCloseRegistro} userId={userData ? userData.shelter_user.id : null} />
+
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Publicación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formNombre">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.nombre || ''}
+                onChange={(e) => setEditData({ ...editData, nombre: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formEdad">
+              <Form.Label>Edad</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.edad || ''}
+                onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="colorEncontrado" className="mb-3">
+              <Form.Label>Colores</Form.Label>
+              <div>
+                {['negro', 'blanco', 'gris', 'cafe', 'amarillo', 'rojizo', 'dorado', 'naranja', 'manchas', 'multicolor'].map((color) => (
+                  <Form.Check
+                    key={color}
+                    type="checkbox"
+                    label={color.charAt(0).toUpperCase() + color.slice(1)}
+                    name={color}
+                    checked={editData.color.includes(color)}
+                    onChange={handleColorChange}
+                  />
+                ))}
+              </div>
+            </Form.Group>
+            <Form.Group controlId="formTemperamento">
+              <Form.Label>Temperamento</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.temperamento || ''}
+                onChange={(e) => setEditData({ ...editData, temperamento: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formVacunas">
+              <Form.Label>Vacunas</Form.Label>
+              <Form.Control
+                type="text"
+                value={editData.vacunas || ''}
+                onChange={(e) => setEditData({ ...editData,
+                  vacunas: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formCaracteristicas">
+                  <Form.Label>Características</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={editData.caracteristicas || ''}
+                    onChange={(e) => setEditData({ ...editData, caracteristicas: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formEsterilizado">
+                  <Form.Label>Esterilizado</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editData.esterilizado || ''}
+                    onChange={(e) => setEditData({ ...editData, esterilizado: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formTamanio">
+                  <Form.Label>Tamaño</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editData.tamanio || ''}
+                    onChange={(e) => setEditData({ ...editData, tamanio: e.target.value })}
+                  />
+                </Form.Group>
+                <Button variant="primary" onClick={handleUpdate}>
+                  Actualizar
+                </Button>
+              </Form>
+            </Modal.Body>
+          </Modal>
+        </Container>
+      );
+    };
+    
+    export default PerfilUsuarioRefugio;
+    

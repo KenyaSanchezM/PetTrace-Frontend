@@ -1,21 +1,16 @@
-
 //Presentación de refugios
-
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import './Refugios.css';
-import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import Header from './Header';
 
-const Tarjeta = ({imagen, titulo, texto, enlace}) => {
+const Tarjeta = ({imagen, titulo, texto, enlace, fotoPerfil}) => {
   return(
-    //<img src={imagen} className="card-img-top" alt={titulo} />  Codigo para poner la imagen
     <div className="col-12 col-sm-6 col-md-4 mb-4 mt-4">
       <div className="card tarjeta" onClick={() => window.location.href = enlace}>
-      <img src="https://i0.wp.com/despertarmexico.com/wp-content/uploads/2023/12/refigio-de-perritos-pide-apoyo1.jpg?resize=1024%2C768&ssl=1" className="card-img-top" style={{width: '100%', height: '100%'}} alt="..." />
+      <img src={imagen} className="card-img-top" style={{width: '100%', height: '100%'}} alt={titulo} />
         <div className="card-img-overlay d-flex flex-column justify-content-end p-3">
-          <h5 className="card-title">{titulo}</h5>
+        <h5 className="card-title">{titulo}</h5>
           <hr className="title-underline" />
         </div>
         <div className="card-body">
@@ -28,116 +23,89 @@ const Tarjeta = ({imagen, titulo, texto, enlace}) => {
 };
 
 const Refugios = () => {
-    const mainNavRef = useRef(null);
-    const navbarTogglerRef = useRef(null);
-
-    useEffect(() => {
-        const handleScroll = () => {
-        if (mainNavRef.current) {
-            if (window.scrollY === 0) {
-            mainNavRef.current.classList.remove('navbar-shrink');
-            } else {
-            mainNavRef.current.classList.add('navbar-shrink');
-            }
-        }
-        };
-
-        const handleNavItemClick = () => {
-        if (navbarTogglerRef.current && window.getComputedStyle(navbarTogglerRef.current).display !== 'none') {
-            navbarTogglerRef.current.click();
-        }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        if (mainNavRef.current) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#mainNav',
-            rootMargin: '0px 0px -40%',
-        });
-        }
-
-        const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
-        responsiveNavItems.forEach((item) => {
-        item.addEventListener('click', handleNavItemClick);
-        });
-
-        // Initial call to set navbar shrink state
-        handleScroll();
-
-        return () => {
-        window.removeEventListener('scroll', handleScroll);
-        responsiveNavItems.forEach((item) => {
-            item.removeEventListener('click', handleNavItemClick);
-        });
-        };
-    }, []);
     return(
-    <div>
-      {/* Masthead */}
-      <header className="masthead">
-        <div className="container">
-          {/*<div className="masthead-subheading">Conoce acerca de nuestros</div>*/}
-          <div className="masthead-heading text-uppercase">Refugios</div>
-          <a className="btn btn-warning btn-xl text-light" href="#services">Haz Match</a>
-        </div>
-      </header>
-      {/* Refugios */}
-      <section className="page-section" id="services">
-        <div className="container">
-          <div className="text-center">
-            <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center">
-                  <p className="mb-1 me-2 text-uppercase" style={{ fontFamily: 'inherit' }}>Filtrar por estado:</p>
-                  <div className="btn-group me-3" role="group">
-                    <button type="button" className="btn btn-warning dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700' }}>
-                      Selecciona
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li><a className="dropdown-item"  href="#">Jalisco</a></li>
-                      <li><a className="dropdown-item" href="#">CDMX</a></li>
-                      <li><a className="dropdown-item"  href="#">Jalisco</a></li>
-                      <li><a className="dropdown-item" href="#">CDMX</a></li>
-                      <li><a className="dropdown-item"  href="#">Jalisco</a></li>
-                      <li><a className="dropdown-item" href="#">CDMX</a></li>
-                    </ul>
+      <div className='contenedor-refugios'>
+        {/* Masthead */}
+        <header className="masthead">
+          <div className="container">
+            {/*<div className="masthead-subheading">Conoce acerca de nuestros</div>*/}
+            <div className="masthead-heading text-uppercase">Refugios</div>
+            <a className="btn btn-warning btn-xl text-light" href="#services">Haz Match</a>
+          </div>
+        </header>
+        {/* Refugios */}
+        <section className="page-section" id="services">
+          <div className="container">
+            <div className="text-center">
+              <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center">
+                    <div className="btn-filter btn-group me-3" role="group">
+                      <button type="button" className="btn btn-warning dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700', width: '120px'}}>
+                        Estado
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><a className="dropdown-item"  href="#">Aguascalientes</a></li>
+                        <li><a className="dropdown-item" href="#">Baja California</a></li>
+                        <li><a className="dropdown-item"  href="#">Baja California Sur</a></li>
+                        <li><a className="dropdown-item" href="#">Campeche</a></li>
+                        <li><a className="dropdown-item"  href="#">Coahuila</a></li>
+                        <li><a className="dropdown-item" href="#">Colima</a></li>
+                        <li><a className="dropdown-item" href="#">Chiapas</a></li>
+                        <li><a className="dropdown-item" href="#">Chihuahua</a></li>
+                        <li><a className="dropdown-item" href="#">Durango</a></li>
+                        <li><a className="dropdown-item" href="#">Distrito Federal</a></li>
+                        <li><a className="dropdown-item" href="#">Guanajuato</a></li>
+                        <li><a className="dropdown-item" href="#">Guerrero</a></li>
+                        <li><a className="dropdown-item" href="#">Hidalgo</a></li>
+                        <li><a className="dropdown-item" href="#">Jalisco</a></li>
+                        <li><a className="dropdown-item" href="#">México</a></li>
+                        <li><a className="dropdown-item" href="#">Michoacán</a></li>
+                        <li><a className="dropdown-item" href="#">Morelos</a></li>
+                        <li><a className="dropdown-item" href="#">Nayarit</a></li>
+                        <li><a className="dropdown-item" href="#">Oaxaca</a></li>
+                        <li><a className="dropdown-item" href="#">Quintana Roo</a></li>
+                        <li><a className="dropdown-item" href="#">San Luis Potosí</a></li>
+                        <li><a className="dropdown-item" href="#">Sonora</a></li>
+                        <li><a className="dropdown-item" href="#">Yucatán</a></li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <form className="d-flex" role="search">
-                  <input className="form-control me-2 rounded-pill shadow-sm" type="search" placeholder="Search" aria-label="Search" />
-                  <button className="btn rounded-pill btn-warning" type="submit" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700' }}>
-                    <i className="bi bi-search " style={{ color: '#fff' }}></i>
-                  </button>
-                </form>
+                  <form className="d-flex" role="search">
+                    <input className="form-control me-2 rounded-pill shadow-sm" type="search" placeholder="Buscar" aria-label="Search" />
+                    <button className="btn rounded-pill btn-warning" type="submit" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700' }}>
+                      <i className="bi bi-search " style={{ color: '#fff' }}></i>
+                    </button>
+                  </form>
+              </div>
+            </div>
+            <div className=" tarjetas row text-center mt-5">
+              <Tarjeta
+                imagen="https://www.hogarmania.com/archivos/202011/cosas-donar-refugio-animales-portada-668x400x80xX-1.jpg"
+                titulo="Buenos Chicos"
+                texto="Refugio dedicado a brindar amor y hogar a perros en busca de una segunda oportunidad."
+                enlace = "/refugio"
+                fotoPerfil = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s'
+              />
+              <Tarjeta
+                imagen="https://cdn.unotv.com/images/2023/12/refugio-animales-140859-1024x576.jpg"
+                titulo="Dejando Huellitas"
+                texto="Comprometidos en rescatar y encontrar familias amorosas para perros necesitados."
+              />
+              <Tarjeta
+                imagen="https://www.elsoldetlaxcala.com.mx/incoming/mc3rhk-albergue-de-perros/ALTERNATES/LANDSCAPE_960/Albergue%20de%20perros"
+                titulo="Patitas Felices"
+                texto="Ofrecemos esperanza y un nuevo hogar a perros abandonados"
+              />
+              <Tarjeta
+                imagen="https://res.cloudinary.com/worldpackers/image/upload/c_fill,f_auto,q_auto,w_1024/v1/guides/article_cover/wesauslaoz5kkprwrkjg"
+                titulo="Patitas Felices"
+                texto="Un refugio seguro donde los perros encuentran amor y cuidado"
+              />
             </div>
           </div>
-          <div className="row text-center mt-5">
-            <Tarjeta
-              imagen="https://via.placeholder.com/300"
-              titulo="Buenos Chicos"
-              texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
-              enlace = "/refugio"
-            />
-            <Tarjeta
-              imagen="https://via.placeholder.com/300"
-              titulo="Dejando Huellitas"
-              texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
-            />
-            <Tarjeta
-              imagen="https://via.placeholder.com/300"
-              titulo="Patitas Felices"
-              texto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in placerat urna."
-            />
-            <Tarjeta
-              imagen="https://via.placeholder.com/300"
-              titulo="Patitas Felices"
-              texto="Algunos textos de ejemplo para construir el título de la tarjeta y hacer que el contenido de la tarjeta sea más extenso."
-            />
-          </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
           
-    )
-}
+    );
+};
 export default Refugios
