@@ -21,3 +21,17 @@
     background-color: #c55b03;
     border-color: #c55b03;
 }
+
+#time {
+    width: 100%; /* Asegura que el TimePicker ocupe todo el ancho disponible */
+    min-width: 150px; /* Ajusta este valor según sea necesario */
+}
+.react-time-picker {
+width: 100%; /* Asegura que ocupe el espacio completo */
+max-width: 300px; /* Ajusta el tamaño si es necesario */
+z-index: 999; /* Asegura que los elementos flotantes se vean por encima de otros elementos */
+}
+.react-time-picker__wrapper {
+z-index: 10; /* Asegura que el componente tenga prioridad sobre otros */
+}
+      
