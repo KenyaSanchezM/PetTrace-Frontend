@@ -243,14 +243,41 @@ const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
       
       <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
         <div className="card h-100" style={{ width: '18rem' }}>
-          <div className="image-container" style={{ height: '200px', overflow: 'hidden' }}>
-            <img
-              src={imagen}
-              className="card-img-top"
-              alt="..."
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
+        <div id={`carousel-${nombre}`} className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-inner" style={{ height: '280px', overflow: 'hidden' }}>
+            {imagen.map((img, index) => (
+              <div
+                key={index}
+                className={`carousel-item ${index === 0 ? 'active' : ''}`}
+              >
+                <img
+                  src={img}
+                  className="d-block w-100"
+                  alt={`Imagen de ${nombre}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+            ))}
           </div>
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target={`#carousel-${nombre}`}
+            data-bs-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target={`#carousel-${nombre}`}
+            data-bs-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
 
           <div className="card-body">
             <h5 className="card-title">{nombre}</h5>
@@ -413,7 +440,11 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                           {userData && userData.predictions && userData.predictions.map((perro) => (
                               <Col md={4} key={perro.id} className="mb-4">
                                   <TarjetaPerros
-                                      imagen={`http://localhost:8000${perro.image}`} // Asumiendo que tu API devuelve la imagen con un prefijo de URL
+                                      imagen={[
+                                        `http://localhost:8000${perro.image}`,
+                                        `http://localhost:8000${perro.profile_image1}`,
+                                        `http://localhost:8000${perro.profile_image2}`
+                                      ]}
                                       nombre={perro.nombre}
                                       edad={perro.edad}
                                       tamanio={perro.tamanio}
