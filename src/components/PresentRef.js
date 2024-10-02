@@ -177,6 +177,7 @@ const PresentRef = () => {
                               descripcion={evento.descripcion_evento}
                               fecha={evento.fecha_evento}
                               ubicacion={evento.lugar_evento}
+                              hora={evento.hora_evento}
                              />
                           ))}
                       </div>

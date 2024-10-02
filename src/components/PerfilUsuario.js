@@ -5,6 +5,7 @@ import RegistroPerros from './RegistroPerros';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNavigate
 import { Toast } from 'react-bootstrap';
+import { FaEdit } from 'react-icons/fa';
 
 const PerfilUsuario = () => {
   const [userData, setUserData] = useState(null);
@@ -171,6 +172,129 @@ const PerfilUsuario = () => {
     navigate(`/home?search=${encodeURIComponent(JSON.stringify(query))}`);
 };
 
+const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [editUserProfileData, setEditUserProfileData] = useState({
+    nombre: '',
+    email: '',
+    telefono: ''
+  });
+
+
+  const handleEditUserProfile = () => {
+    if (userData) {
+      setEditUserProfileData({
+        nombre: userData.user.nombre,
+        email: userData.user.email,
+        telefono: userData.user.telefono,
+      });
+      setShowEditProfileModal(true); // Mostramos el modal
+    } else {
+      console.error("No se ha cargado la información del usuario.");
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    const token = localStorage.getItem('access_token');
+    const userId = userData?.user?.id;
+  
+    if (!userId) {
+      console.error("El ID del usuario es indefinido");
+      return;
+    }
+  
+    // Asegúrate de enviar solo los campos que pueden ser editados
+    const dataToUpdate = {
+      email: editUserProfileData.email,
+      nombre: editUserProfileData.nombre,
+      telefono: editUserProfileData.telefono
+    };
+  
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/user-profile/update/${userId}/`,
+        dataToUpdate,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+  
+      setUserData((prevData) => ({
+        ...prevData,
+        user: response.data
+      }));
+  
+      setShowEditProfileModal(false);
+      alert('Perfil actualizado con éxito.');
+    } catch (error) {
+      console.error('Error al actualizar el perfil:', error.response ? error.response.data : error);
+      alert('Hubo un problema al actualizar el perfil.');
+    }
+  };
+  
+  
+  const [showEditImageModal, setShowEditImageModal] = useState(false);
+  const [newProfileImage, setNewProfileImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    setNewProfileImage(e.target.files[0]);
+  };
+
+  const handleUpdateImage = async () => {
+    const token = localStorage.getItem('access_token');
+    const formData = new FormData();
+    formData.append('profile_image', newProfileImage);
+
+    try {
+      const response = await axios.put(`http://localhost:8000/api/user-profile/update/${userData.user.id}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // Actualiza el estado del usuario o maneja la respuesta como necesites
+      setShowEditImageModal(false);
+      alert('Imagen de perfil actualizada con éxito.');
+    } catch (error) {
+      console.error('Error al actualizar la imagen de perfil:', error);
+      alert('Hubo un problema al actualizar la imagen de perfil.');
+    }
+  };
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleDeleteProfile = () => {
+    setShowDeleteModal(true); // Mostrar el modal de confirmación
+  };
+  
+  const confirmDeleteProfile = async () => {
+    try {
+      const token = localStorage.getItem('access_token'); 
+      
+      const response = await fetch(`http://localhost:8000/api/user-profile/delete/${userData.user.id}/`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // Incluye el token en los encabezados
+        },
+      });
+  
+      if (response.ok) {
+        alert('Perfil eliminado correctamente');
+        console.log('Perfil eliminado correctamente');
+        localStorage.removeItem('access_token');
+        window.location.href = '/';
+      } else {
+        const errorData = await response.json();
+        console.error('Error al eliminar el perfil', errorData);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud de eliminación', error);
+    }
+    setShowDeleteModal(false);
+  };
+
     
 
 return (
@@ -192,11 +316,24 @@ return (
                         roundedCircle 
                         fluid 
                       />
+                      <button 
+                        className="btn-edit-image" 
+                        onClick={() => setShowEditImageModal(true)}
+                      >
+                        <FaEdit color='orange' />
+                      </button>
                     </div>
                   </Col>
                   <Col xs={12} md={8}>
                     <h2>{userData.user.nombre}</h2>
                     <p>Email: {userData.user.email}<br />Teléfono: {userData.user.telefono}</p>
+                    <Button className='btn-editar-perfil' variant="primary" onClick={handleEditUserProfile}>
+                      Editar Perfil
+                    </Button>
+                    <Button className='btn-editar-perfil' variant="primary" onClick={handleDeleteProfile}>
+                      Eliminar Perfil
+                    </Button>
+                    <br/>
                     <Button className='btn-registrar-perro' variant="warning" onClick={handleShowRegistro}>
                       Registrar un perro
                     </Button>
@@ -352,6 +489,85 @@ return (
               </Modal.Body>
             </Modal>
 
+            {/* Modal para editar el perfil del usuario */}
+            <Modal show={showEditProfileModal} onHide={() => setShowEditProfileModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Editar Perfil</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group controlId="formNombre">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={editUserProfileData.nombre}
+                      onChange={(e) => setEditUserProfileData({ ...editUserProfileData, nombre: e.target.value })}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={editUserProfileData.email}
+                      onChange={(e) => setEditUserProfileData({ ...editUserProfileData, email: e.target.value })}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formTelefono">
+                    <Form.Label>Teléfono</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={editUserProfileData.telefono}
+                      onChange={(e) => setEditUserProfileData({ ...editUserProfileData, telefono: e.target.value })}
+                    />
+                  </Form.Group>
+
+                  <br/>
+                  <Button className="btn-aceptar" variant="primary" onClick={handleUpdateProfile}>
+                    Actualizar
+                  </Button>
+                </Form>
+              </Modal.Body>
+            </Modal>
+
+            {/* Modal para editar imagen de perfil */}
+            <Modal show={showEditImageModal} onHide={() => setShowEditImageModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Editar Imagen de Perfil</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group controlId="formProfileImage">
+                    <Form.Label>Cargar nueva imagen de perfil</Form.Label>
+                    <Form.Control type="file" onChange={handleImageChange} />
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowEditImageModal(false)}>
+                  Cancelar
+                </Button>
+                <Button className="btn-aceptar" variant="primary" onClick={handleUpdateImage}>
+                  Guardar Cambios
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            {/*Modal para eliminar el usuario*/}
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirmar Eliminación</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>¿Estás seguro de que deseas eliminar tu perfil? Esta acción no se puede deshacer.</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                  Cancelar
+                </Button>
+                <Button variant="danger" onClick={confirmDeleteProfile}>
+                  Eliminar
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
 
 
           </>
@@ -500,6 +716,50 @@ return (
             margin: 0;
             padding: 0;
         }
+        
+        .btn-editar-perfil{
+    margin-right: 10px;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn-editar-perfil:hover {
+    border-color: #c55b03;
+    background-color: #c55b03;
+    color: #fff;
+}
+
+.btn-aceptar{
+    width: 100%;
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    text-align: center;
+}
+.btn-aceptar:hover {
+    border-color: #c55b03;
+    background-color: #c55b03;
+    color: #fff;
+}
+
+.btn-edit-image {
+    position: absolute;
+    top: 10px; /* Ajusta según sea necesario */
+    right: 10px; /* Ajusta según sea necesario */
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.5rem; /* Tamaño del ícono */
+    z-index: 10;
+  }
+  
+  .btn-edit-image:hover {
+    color: lightgray; /* Cambiar color al pasar el mouse */
+  }
         `}
       </style>
 

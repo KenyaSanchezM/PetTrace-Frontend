@@ -270,7 +270,7 @@ const TarjetaPerros = ({imagen, nombre, edad, tamanio, descripcion}) => {
 
 
 
-const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora, footer}) => {
+const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora_evento, footer}) => {
   return(
       <div className="row">
           <div className="card mb-3" style={{marginTop: '10px'}}>
@@ -283,7 +283,7 @@ const TarjetaEventos = ({imagen, nombre, descripcion, fecha, ubicacion, hora, fo
                         <h5 className="card-title">{nombre} </h5>
                         <p className="card-text">{descripcion}<br/>
                             <b>Ubicación: </b>{ubicacion}<br/>
-                            <b>Hora: </b>{hora}<br/>
+                            <b>Hora: </b>{hora_evento}<br/>
                             <b>Fecha del evento: </b>{fecha}   
                         </p>
                     </div>
@@ -390,7 +390,7 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                               descripcion={evento.descripcion_evento}
                               fecha={evento.fecha_evento}
                               ubicacion={evento.lugar_evento}
-                              
+                              hora_evento={evento.hora_evento}
                               footer={
                                 <div className="d-flex justify-content-end" style={{ backgroundColor: 'transparent' }}>
                                   <Button variant="danger" onClick={() => handleDeleteEvent(evento.id)} className="me-2">
