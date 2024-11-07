@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 
 const TarjetaEventos = ({ imagen, nombre, descripcion, fecha }) => {
   return (
-    <Card className="my-3">
+    <Card className="my-3" style={{ height: '450px' }}>
       <Card.Img variant="top" src={imagen} alt={nombre} />
       <Card.Body>
         <Card.Title>{nombre}</Card.Title>

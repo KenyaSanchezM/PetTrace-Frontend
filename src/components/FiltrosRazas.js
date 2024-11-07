@@ -159,20 +159,24 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
                     <div className="filter-section">
                         <h4>Estatus</h4>
                         <select onChange={(e) => setSelectedStatus(e.target.value)}>
+                            
                             <option value="">Selecciona</option>
                             <option value="perdido">Perdido</option>
                             <option value="encontrado">Encontrado</option>
                         </select>
                     </div>
 
-                    <select onChange={(e) => setSelectedEstado(e.target.value)}>
-                        <option value="">Selecciona un estado</option>
-                        {estados.map((estado, index) => (
-                            <option key={index} value={estado}>
-                                {estado}
-                            </option>
-                        ))}
-                    </select>
+                    <div className="filter-section">
+                        <h4>Estado</h4>
+                        <select onChange={(e) => setSelectedEstado(e.target.value)}>
+                            <option value="">Selecciona un estado</option>
+                            {estados.map((estado, index) => (
+                                <option key={index} value={estado}>
+                                    {estado}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
 
 

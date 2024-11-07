@@ -25,7 +25,7 @@ const availableBreeds = [
     const MatchForm = ({ show, handleClose, shelterId }) => {
     const [formData, setFormData] = useState({
         tamanio: '',
-        anciano: '',
+        edad: '',
         raza: '',
         temperamento: '',
     });
@@ -122,15 +122,15 @@ const availableBreeds = [
                 <Form.Label>Edad</Form.Label>
                 <Form.Control
                     as="select"
-                    name="Edad"
+                    name="edad"
                     value={formData.edad}
                     onChange={handleInputChange}
                   >
                     <option value="">Selecciona una edad</option>
-                    <option value="pequeño">Cachorro</option>
-                    <option value="mediano">Joven</option>
-                    <option value="grande">Adulto</option>
-                    <option value="anciano">Anciano</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Joven">Joven</option>
+                    <option value="Adulto">Adulto</option>
+                    <option value="Anciano">Anciano</option>
                   </Form.Control>
                 </Form.Group>
                 {/* Selección de Razas */}

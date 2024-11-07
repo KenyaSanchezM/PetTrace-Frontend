@@ -3,6 +3,8 @@ import { Modal, Button, Form, Container } from 'react-bootstrap';
 import './RegistrarEvento.css';
 import TimePicker from 'react-time-picker';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 const RegistrarEvento = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
@@ -46,7 +48,7 @@ const RegistrarEvento = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('access_token');
 
     const formDataToSubmit = new FormData();
     // Agregar los datos del formulario
@@ -72,6 +74,14 @@ const RegistrarEvento = ({ show, handleClose }) => {
       console.log('Evento registrado:', response.data);
       handleClose(); 
       resetForm();
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: 'Tu perrito se ha registrado correctamente.',
+        confirmButtonText: 'Aceptar'
+    }).then(() => {
+      window.location.reload(); // Recargar la página después de la alerta
+    });
     } catch (error) {
       // Lógica de reintento si el token expira
       if (error.response && error.response.status === 401 && error.response.data.code === 'token_not_valid') {
@@ -82,7 +92,7 @@ const RegistrarEvento = ({ show, handleClose }) => {
           });
   
           token = refreshResponse.data.access;
-          localStorage.setItem('token', token);
+          localStorage.setItem('access_token', token);
   
           // Reintentar la solicitud original con el nuevo token
           const retryResponse = await axios.post('http://localhost:8000/api/registrar-evento/', formData, {
@@ -92,9 +102,16 @@ const RegistrarEvento = ({ show, handleClose }) => {
             },
           });
   
-          console.log('Perro registrado:', retryResponse.data);
           handleClose();
           resetForm();
+          Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: 'Tu perrito se ha registrado correctamente.',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+          window.location.reload(); // Recargar la página después de la alerta
+        });
         } catch (refreshError) {
           console.error('Error al refrescar el token:', refreshError.response ? refreshError.response.data : refreshError.message);
           alert('Tu sesión ha expirado y no se pudo renovar. Por favor, inicia sesión de nuevo.');

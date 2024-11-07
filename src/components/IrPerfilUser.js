@@ -72,7 +72,7 @@ const IrPerfilUser = () => {
                                                             <div className="card-body">
                                                                 <p className='p-name'>{perro.nombre}</p>
                                                                 <p className='text'>
-                                                                    <strong>Estado: </strong>{perro.form_type ? 'Perdido' : 'Encontrado'}<br />
+                                                                    <strong>Estatus: </strong>{perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'}<br />
                                                                     <strong>Edad:</strong> {perro.edad}<br />
                                                                     <strong>Color:</strong> {perro.color}<br />
                                                                     <strong>Estado:</strong> {perro.estado}<br />

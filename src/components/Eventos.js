@@ -66,15 +66,15 @@ const Eventos = () => {
           <div className="text-center">
             <div className="d-flex align-items-center justify-content-between">
               <div className="d-flex align-items-center">
-                <div className="btn-group me-3" role="group" style={{ marginLeft: '28px' }}>
-                  <button type="button" className="btn btn-warning dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700', width: '120px' }}>
+                {/*<div className="btn-group me-3" role="group" style={{ marginLeft: '28px' }}>
+                   <button type="button" className="btn btn-warning dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false" style={{ backgroundColor: '#ff8700', borderColor: '#ff8700', width: '120px' }}>
                     Estado
                   </button>
                   <ul className="dropdown-menu">
-                    {/* Opciones de Estado */}
+                    Opciones de Estado 
                     <li><a className="dropdown-item" href="#">Aguascalientes</a></li>
                     <li><a className="dropdown-item" href="#">Baja California</a></li>
-                    {/* ... Más opciones */}
+                     ... Más opciones 
                   </ul>
                 </div>
                 <div className="btn-group me-3" role="group">
@@ -85,9 +85,9 @@ const Eventos = () => {
                     <li><a className="dropdown-item" href="#">Adopciones</a></li>
                     <li><a className="dropdown-item" href="#">Rifas</a></li>
                     <li><a className="dropdown-item" href="#">Voluntariado</a></li>
-                    {/* Más categorías */}
+                    {/* Más categorías 
                   </ul>
-                </div>
+                </div>*/}
               </div>
               {/* <form className="d-flex" role="search">
                 <input className="form-control me-2 rounded-pill shadow-sm" type="search" placeholder="Buscar" aria-label="Search" />
@@ -104,13 +104,27 @@ const Eventos = () => {
       <Container className="mt-4">
         <div className='cont2'>
           <Row className="tarjetas d-flex justify-content-left">
-          {eventos.length > 0 ? (
+            {eventos.length > 0 ? (
               eventos.map((evento, index) => (
                 evento && evento.nombre_evento ? ( // Verificamos que 'evento' y 'nombre_evento' existan
                   <Col md={4} className="mb-3" key={evento.id || index}> 
-                    <div className="card" onClick={() => handleCardClick(evento)}>
-                      <img src={evento.imagen_evento ? `http://localhost:8000${evento.imagen_evento}` : defaultImage} alt='evento' className="card-img-top" />
-                      <div className="card-body">
+                    <div 
+                      className="card" 
+                      onClick={() => handleCardClick(evento)}
+                      style={{
+                        height: '480px', // Ajusta la altura de la tarjeta
+                        display: 'flex',
+                        flexDirection: 'column',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' // Un ejemplo de sombra
+                      }}
+                    >
+                      <img 
+                        src={evento.imagen_evento ? `http://localhost:8000${evento.imagen_evento}` : defaultImage} 
+                        alt='evento' 
+                        className="card-img-top" 
+                        style={{ objectFit: 'cover', height: '200px' }} // Controlar la imagen
+                      />
+                      <div className="card-body" style={{ flexGrow: 1 }}>
                         <p className='p-name'>{evento.nombre_evento}</p>
                         <p className='text'>
                           <strong>Ubicación:</strong> {evento.lugar_evento || 'Ubicación no disponible'} <br />
@@ -131,6 +145,7 @@ const Eventos = () => {
           </Row>
         </div>
       </Container>
+
 
       {/* Modal */}
       <Modal show={showModal} onHide={handleClose}>

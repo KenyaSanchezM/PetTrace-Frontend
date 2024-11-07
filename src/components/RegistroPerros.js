@@ -70,7 +70,7 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('access_token');
   
     const formData = new FormData();
     const predictionFormData = new FormData();
@@ -138,7 +138,7 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
           });
   
           token = refreshResponse.data.access;
-          localStorage.setItem('token', token);
+          localStorage.setItem('access_token', token);
   
           // Reintentar la solicitud original con el nuevo token
           const retryResponse = await axios.post('http://localhost:8000/api/registro-perros/', formData, {
@@ -196,10 +196,10 @@ return (
           </Form.Group>
 
           <Form.Group controlId="formType" className="mb-3">
-            <Form.Label>¿Es un perro encontrado o perdido?</Form.Label>
+            <Form.Label>¿Se te perdió o lo encontraste?</Form.Label>
             <Form.Select value={formType} onChange={(e) => setFormType(e.target.value)}>
-              <option value="encontrado">Encontrado</option>
-              <option value="perdido">Perdido</option>
+              <option value="Encontrado">Encontrado</option>
+              <option value="Perdido">Perdido</option>
             </Form.Select>
           </Form.Group>
 
@@ -221,8 +221,8 @@ return (
                     onChange={(e) => setTieneCollar(e.target.value)}
                   >
                     <option value="">Selecciona una opción</option>
-                    <option value="si">Sí</option>
-                    <option value="no">No</option>
+                    <option value="Si">Sí</option>
+                    <option value="No">No</option>
                   </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="edadEncontrado" className="mb-3">

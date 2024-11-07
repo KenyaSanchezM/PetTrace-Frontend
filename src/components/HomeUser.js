@@ -158,7 +158,7 @@ const HomeUser = () => {
                             </div>
                         ))
                     ) : (
-                        <p>No hay perros registrados</p>
+                        <p>...</p>
                     )}
                 </div>
                 {showSearchResults && (

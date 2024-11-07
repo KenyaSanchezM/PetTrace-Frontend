@@ -107,8 +107,8 @@ return (
                 {showMenu && (
                         <ul className="settings-menu" ref={menuRef} >
                             <li><Link to={`/ir-perfil-usuario/${userId}`}>Ir al perfil</Link></li>
-                            <li><a href="/enviar-mensaje">Enviar mensaje</a></li>
-                            <li><a href="/reportar-usuario">Reportar usuario</a></li>
+                            {/* <li><a href="/enviar-mensaje">Enviar mensaje</a></li>
+                            <li><a href="/reportar-usuario">Reportar usuario</a></li>*/}
                         </ul>
                     )}
             </div>
@@ -137,9 +137,11 @@ return (
                     <p><strong>Sexo:</strong> {texts[8] || 'No disponible'}</p>
                 </div>
                 <div className='button-container'>
+                {/*
                 <Button variant="primary" className="contact-button"title="Envía un mensaje">
                     <i className="fa-solid fa-envelope"></i> 
-                </Button>
+                </Button>*/}
+
                 </div>
 
 

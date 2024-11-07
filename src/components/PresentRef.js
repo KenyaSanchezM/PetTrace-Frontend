@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import './PresentRef.css';
 import MatchForm from './MatchForm';
 
 const PresentRef = () => {
@@ -47,14 +46,41 @@ const PresentRef = () => {
         return (
             <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
                 <div className="card h-100" style={{ width: '18rem' }}>
-                    <div className="image-container" style={{ height: '200px', overflow: 'hidden' }}>
-                        <img
-                            src={imagen}
-                            className="card-img-top"
-                            alt="..."
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                    </div>
+                <div id={`carousel-${nombre}`} className="carousel slide" data-bs-ride="carousel">
+                        <div className="carousel-inner" style={{ height: '280px', overflow: 'hidden' }}>
+                            {imagen.map((img, index) => (
+                            <div
+                                key={index}
+                                className={`carousel-item ${index === 0 ? 'active' : ''}`}
+                            >
+                                <img
+                                src={img}
+                                className="d-block w-100"
+                                alt={`Imagen de ${nombre}`}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                />
+                            </div>
+                            ))}
+                        </div>
+                        <button
+                            className="carousel-control-prev"
+                            type="button"
+                            data-bs-target={`#carousel-${nombre}`}
+                            data-bs-slide="prev"
+                        >
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button
+                            className="carousel-control-next"
+                            type="button"
+                            data-bs-target={`#carousel-${nombre}`}
+                            data-bs-slide="next"
+                        >
+                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Next</span>
+                        </button>
+                        </div>
                     <div className="card-body">
                         <h5 className="card-title">{nombre}</h5>
                         <p className="card-text">
@@ -130,7 +156,24 @@ const PresentRef = () => {
                                 <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
                                 <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
                                 <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
-                                <Button className="btn btn-warning btn-match text-light" onClick={handleShowMatchForm}>Haz match</Button>
+                                <div style={{ textAlign: 'center' }}>  {/* Centra el botón */}
+                                <Button
+                                    style={{
+                                    margin: '20px auto',  /* margen superior/inferior y centrado */
+                                    border: '2px solid orange',  /* borde naranja */
+                                    color: 'orange',  /* color de la letra */
+                                    backgroundColor: 'white',  /* fondo blanco */
+                                    padding: '10px 20px',  /* espacio interno */
+                                    fontSize: '16px',  /* tamaño de la fuente */
+                                    display: 'inline-block',  /* necesario para el centrado */
+                                    cursor: 'pointer',  /* cursor de mano */
+                                    transition: 'background-color 0.3s ease'  /* transición suave */
+                                    }}
+                                    onClick={handleShowMatchForm}
+                                >
+                                    Haz match
+                                </Button>
+                                </div>
                                 <MatchForm 
                                     show={showMatchForm} 
                                     handleClose={handleCloseMatchForm} 
@@ -161,12 +204,28 @@ const PresentRef = () => {
                 ciudad={refugioData.shelter_user.ciudad}
                 estado={refugioData.shelter_user.estado}
             />
-            <div className="AdditionalSection">
-                <div className="container px-5 mt-5">
-                    <div className="row justify-content-center">
-                        <button className={`btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>Perritos<i className="fa-solid fa-dog" style={{ marginLeft: '10px' }}></i></button>
-                        <button className={`btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>Eventos con Causa y Voluntariado</button>
-                    </div>
+            <div className='AdditionalSection'>
+              <div className="container px-5 mt-5">
+              <div className="row justify-content-center">
+                <div className="col-auto">
+                <button 
+                    className={`btn btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} 
+                    onClick={() => setActiveButton('perritos')}
+                    style={{ fontSize: '20px' }}  // Aumenta el tamaño de la letra
+                  >
+                    Perritos <i className="fa-solid fa-dog" style={{ marginLeft: '50px' }}></i>
+                  </button>
+                </div>
+                <div className="col-auto">
+                  <button 
+                    className={`btn btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} 
+                    onClick={() => setActiveButton('eventos')}
+                    style={{ fontSize: '20px' }}  // Aumenta el tamaño de la letra
+                  >
+                    Eventos con causa y voluntariado
+                    </button>
+                </div>
+            </div>
                     <hr />
                     {activeButton === 'eventos' ? (
                       <div className='row'>
@@ -177,6 +236,7 @@ const PresentRef = () => {
                               descripcion={evento.descripcion_evento}
                               fecha={evento.fecha_evento}
                               ubicacion={evento.lugar_evento}
+                              hora={evento.hora_evento}
                              />
                           ))}
                       </div>
@@ -185,7 +245,11 @@ const PresentRef = () => {
                           {refugioData && refugioData.predictions && refugioData.predictions.map((perro) => (
                               <Col md={4} key={perro.id} className="mb-4">
                                   <TarjetaPerros
-                                      imagen={`http://localhost:8000${perro.image}`} // Asumiendo que tu API devuelve la imagen con un prefijo de URL
+                                      imagen={[
+                                        `http://localhost:8000${perro.image}`,
+                                        `http://localhost:8000${perro.profile_image1}`,
+                                        `http://localhost:8000${perro.profile_image2}`
+                                      ]}
                                       nombre={perro.nombre}
                                       edad={perro.edad}
                                       tamanio={perro.tamanio}
