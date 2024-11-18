@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import './PresentRef.css';
 import MatchForm from './MatchForm';
 
 const PresentRef = () => {
@@ -157,7 +156,24 @@ const PresentRef = () => {
                                 <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
                                 <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
                                 <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
-                                <Button className="btn btn-warning btn-match text-light" onClick={handleShowMatchForm}>Haz match</Button>
+                                <div style={{ textAlign: 'center' }}>  {/* Centra el botón */}
+                                <Button
+                                    style={{
+                                    margin: '20px auto',  /* margen superior/inferior y centrado */
+                                    border: '2px solid orange',  /* borde naranja */
+                                    color: 'orange',  /* color de la letra */
+                                    backgroundColor: 'white',  /* fondo blanco */
+                                    padding: '10px 20px',  /* espacio interno */
+                                    fontSize: '16px',  /* tamaño de la fuente */
+                                    display: 'inline-block',  /* necesario para el centrado */
+                                    cursor: 'pointer',  /* cursor de mano */
+                                    transition: 'background-color 0.3s ease'  /* transición suave */
+                                    }}
+                                    onClick={handleShowMatchForm}
+                                >
+                                    Haz match
+                                </Button>
+                                </div>
                                 <MatchForm 
                                     show={showMatchForm} 
                                     handleClose={handleCloseMatchForm} 
@@ -188,12 +204,28 @@ const PresentRef = () => {
                 ciudad={refugioData.shelter_user.ciudad}
                 estado={refugioData.shelter_user.estado}
             />
-            <div className="AdditionalSection">
-                <div className="container px-5 mt-5">
-                    <div className="row justify-content-center">
-                        <button className={`btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>Perritos<i className="fa-solid fa-dog" style={{ marginLeft: '10px' }}></i></button>
-                        <button className={`btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>Eventos con Causa y Voluntariado</button>
-                    </div>
+            <div className='AdditionalSection'>
+              <div className="container px-5 mt-5">
+              <div className="row justify-content-center">
+                <div className="col-auto">
+                <button 
+                    className={`btn btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} 
+                    onClick={() => setActiveButton('perritos')}
+                    style={{ fontSize: '20px' }}  // Aumenta el tamaño de la letra
+                  >
+                    Perritos <i className="fa-solid fa-dog" style={{ marginLeft: '50px' }}></i>
+                  </button>
+                </div>
+                <div className="col-auto">
+                  <button 
+                    className={`btn btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} 
+                    onClick={() => setActiveButton('eventos')}
+                    style={{ fontSize: '20px' }}  // Aumenta el tamaño de la letra
+                  >
+                    Eventos con causa y voluntariado
+                    </button>
+                </div>
+            </div>
                     <hr />
                     {activeButton === 'eventos' ? (
                       <div className='row'>

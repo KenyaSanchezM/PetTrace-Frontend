@@ -13,11 +13,24 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
   const [nombre, setNombre] = useState('');
   const [edad, setEdad] = useState('');
   const [color, setColor] = useState([]);
-  const [ubicacion, setUbicacion] = useState('');
+  const [estado, setEstado] = useState('');
+  const [ciudad, setCiudad] = useState('');
+  const [direccion, setDireccion] = useState('');
   const [tieneCollar, setTieneCollar] = useState('');
   const [caracteristicas, setCaracteristicas] = useState('');
   const [fecha, setFecha] = useState('');
   const [sexo, setSexo] = useState('');
+  const [isLoading, setIsLoading] = useState(false); 
+
+  const estados = [
+    'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 
+    'Coahuila', 'Colima', 'Chiapas', 'Chihuahua', 'Durango', 'Distrito Federal', 
+    'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán', 
+    'Morelos', 'Nayarit', 'Oaxaca', 'Quintana Roo', 'San Luis Potosí', 
+    'Sonora', 'Yucatán'
+  ];
+  
+  
 
   const resetForm = () => {
     setFile(null);
@@ -26,7 +39,9 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
     setNombre('');
     setEdad('');
     setColor([]);
-    setUbicacion('');
+    setEstado('');
+    setCiudad('');
+    setDireccion('');
     setTieneCollar('');
     setCaracteristicas('');
     setFecha('');
@@ -54,7 +69,8 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let token = localStorage.getItem('token');
+    
+    let token = localStorage.getItem('access_token');
   
     const formData = new FormData();
     const predictionFormData = new FormData();
@@ -76,7 +92,9 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
       formData.append('nombre', nombre);
       formData.append('edad', edad);
       formData.append('color', JSON.stringify(color));
-      formData.append('ubicacion', ubicacion);
+      formData.append('estado', estado);
+      formData.append('ciudad', ciudad);
+      formData.append('direccion', direccion);
       formData.append('tieneCollar', tieneCollar);
       formData.append('caracteristicas', caracteristicas);
       formData.append('fecha', fecha);
@@ -94,6 +112,9 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      
+      Swal.close(); // Cerrar el mensaje de búsqueda
   
       handleClose(); 
       resetForm();
@@ -117,7 +138,7 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
           });
   
           token = refreshResponse.data.access;
-          localStorage.setItem('token', token);
+          localStorage.setItem('access_token', token);
   
           // Reintentar la solicitud original con el nuevo token
           const retryResponse = await axios.post('http://localhost:8000/api/registro-perros/', formData, {
@@ -126,7 +147,8 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
               'Content-Type': 'multipart/form-data',
             },
           });
-  
+          
+          Swal.close(); // Cerrar el mensaje de búsqueda
           
           handleClose();
           resetForm();
@@ -155,9 +177,9 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
 return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }}>
       <Modal.Header closeButton>
-        <Modal.Title>Registro de Perros</Modal.Title>
+        <Modal.Title>Registro de perro</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ maxHeight: '1400px', overflowY: 'auto' }}> {/* Agregar estilos aquí */}
+      <Modal.Body style={{ maxHeight: '1600px', overflowY: 'auto' }}> {/* Agregar estilos aquí */}
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Sube la imagen para la IA</Form.Label>
@@ -174,10 +196,10 @@ return (
           </Form.Group>
 
           <Form.Group controlId="formType" className="mb-3">
-            <Form.Label>¿Es un perro encontrado o perdido?</Form.Label>
+            <Form.Label>¿Se te perdió o lo encontraste?</Form.Label>
             <Form.Select value={formType} onChange={(e) => setFormType(e.target.value)}>
-              <option value="encontrado">Encontrado</option>
-              <option value="perdido">Perdido</option>
+              <option value="Encontrado">Encontrado</option>
+              <option value="Perdido">Perdido</option>
             </Form.Select>
           </Form.Group>
 
@@ -199,18 +221,24 @@ return (
                     onChange={(e) => setTieneCollar(e.target.value)}
                   >
                     <option value="">Selecciona una opción</option>
-                    <option value="si">Sí</option>
-                    <option value="no">No</option>
+                    <option value="Si">Sí</option>
+                    <option value="No">No</option>
                   </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="edadEncontrado" className="mb-3">
                   <Form.Label>Edad</Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="Edad del perro"
+                    as="select"
+                    name="Edad"
                     value={edad}
-                    onChange={(e) => setEdad(e.target.value)} 
-                  />
+                    onChange={(e) => setEdad(e.target.value)}
+                  >
+                    <option value="">Selecciona una opcion</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Joven">Joven</option>
+                    <option value="Adulto">Adulto</option>
+                    <option value="Anciano">Anciano</option>
+                  </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formSexo" className="mb-3">
                   <Form.Label>Sexo</Form.Label>
@@ -306,12 +334,38 @@ return (
                     />
                   </Form.Group>
 
-              <Form.Group controlId="ubicacionEncontrado" className="mb-3">
-                <Form.Label>Ubicación</Form.Label>
+                  <Form.Group controlId="estadoEncontrado" className="mb-3">
+                    <Form.Label>Estado dónde se encontró</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={estado}
+                      onChange={(e) => setEstado(e.target.value)}
+                    >
+                      <option value="">Seleccione un estado</option>
+                      {estados.map((estado, index) => (
+                        <option key={index} value={estado}>
+                          {estado}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+
+              <Form.Group controlId="ciudadEncontrado" className="mb-3">
+                <Form.Label>Ciudad</Form.Label>
                 <Form.Control
                   type="text"
-                  value={ubicacion}
-                  onChange={(e) => setUbicacion(e.target.value)}
+                  placeholder="Ej. Guadalajara"
+                  value={ciudad}
+                  onChange={(e) => setCiudad(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="direccionEncontrado" className="mb-3">
+                <Form.Label>Direccion</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Ej. Av. 1 entre calle 2 y calle 3"
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
                 />
               </Form.Group>
               <Form.Group controlId="caracteristicasEncontrado" className="mb-3">
@@ -339,12 +393,17 @@ return (
                 <Form.Group controlId="edadPerdido" className="mb-3">
                   <Form.Label>Edad</Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="Edad del perro"
-                    name="edad"
+                    as="select"
+                    name="Edad"
                     value={edad}
                     onChange={(e) => setEdad(e.target.value)}
-                  />
+                  >
+                    <option value="">Selecciona una opcion</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Joven">Joven</option>
+                    <option value="Adulto">Adulto</option>
+                    <option value="Anciano">Anciano</option>
+                  </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="tieneCollarPerdido" className="mb-3">
                   <Form.Label>¿Tiene collar?</Form.Label>
@@ -354,8 +413,8 @@ return (
                     onChange={(e) => setTieneCollar(e.target.value)}
                   >
                     <option value="">Selecciona una opción</option>
-                    <option value="si">Sí</option>
-                    <option value="no">No</option>
+                    <option value="Si">Sí</option>
+                    <option value="No">No</option>
                   </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="formSexo" className="mb-3">
@@ -450,19 +509,45 @@ return (
                     type="date"
                     value={fecha}
                     onChange={(e) => setFecha(e.target.value)}
-                    min="2010-01-01"  // Fecha mínima es 1 de enero de 2010
+                    min="2018-01-01"  // Fecha mínima es 1 de enero de 2010
                     max={new Date().toISOString().split("T")[0]}  // Fecha máxima es hoy
                   />
                 </Form.Group>
+                
+                <Form.Group controlId="estadoPerdido" className="mb-3">
+                  <Form.Label>Estado donde se perdió</Form.Label>
+                  <Form.Control
+                    as="select"
+                    placeholder="Selecciona una opcion"
+                    value={estado}
+                    onChange={(e) => setEstado(e.target.value)}
+                  >
+                    <option value="">Seleccione un estado</option>
+                    {estados.map((estado, index) => (
+                      <option key={index} value={estado}>
+                        {estado}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
 
-                <Form.Group controlId="ubicacionPerdido" className="mb-3">
-                  <Form.Label>Última ubicación</Form.Label>
+                <Form.Group controlId="ciudadPerdido" className="mb-3">
+                  <Form.Label>Ciudad</Form.Label>
                   <Form.Control
                     type="text"
-                    value={ubicacion}
-                    onChange={(e) => setUbicacion(e.target.value)}
+                    value={ciudad}
+                    onChange={(e) => setCiudad(e.target.value)}
                   />
                 </Form.Group>
+                <Form.Group controlId="direccionPerdido" className="mb-3">
+                <Form.Label>Direccion</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Ej. Av. 1 entre calle 2 y calle 3"
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
+                />
+              </Form.Group>
                 {/* Integración del mapa 
                 <Form.Group className="mb-3">
                   <Form.Label>Selecciona la ubicación donde lo perdiste</Form.Label>
@@ -480,7 +565,7 @@ return (
               </>
             )}
             <Button variant="primary" type="submit">
-            Registrar un perro
+              Registrar un perro
             </Button>
           </Form>
         </Modal.Body>

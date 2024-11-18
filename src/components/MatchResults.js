@@ -1,15 +1,14 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import TarjetaPerros from './TarjetaPerros'; // Asegúrate de importar el componente
-import { FaDog, FaRuler, FaPalette } from 'react-icons/fa'; // Importa íconos de react-icons
+import { FaDog, FaRuler, FaPalette } from 'react-icons/fa'; 
+import { useLocation, useNavigate } from 'react-router-dom'; 
 
 const MatchResults = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Hook para navegar
   const locationResults = location.state?.results || [];
   const defaultImage = "/images/eventos.jpg";
 
-  // Tarjeta de cada perro
-  const TarjetaPerrosMatch = ({ imagen, nombre, edad, tamanio, descripcion, breed }) => {
+  const TarjetaPerrosMatch = ({ imagen, nombre, edad, tamanio, descripcion, breed, temperamento }) => {
     return (
       <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center">
         <div className="card h-100 shadow border-0" style={{ width: '60rem' }}>
@@ -30,6 +29,8 @@ const MatchResults = () => {
               <br />
               <span><FaPalette /> <b>Razas:</b> {breed}</span>
               <br />
+              <span> <b>Temperamento:</b> {temperamento}</span>
+              <br />
               <span><b>Color:</b> {descripcion}</span>
             </p>
           </div>
@@ -40,33 +41,41 @@ const MatchResults = () => {
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <h3 className="mt-4">¡Felicidades, encuentra a tu mejor amigo!</h3>
-      <div className="row justify-content-center">
-        {locationResults.length > 0 ? (
-          locationResults.map((dog) => {
-            const breedsArray = typeof dog.breeds === 'string' ? dog.breeds.split(',').slice(0, 3) : [];
-            const breed = breedsArray.length > 0 ? breedsArray.join(', ') : 'Raza no especificada';
-            const color = Array.isArray(dog.color) ? dog.color.join(', ') : dog.color || 'No especificado';
-            
-            return (
-              <TarjetaPerrosMatch
-                key={dog.id}
-                imagen={dog.image}
-                nombre={dog.nombre}
-                edad={dog.edad}
-                tamanio={dog.tamanio}
-                breed={breed}
-                descripcion={color}
-              />
-            );
-          })
-        ) : (
-          <p>No se encontraron coincidencias.</p>
-        )}
-      </div>
-      <h5 className="mt-4">¡Comunicate con el refugio por medio de redes sociales o su número telefónico!</h5>
+      {locationResults.length > 0 ? (
+        <>
+          <h3 className="mt-4">¡Felicidades, encuentra a tu mejor amigo!</h3>
+          <div className="row justify-content-center">
+            {locationResults.map((dog) => {
+              const breedsArray = typeof dog.breeds === 'string' ? dog.breeds.split(',').slice(0, 3) : [];
+              const breed = breedsArray.length > 0 ? breedsArray.join(', ') : 'Raza no especificada';
+              const color = Array.isArray(dog.color) ? dog.color.join(', ') : dog.color || 'No especificado';
+              
+              return (
+                <TarjetaPerrosMatch
+                  key={dog.id}
+                  imagen={dog.image}
+                  nombre={dog.nombre}
+                  edad={dog.edad}
+                  tamanio={dog.tamanio}
+                  breed={breed}
+                  descripcion={color}
+                  temperamento={dog.temperamento}
+                />
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <p className="text-center text-muted mt-4">No se encontraron coincidencias. Intenta modificar tus preferencias o vuelve más tarde.</p>
+
+      )}
+      <h5 className="mt-4">¡Comunícate con el refugio por medio de redes sociales o su número telefónico!</h5>
+      <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>
+        Volver a la página anterior
+      </button>
     </div>
   );
 };
 
 export default MatchResults;
+

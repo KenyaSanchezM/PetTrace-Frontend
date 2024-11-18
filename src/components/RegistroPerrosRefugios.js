@@ -196,11 +196,17 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
           <Form.Group controlId="formEdad" className="mb-3">
             <Form.Label>Edad</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Edad del perro"
-              value={edad}
-              onChange={(e) => setEdad(e.target.value)} 
-            />
+                    as="select"
+                    name="Edad"
+                    value={edad}
+                    onChange={(e) => setEdad(e.target.value)}
+                  >
+                    <option value="">Selecciona un tamaño</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Joven">Joven</option>
+                    <option value="Adulto">Adulto</option>
+                    <option value="Anciano">Anciano</option>
+                  </Form.Control>
           </Form.Group>
           <Form.Group controlId="formColor" className="mb-3">
             <Form.Label>Colores</Form.Label>

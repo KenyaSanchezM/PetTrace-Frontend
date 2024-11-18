@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNav
 import { Toast } from 'react-bootstrap';
 import { FaEdit } from 'react-icons/fa';
 
+
 const PerfilUsuario = () => {
   const [userData, setUserData] = useState(null);
   const [showRegistro, setShowRegistro] = useState(false);
@@ -15,7 +16,9 @@ const PerfilUsuario = () => {
     nombre: '',
     edad: '',
     color: [],
-    ubicacion: '',
+    estado: '',
+    ciudad: '',
+    direccion: '',
     tieneCollar: '',
     caracteristicas: '',
     fecha: '',
@@ -41,6 +44,14 @@ const PerfilUsuario = () => {
     };
     fetchUserData();
   }, []);
+
+  const estados = [
+    'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 
+    'Coahuila', 'Colima', 'Chiapas', 'Chihuahua', 'Durango', 'Distrito Federal', 
+    'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán', 
+    'Morelos', 'Nayarit', 'Oaxaca', 'Quintana Roo', 'San Luis Potosí', 
+    'Sonora', 'Yucatán'
+  ];
 
   const handleShowRegistro = () => setShowRegistro(true);
   const handleCloseRegistro = () => setShowRegistro(false);
@@ -68,7 +79,9 @@ const PerfilUsuario = () => {
         setShowToast(false);
         // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
         //fetchUserData(); 
-      }, 2000); // Espera 2 segundos antes de ocultar
+      }, 2000).then(() => {
+        window.location.reload(); // Recargar la página después de la alerta
+      }); // Espera 2 segundos antes de ocultar
 
 
     } catch (error) {
@@ -226,7 +239,14 @@ const [showEditProfileModal, setShowEditProfileModal] = useState(false);
       }));
   
       setShowEditProfileModal(false);
-      alert('Perfil actualizado con éxito.');
+      // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
+      
     } catch (error) {
       console.error('Error al actualizar el perfil:', error.response ? error.response.data : error);
       alert('Hubo un problema al actualizar el perfil.');
@@ -255,7 +275,13 @@ const [showEditProfileModal, setShowEditProfileModal] = useState(false);
       });
       // Actualiza el estado del usuario o maneja la respuesta como necesites
       setShowEditImageModal(false);
-      alert('Imagen de perfil actualizada con éxito.');
+      // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
     } catch (error) {
       console.error('Error al actualizar la imagen de perfil:', error);
       alert('Hubo un problema al actualizar la imagen de perfil.');
@@ -281,7 +307,13 @@ const [showEditProfileModal, setShowEditProfileModal] = useState(false);
       });
   
       if (response.ok) {
-        alert('Perfil eliminado correctamente');
+        // Mostrar Toast de éxito
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        // Si quieres volver a cargar los datos del usuario, descomenta la línea siguiente
+        //fetchUserData(); 
+      }, 2000); // Espera 2 segundos antes de ocultar
         console.log('Perfil eliminado correctamente');
         localStorage.removeItem('access_token');
         window.location.href = '/';
@@ -307,7 +339,7 @@ return (
             <Container className="mt-4">
               
 
-              <Card.Body>
+            <Card.Body>
                 <Row className="cont1 align-items-center mb-4">
                   <Col xs={12} md={4} className="text-center">
                     <div className="perfil-contenedor">
@@ -315,6 +347,7 @@ return (
                         src={`http://localhost:8000${userData.user.profile_image}`} // Accediendo a la imagen del usuario
                         roundedCircle 
                         fluid 
+                        alt="Foto de perfil"
                       />
                       <button 
                         className="btn-edit-image" 
@@ -334,9 +367,23 @@ return (
                       Eliminar Perfil
                     </Button>
                     <br/>
-                    <Button className='btn-registrar-perro' variant="warning" onClick={handleShowRegistro}>
+                    <Button
+                      onClick={handleShowRegistro}
+                      style={{
+
+                        backgroundColor:' #fff',
+                        borderRadius: '4px',
+                        borderColor: '#ff8700',
+                        width: '300px',
+                        color: '#ff8700',
+                        marginRight: '48px',
+                        boxShadow:' 0 4px 8px rgba(0, 0, 0, 0.2)',
+                       
+                      }}
+                    >
                       Registrar un perro
                     </Button>
+                    
                   </Col>
                 </Row>
               </Card.Body>
@@ -367,10 +414,12 @@ return (
                               <div className="card-body">
                                 <p className='p-name'>{perro.nombre}</p>
                                 <p className='text'>
-                                  <strong>Estado: </strong>{perro.form_type === 'perdido' ? 'Perdido' : 'Encontrado'}<br />
+                                  <strong>Estatus: </strong>{perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'}<br />
                                   <strong>Edad:</strong> {perro.edad}<br />
                                   <strong>Color:</strong> {perro.color}<br />
-                                  <strong>Ubicación:</strong> {perro.ubicacion}<br />
+                                  <strong>Estado:</strong> {perro.estado}<br />
+                                  <strong>Ciudad:</strong> {perro.ciudad}<br />
+                                  <strong>Direccion:</strong> {perro.direccion}<br />
                                   <strong>¿Tiene collar?:</strong> {perro.tieneCollar ? 'Sí' : 'No'}<br />
                                   <strong>Características:</strong> {perro.caracteristicas}<br />
                                   <strong>Fecha:</strong> {perro.fecha}
@@ -423,10 +472,17 @@ return (
                   <Form.Group controlId="formEdad">
                     <Form.Label>Edad</Form.Label>
                     <Form.Control
-                      type="text"
-                      value={editData.edad || ''}
-                      onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
-                    />
+                    as="select"
+                    name="Edad"
+                    value={editData.edad || ''}
+                    onChange={(e) => setEditData({ ...editData, edad: e.target.value })}
+                  >
+                    <option value="">Selecciona un tamaño</option>
+                    <option value="cachorro">Cachorro</option>
+                    <option value="joven">Joven</option>
+                    <option value="adulto">Adulto</option>
+                    <option value="anciano">Anciano</option>
+                  </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="colorEncontrado" className="mb-3">
                     <Form.Label>Colores</Form.Label>
@@ -443,12 +499,35 @@ return (
                       ))}
                     </div>
                   </Form.Group>
-                  <Form.Group controlId="formUbicacion">
-                    <Form.Label>Ubicación</Form.Label>
+                  <Form.Group controlId="formEstado">
+                    <Form.Label>Estado</Form.Label>
+                    <Form.Select
+                      value={editData.estado || ''} // Asegura que haya un valor seleccionado o vacío
+                      onChange={(e) => setEditData({ ...editData, estado: e.target.value })}
+                    >
+                      <option value="">Seleccione un estado</option>
+                      {estados.map((estado, index) => (
+                        <option key={index} value={estado}>
+                          {estado}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group controlId="formCiudad">
+                    <Form.Label>Ciudad</Form.Label>
                     <Form.Control
                       type="text"
-                      value={editData.ubicacion || ''}
-                      onChange={(e) => setEditData({ ...editData, ubicacion: e.target.value })}
+                      value={editData.ciudad || ''}
+                      onChange={(e) => setEditData({ ...editData, ciudad: e.target.value })}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formDireccion">
+                    <Form.Label>Direccion</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={editData.direccion || ''}
+                      onChange={(e) => setEditData({ ...editData, direccion: e.target.value })}
                     />
                   </Form.Group>
                   <Form.Group controlId="formTieneCollar">
@@ -487,6 +566,84 @@ return (
                   </Button>
                 </Form>
               </Modal.Body>
+            </Modal>
+            {/* Modal para editar el perfil del usuario */}
+            <Modal show={showEditProfileModal} onHide={() => setShowEditProfileModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Editar Perfil</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group controlId="formNombre">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={editUserProfileData.nombre}
+                      onChange={(e) => setEditUserProfileData({ ...editUserProfileData, nombre: e.target.value })}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={editUserProfileData.email}
+                      onChange={(e) => setEditUserProfileData({ ...editUserProfileData, email: e.target.value })}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formTelefono">
+                    <Form.Label>Teléfono</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={editUserProfileData.telefono}
+                      onChange={(e) => setEditUserProfileData({ ...editUserProfileData, telefono: e.target.value })}
+                    />
+                  </Form.Group>
+
+                  <br/>
+                  <Button className="btn-aceptar" variant="primary" onClick={handleUpdateProfile}>
+                    Actualizar
+                  </Button>
+                </Form>
+              </Modal.Body>
+            </Modal>
+
+            {/* Modal para editar imagen de perfil */}
+            <Modal show={showEditImageModal} onHide={() => setShowEditImageModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Editar Imagen de Perfil</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group controlId="formProfileImage">
+                    <Form.Label>Cargar nueva imagen de perfil</Form.Label>
+                    <Form.Control type="file" onChange={handleImageChange} />
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowEditImageModal(false)}>
+                  Cancelar
+                </Button>
+                <Button className="btn-aceptar" variant="primary" onClick={handleUpdateImage}>
+                  Guardar Cambios
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            {/*Modal para eliminar el usuario*/}
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirmar Eliminación</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>¿Estás seguro de que deseas eliminar tu perfil? Esta acción no se puede deshacer.</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                  Cancelar
+                </Button>
+                <Button variant="danger" onClick={confirmDeleteProfile}>
+                  Eliminar
+                </Button>
+              </Modal.Footer>
             </Modal>
 
             {/* Modal para editar el perfil del usuario */}
@@ -653,7 +810,7 @@ return (
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             width: 18rem; 
-            height: 36rem;
+            height: 40rem;
         }
 
         .card-body {
@@ -716,8 +873,7 @@ return (
             margin: 0;
             padding: 0;
         }
-        
-        .btn-editar-perfil{
+            .btn-editar-perfil{
     margin-right: 10px;
     background-color: #ffc107;
     border-color: #ffc107;

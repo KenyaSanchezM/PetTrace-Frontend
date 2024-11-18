@@ -9,10 +9,12 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
     const [selectedSex, setSelectedSex] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
+    const [selectedEstado, setSelectedEstado] = useState('');
     
     const [showFilters, setShowFilters] = useState(false);
     const [showBreeds, setShowBreeds] = useState(false);
     const [showColors, setShowColors] = useState(false);
+
 
     const availableBreeds = ['Afgano', 'Akita', 'Alaskan Malamute',  'Basenji', 'Basset Hound',
         'Beagle', 'Bearded Collie', 'Bichon Frise', 'Border Collie', 'Border Terrier',
@@ -32,6 +34,33 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
 
     const availableColors = ['negro', 'blanco', 'gris', 'cafe', 'amarillo', 'rojizo','dorado','naranja', 'multicolor','manchas'];
 
+    const estados = [
+        'Aguascalientes',
+        'Baja California',
+        'Baja California Sur',
+        'Campeche',
+        'Coahuila',
+        'Colima',
+        'Chiapas',
+        'Chihuahua',
+        'Durango',
+        'Distrito Federal',
+        'Guanajuato',
+        'Guerrero',
+        'Hidalgo',
+        'Jalisco',
+        'México',
+        'Michoacán',
+        'Morelos',
+        'Nayarit',
+        'Oaxaca',
+        'Quintana Roo',
+        'San Luis Potosí',
+        'Sonora',
+        'Yucatán'
+      ];
+      
+    
     const handleCheckboxChange = (e, type) => {
         const value = e.target.value;
         const isChecked = e.target.checked;
@@ -50,6 +79,7 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
             sex: selectedSex,
             date: selectedDate,
             status: selectedStatus,
+            estado: selectedEstado, // Aquí debería contener el valor del estado seleccionado
         };
     
         // Solo agregar el filtro is_mine si se ha seleccionado (true o false)
@@ -57,19 +87,11 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
             filters.is_mine = is_mine;
         }
     
-        onFilterSubmit(filters);
+        console.log("Selected Estado: ", selectedEstado); // Verifica el valor seleccionado aquí
     
-
-        console.log({
-            isMineNumber: is_mine,
-            filters: filters
-        });
-    
-        // Llamar la función que envía los filtros
         onFilterSubmit(filters); 
-    
-        
     };
+    
     
     return (
         <div className="filtros-container">
@@ -137,11 +159,26 @@ const FiltrosRazas = ({ onFilterSubmit }) => {
                     <div className="filter-section">
                         <h4>Estatus</h4>
                         <select onChange={(e) => setSelectedStatus(e.target.value)}>
+                            
                             <option value="">Selecciona</option>
                             <option value="perdido">Perdido</option>
                             <option value="encontrado">Encontrado</option>
                         </select>
                     </div>
+
+                    <div className="filter-section">
+                        <h4>Estado</h4>
+                        <select onChange={(e) => setSelectedEstado(e.target.value)}>
+                            <option value="">Selecciona un estado</option>
+                            {estados.map((estado, index) => (
+                                <option key={index} value={estado}>
+                                    {estado}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+
 
                     <button className="search-button" onClick={handleSearchClick}>Buscar</button>
                 </div>

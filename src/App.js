@@ -18,7 +18,7 @@ import RegistroPerrosRefugios from './components/RegistroPerrosRefugios';
 import RegistroPerros from './components/RegistroPerros'; // Importa el componente
 import './App.css'; 
 import PerfilUsuario from './components/PerfilUsuario';
-import RegistrarEvento from './components/RegistrarEvento';
+import RegistarEvento from './components/RegistrarEvento';
 //import ReportModal from './components/Report';
 import HomeUser from './components/HomeUser';
 import Eventos from './components/Eventos';
@@ -32,6 +32,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showRegistrarEvento, setShowRegistrarEvento] = useState(false);
   const [showMatchForm, setShowMatchForm] = useState(false);
 
 
@@ -43,6 +44,9 @@ function App() {
 
   const handleShowMatchForm = () => setShowMatchForm(true);
   const handleCloseMatchForm = () => setShowMatchForm(false);
+
+  const handleShowRegistrarEvento = () => setShowRegistrarEvento(true);
+  const handleCloseRegistrarEvento = () => setShowRegistrarEvento(false);
 
   useEffect(() => {
     // Verificar si el usuario está autenticado al cargar la aplicación
@@ -75,6 +79,7 @@ function App() {
           onSignInClick={handleShowModal}
           onLogoutClick={handleLogout}
           onRegisterClick={handleShowRegisterModal}
+          onRegistrarEventoClick={handleShowRegistrarEvento}
         />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -92,7 +97,7 @@ function App() {
           <Route path='/eventos' element={<Eventos />} />
           <Route path="/ir-perfil-usuario/:userId" element={<IrPerfilUser />} />
           <Route path="/api/ir-perfil-refugio/:id" element={<PresentRef />} />
-          <Route path='/registro-eventos' element={<RegistrarEvento />} />
+          <Route path='/registro-eventos' element={<RegistarEvento />} />
           <Route path="/api/match" element={<MatchForm />} />
           <Route path="/match-resultados" element={<MatchResults />} />
 
@@ -101,6 +106,7 @@ function App() {
         <SignIn show={showModal} handleClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
         <MatchForm show={showMatchForm} handleClose={handleCloseMatchForm} />
+
       </div>
     </Router>
   ); 

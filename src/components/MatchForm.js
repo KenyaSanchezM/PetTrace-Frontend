@@ -25,7 +25,7 @@ const availableBreeds = [
     const MatchForm = ({ show, handleClose, shelterId }) => {
     const [formData, setFormData] = useState({
         tamanio: '',
-        color: [],
+        edad: '',
         raza: '',
         temperamento: '',
     });
@@ -117,79 +117,21 @@ const availableBreeds = [
                   </Form.Control>
                 </Form.Group>
 
-                {/* Colores */}
-                <Form.Group controlId="color" className="mb-3">
-                    <Form.Label>Color</Form.Label>
-                    <Form.Check
-                    type="checkbox"
-                    label="Negro"
-                    name="negro"
-                    checked={formData.color.includes('negro')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Blanco"
-                    name="blanco"
-                    checked={formData.color.includes('blanco')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Gris"
-                    name="gris"
-                    checked={formData.color.includes('gris')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Café"
-                    name="cafe"
-                    checked={formData.color.includes('cafe')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Amarillo"
-                    name="amarillo"
-                    checked={formData.color.includes('amarillo')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Rojizo"
-                    name="rojizo"
-                    checked={formData.color.includes('rojizo')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Dorado"
-                    name="dorado"
-                    checked={formData.color.includes('dorado')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Naranja"
-                    name="naranja"
-                    checked={formData.color.includes('naranja')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Manchas"
-                    name="manchas"
-                    checked={formData.color.includes('manchas')}
-                    onChange={handleColorChange}
-                    />
-                    <Form.Check
-                    type="checkbox"
-                    label="Multicolor"
-                    name="multicolor"
-                    checked={formData.color.includes('multicolor')}
-                    onChange={handleColorChange}
-                    />
+                {/* Edad */}
+                <Form.Group controlId="edad" className="mb-3">
+                <Form.Label>Edad</Form.Label>
+                <Form.Control
+                    as="select"
+                    name="edad"
+                    value={formData.edad}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Selecciona una edad</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Joven">Joven</option>
+                    <option value="Adulto">Adulto</option>
+                    <option value="Anciano">Anciano</option>
+                  </Form.Control>
                 </Form.Group>
                 {/* Selección de Razas */}
                 <Form.Group controlId="raza" className="mb-3">

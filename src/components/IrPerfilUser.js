@@ -72,10 +72,12 @@ const IrPerfilUser = () => {
                                                             <div className="card-body">
                                                                 <p className='p-name'>{perro.nombre}</p>
                                                                 <p className='text'>
-                                                                    <strong>Estado: </strong>{perro.form_type ? 'Perdido' : 'Encontrado'}<br />
+                                                                    <strong>Estatus: </strong>{perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'}<br />
                                                                     <strong>Edad:</strong> {perro.edad}<br />
                                                                     <strong>Color:</strong> {perro.color}<br />
-                                                                    <strong>Ubicación:</strong> {perro.ubicacion}<br />
+                                                                    <strong>Estado:</strong> {perro.estado}<br />
+                                                                    <strong>Ciudad:</strong> {perro.ciudad}<br />
+                                                                    <strong>Direccion:</strong> {perro.direccion}<br />
                                                                     <strong>¿Tiene collar?:</strong> {perro.tieneCollar ? 'Sí' : 'No'}<br />
                                                                     <strong>Características:</strong> {perro.caracteristicas}<br />
                                                                     <strong>Fecha:</strong> {perro.fecha}
@@ -176,7 +178,7 @@ const IrPerfilUser = () => {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             width: 18rem; 
-            height: 36rem;
+            height: 40rem;
         }
 
         .card-body {

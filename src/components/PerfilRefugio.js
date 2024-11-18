@@ -6,7 +6,6 @@ import RegistroPerrosRefugio from './RegistroPerrosRefugios';
 import RegistrarEvento from './RegistrarEvento';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './PerfilRefugio.css';
 import TimePicker from 'react-time-picker'; 
 import { Toast } from 'react-bootstrap';
 
@@ -365,11 +364,7 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                               <h5 className="font-weight-light"><i className="fa-solid fa-piggy-bank"></i> {cuenta}</h5>
                               <a href={facebook}><i className="fa-brands fa-facebook" style={{ marginTop: '20px', fontSize: '1.5rem', color: '#070B83' }}></i></a>
                               <a href={instagram}><i className="fa-brands fa-instagram" style={{ marginTop: '20px', marginLeft: '20px', color: '#B817A9', fontSize: '1.5rem' }}></i></a>
-                              <div>
-                                <Button variant="primary" onClick={handleShowRegistro}>
-                                  Registrar un perro
-                                </Button>
-                              </div>  
+                              
                           </div>
                       </div>
                   </div>
@@ -392,13 +387,21 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
               <div className="container px-5 mt-5">
               <div className="row justify-content-center">
                 <div className="col-auto">
-                    <button className={`btn btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} onClick={() => setActiveButton('perritos')}>
-                        Perritos <i className="fa-solid fa-dog" style={{ marginLeft: '10px' }}></i>
-                    </button>
+                <button 
+                    className={`btn btn-elect ${activeButton === 'perritos' ? 'active' : ''}`} 
+                    onClick={() => setActiveButton('perritos')}
+                    style={{ fontSize: '20px' }}  // Aumenta el tamaño de la letra
+                  >
+                    Perritos <i className="fa-solid fa-dog" style={{ marginLeft: '50px' }}></i>
+                  </button>
                 </div>
                 <div className="col-auto">
-                    <button className={`btn btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} onClick={() => setActiveButton('eventos')}>
-                        Eventos con Causa y Voluntariado
+                  <button 
+                    className={`btn btn-elect ${activeButton === 'eventos' ? 'active' : ''}`} 
+                    onClick={() => setActiveButton('eventos')}
+                    style={{ fontSize: '20px' }}  // Aumenta el tamaño de la letra
+                  >
+                    Eventos con causa y voluntariado
                     </button>
                 </div>
             </div>
@@ -423,9 +426,10 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                                   <Button variant="danger" onClick={() => handleDeleteEvent(evento.id)} className="me-2">
                                     <i className="fa-solid fa-trash"></i>
                                   </Button>
-                                  <Button variant="warning" /*onClick={() => handleEditEvento(evento)}*/>
+
+                                  {/*<Button variant="warning" onClick={() => handleEditEvento(evento)}>
                                     <i className="fa-solid fa-pencil-alt"></i>
-                                  </Button>
+                                  </Button>*/}
                                 </div>
                               }
                              />
@@ -433,10 +437,25 @@ const HeadSection = ({ profile_image, image1, image2, image3, titulo, descripcio
                       </div>
                   ) : (
                       <div className='row'>
-                        <div>
-                          <Button className="btn-regperr" variant="primary" onClick={handleShowRegistro}><i class="bi bi-plus-circle"> Agregar Perro</i> 
-                          </Button>
-                        </div>
+                        <div style={{ textAlign: 'center' }}>  {/* Centra el botón */}
+                        <Button 
+                          style={{
+                            margin: '20px auto',  /* margen superior/inferior y centrado */
+                            border: '2px solid orange',  /* borde naranja */
+                            color: 'orange',  /* color de la letra */
+                            backgroundColor: 'white',  /* fondo blanco */
+                            padding: '10px 20px',  /* espacio interno */
+                            fontSize: '16px',  /* tamaño de la fuente */
+                            display: 'inline-block',  /* necesario para el centrado */
+                            cursor: 'pointer',  /* cursor de mano */
+                            transition: 'background-color 0.3s ease'  /* transición suave */
+                          }} 
+                          onClick={handleShowRegistro}
+                        >
+                          <i className="bi bi-plus-circle"> Agregar Perro</i>
+                        </Button>
+                      </div>
+
                           {userData && userData.predictions && userData.predictions.map((perro) => (
                               <Col md={4} key={perro.id} className="mb-4">
                                   <TarjetaPerros
