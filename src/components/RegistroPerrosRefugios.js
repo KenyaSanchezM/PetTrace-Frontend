@@ -164,7 +164,7 @@ const RegistroPerrosRefugio = ({ show, handleClose, shelterUserId }) => {
   return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }}>
       <Modal.Header closeButton>
-        <Modal.Title>Registro de Perros de Refugio</Modal.Title>
+        <Modal.Title>Registra a un perro</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ maxHeight: '1400px', overflowY: 'auto' }}>
 

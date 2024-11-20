@@ -128,7 +128,7 @@ return (
             <div className="DogCard-body">
                 <div className="dog-details">
                     <p><strong>Nombre:</strong> {texts[1] || 'No disponible'}</p>
-                    <p><strong>Estatus:</strong> {texts[2] || 'No disponible'}</p>
+                    <p><strong>Estatus:</strong> {texts[2] ? texts[2].charAt(0).toUpperCase() + texts[2].slice(1) : 'No disponible'}</p>
                     <p><strong>Características:</strong> {texts[0] || 'No disponible'}</p>
                     <p><strong>Estado:</strong> {texts[3] || 'No disponible'}</p>
                     <p><strong>Ciudad:</strong> {texts[4] || 'No disponible'}</p>

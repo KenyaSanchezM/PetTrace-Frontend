@@ -95,8 +95,15 @@ const availableBreeds = [
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Preferencias de Mascota Ideal</Modal.Title>
-      </Modal.Header>
+        <Modal.Title>¿Qué debería tener tu mascota ideal?</Modal.Title>
+      </Modal.Header>  
+      <Modal.Body>
+      <p style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.6)", marginTop: "0.5rem", marginBottom: "-1rem", textAlign: "center" }}>
+        Te mostraremos coincidencias con al menos uno de los filtros que elijas, entre más filtros agregues más probable 
+        es que encontremos a una mascota que cumpla con alguno(s) de tus requisitos.
+      </p>
+      </Modal.Body>     
+        
       <Modal.Body>
         <Container>
           <Row>

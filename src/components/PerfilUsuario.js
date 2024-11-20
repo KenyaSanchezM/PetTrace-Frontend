@@ -42,7 +42,7 @@ const PerfilUsuario = () => {
       } catch (error) {
         console.error('Error fetching user data:', error.response ? error.response.data : error.message);
       }
-    };
+    }; 
     fetchUserData();
   }, []);
 
@@ -417,7 +417,12 @@ return (
                                 <p className='text'>
                                   <strong>Estatus: </strong>{perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'}<br />
                                   <strong>Edad:</strong> {perro.edad}<br />
-                                  <strong>Color:</strong> {perro.color}<br />
+                                  <strong>Color:</strong> {typeof perro.color === 'string' 
+                                                          ? perro.color.replace(/[\[\]"]+/g, '') 
+                                                          : Array.isArray(perro.color) 
+                                                          ? perro.color.join(', ') 
+                                                          : 'No especificado'}
+                                                          <br />
                                   <strong>Estado:</strong> {perro.estado}<br />
                                   <strong>Ciudad:</strong> {perro.ciudad}<br />
                                   <strong>Direccion:</strong> {perro.direccion}<br />

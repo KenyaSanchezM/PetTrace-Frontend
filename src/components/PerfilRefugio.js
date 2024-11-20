@@ -32,7 +32,6 @@ const PerfilUsuarioRefugio = () => {
     nombre_evento: '',
     descripcion_evento: '',
     lugar_evento:'',
-    //motivo:'',
     anfitrion_evento:'',
     fecha_evento:'',
   });
@@ -48,7 +47,7 @@ const PerfilUsuarioRefugio = () => {
       try {
         const response = await axios.get('http://localhost:8000/api/perfil-refugio/', {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}` 
           }
         });
 

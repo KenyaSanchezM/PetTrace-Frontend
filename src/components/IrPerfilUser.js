@@ -59,7 +59,7 @@ const IrPerfilUser = () => {
                             <div className='cont2'> 
                                 <Row>
                                     <Col>
-                                        <h3>Perros Registrados</h3>
+                                        <h3>Perros registrados</h3>
                                         <hr className="mb-4" />
                                         {userData.predictions && userData.predictions.length > 0 ? (
                                             <Row className='tarjetas'>
@@ -74,7 +74,12 @@ const IrPerfilUser = () => {
                                                                 <p className='text'>
                                                                     <strong>Estatus: </strong>{perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'}<br />
                                                                     <strong>Edad:</strong> {perro.edad}<br />
-                                                                    <strong>Color:</strong> {perro.color}<br />
+                                                                    <strong>Color:</strong> {typeof perro.color === 'string' 
+                                                                        ? perro.color.replace(/[\[\]"]+/g, '') 
+                                                                        : Array.isArray(perro.color) 
+                                                                        ? perro.color.join(', ') 
+                                                                        : 'No especificado'}
+                                                                        <br />
                                                                     <strong>Estado:</strong> {perro.estado}<br />
                                                                     <strong>Ciudad:</strong> {perro.ciudad}<br />
                                                                     <strong>Direccion:</strong> {perro.direccion}<br />

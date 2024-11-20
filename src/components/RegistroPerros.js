@@ -177,7 +177,7 @@ const RegistroPerros = ({ show, handleClose, user_id }) => {
 return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }}>
       <Modal.Header closeButton>
-        <Modal.Title>Registro de perro</Modal.Title>
+        <Modal.Title>Registra a tu perro</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ maxHeight: '1600px', overflowY: 'auto' }}> {/* Agregar estilos aquí */}
         <Form onSubmit={handleSubmit}>

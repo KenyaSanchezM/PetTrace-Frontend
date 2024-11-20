@@ -92,7 +92,25 @@ function Home() {
       <Container className="py-5">
     {/* Primera sección - Carrusel de React-Bootstrap */}
     <div className="section" style={{ marginBottom: '100px' }}>
-        <h2 className="section-title">¡Ayudálos a volver a casa!</h2>
+        <div 
+          className="text-center p-3" 
+          style={{
+            backgroundColor: 'transparent', 
+            borderTop: '2px solid black', 
+            borderBottom: '2px solid black',
+            width: '100%', // Abarca todo el ancho
+            fontFamily: 'Arial, sans-serif', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100px', 
+          }}
+        >
+          <h2 className="section-title" style={{ textAlign: 'center', marginTop: '30px' }}>
+            ¡Ayudálos a volver a casa!
+          </h2>
+        </div>
+        
         <Carousel id="carouselPerros" interval={3000} fade>
           <Carousel.Item>
               <Row>
@@ -102,7 +120,8 @@ function Home() {
                           image={perro.image} 
                           nombre={perro.nombre} 
                           caracteristicas={perro.caracteristicas} 
-                          form_type={perro.form_type} 
+                          form_type={perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'} 
+                          
                       />
                   ))}
               </Row>
@@ -115,7 +134,7 @@ function Home() {
                           image={perro.image} 
                           nombre={perro.nombre} 
                           caracteristicas={perro.caracteristicas} 
-                          form_type={perro.form_type} 
+                          form_type={perro.form_type === 'Perdido' ? 'Perdido' : 'Encontrado'} 
                       />
                   ))}
               </Row>
@@ -126,7 +145,23 @@ function Home() {
     </div>
 
         <div className="section">
-            <h2 className="section-title">Registra a tu mascota y nuestra IA hará el resto</h2>
+        <div 
+          className="text-center p-3" 
+          style={{
+            backgroundColor: 'transparent', 
+            borderTop: '2px solid black', 
+            borderBottom: '2px solid black',
+            width: '100%', // Abarca todo el ancho
+            fontFamily: 'Arial, sans-serif', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100px', 
+          }}
+        >
+            <h2 className="section-title" style={{ textAlign: 'center', marginTop: '30px' }}>
+              Registra a tu mascota y nuestra IA hará el resto</h2>
+          </div>
             <div>
                 <img 
                     src="/images/IA.png" 
@@ -139,11 +174,27 @@ function Home() {
 
       {/* Tercera sección */} 
       <div className="section">
-          <h2 className="section-title">Conoce los refugios</h2>
-          <div className="container" style={{ marginTop: '25px' }}>
-              <div className="row text-center">
+        <div 
+            className="text-center p-3" 
+            style={{
+              backgroundColor: 'transparent', 
+              borderTop: '2px solid black', 
+              borderBottom: '2px solid black',
+              width: '100%', // Abarca todo el ancho
+              fontFamily: 'Arial, sans-serif', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              height: '100px', 
+            }}
+          >
+          <h2 className="section-title" style={{ textAlign: 'center', marginTop: '30px' }}>
+            Conoce los refugios</h2>
+        </div>
+          <div className="container" style={{ marginTop: '26px',backgroundColor: '#f5f5f5' }}>
+              <div className="row text-center" >
                   {refugios.map(refugio => (
-                      <div className="col-6 col-md-3 mb-4" key={refugio.id}>
+                      <div className="col-6 col-md-3 mb-4" style={{ marginTop: '50px'}} key={refugio.id}>
                           <img 
                               src={refugio.profile_image ? `http://localhost:8000${refugio.profile_image}` : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6oMpCjvMKVTempfv32Vjqzsfr2voIbav5A&s"} 
                               className="imagen-refugio rounded-circle" 
