@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Container, Row, Col, Modal, Form,Image } from 'react-bootstrap';
 import axios from 'axios';
 import RegistroPerros from './RegistroPerros';
+import Header from './Header';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from 'react-router-dom';  // Cambia useHistory por useNavigate
 import { Toast } from 'react-bootstrap';

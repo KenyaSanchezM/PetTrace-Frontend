@@ -19,7 +19,7 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
     <nav className="navbar navbar-expand-lg navbar-dark" id="mainNav">
       <div className="container">
         <a className="navbar-brand d-flex align-items-center" href="#page-top">
-          <span className="ms-2">PetTrace</span>
+          <span className="ms-2"><img src="/perrazo.png" alt="Logo" /> PetTrace</span>
         </a>
         <button
           className="navbar-toggler"
