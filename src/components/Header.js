@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.css';
+import axios from 'axios';
 
 
 const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick }) => {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) return; // Si no hay token, no hacemos la solicitud
+      try {
+        const response = await axios.get('http://localhost:8000/api/perfil-usuario/', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        console.log(response.data); // Agregar para verificar la respuesta
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error.response ? error.response.data : error.message);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const getProfileLink = () => {
     const userType = localStorage.getItem('user_type'); // Obtenemos el tipo de usuario
@@ -63,9 +85,20 @@ const Header = ({ isAuthenticated, onSignInClick, onLogoutClick, onRegisterClick
               <a className="nav-link" href="/about">Acerca de nosotros</a>
             </li>
             <li className="nav-item dropdown profile">
+              {userData ? (
               <a className="nav-link dropdown-toggle profile-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img 
+                  src={`http://localhost:8000${userData.user.profile_image}`} 
+                  alt="Foto de perfil"
+                  className="rounded-circle" 
+                  style={{ width: '40px', height: '40px', objectFit: 'cover' }} 
+                />
+              </a>
+              ) : (
+                <a className="nav-link dropdown-toggle profile-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i className="bi bi-person-circle"></i>
               </a>
+              )}
               <ul className="dropdown-menu" aria-labelledby="profileDropdown">
                 {isAuthenticated ? (
                   <>

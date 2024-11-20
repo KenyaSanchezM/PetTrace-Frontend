@@ -3,6 +3,8 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './Contact.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import Swal from 'sweetalert2';
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,13 +16,29 @@ const Contact = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
     // Aquí puedes manejar el envío del formulario
+    Swal.fire({
+      icon: 'success',
+      title: 'Correo enviado',
+      text: 'Tu correo fue enviado exitosamente! :)',
+      confirmButtonText: 'Aceptar'
+    });
+
+    // Limpiar los campos del formulario
+    setFormData({
+      name: '',
+      email: '',
+      message: ''
+    });
   };
+
+  
 
   return (
     <Container className="my-5">
@@ -80,6 +98,7 @@ const Contact = () => {
         </Col>
       </Row>
     </Container>
+    
   );
 };
 

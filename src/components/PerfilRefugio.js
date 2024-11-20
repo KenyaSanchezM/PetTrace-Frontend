@@ -35,7 +35,6 @@ const PerfilUsuarioRefugio = () => {
     //motivo:'',
     anfitrion_evento:'',
     fecha_evento:'',
-    hora_evento:'',
   });
   
   const [perros, setPerros] = useState([]);
@@ -215,9 +214,18 @@ const PerfilUsuarioRefugio = () => {
     }
 
     const token = localStorage.getItem('access_token');
+
+    const dataToUpdateEvent = { 
+      ...editEventoData,
+    };
+
+    delete dataToUpdateEvent.motivo;
+    delete dataToUpdateEvent.hora_evento;
+    delete dataToUpdateEvent.imagen_evento;
+
     
     try {
-      const response = await axios.put(`http://localhost:8000/api/eventos/${editEventoData.id}/update/`, editEventoData, {
+      const response = await axios.put(`http://localhost:8000/api/event/update/${editEventoData.id}/`, dataToUpdateEvent, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

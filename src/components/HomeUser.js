@@ -22,6 +22,30 @@ const HomeUser = () => {
         estado: ''
     });
 
+    const [errorEventos, setErrorEventos] = useState(null);
+    const [eventos, setEventos] = useState([]);
+    useEffect(() => {
+        fetchUltimosEventos();
+    }, []);
+
+    const fetchUltimosEventos = async () => {
+        const token = localStorage.getItem('access_token'); // Asegúrate de que el token esté almacenado correctamente
+        try {
+            const response = await axios.get('http://localhost:8000/api/ultimos-eventos/', {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Incluye el token
+                }
+            });
+            setEventos(response.data);
+        } catch (error) {
+            console.error('Error al obtener los últimos eventos:', error);
+        }
+    };
+
+    const [showModal, setShowModal] = useState(false);
+    const [modalInfo, setModalInfo] = useState({});
+
+
     const userType = localStorage.getItem('user_type');
     const userId = localStorage.getItem('user_id');
 
@@ -104,21 +128,24 @@ const HomeUser = () => {
 
     return (
         <div className="home-user">
-            <div className="sidebar">
-                <h4>Eventos con causa</h4>
+            <div className="sidebar" >
+            <h4 ><a style={{textDecoration: 'none', color:'#000'} } href="/eventos">Eventos con causa</a></h4>
                 <hr />
-                <div className="EventCardHome">
-                    <h5>Adopta</h5>
-                    <img src="https://www.dondeir.com/wp-content/uploads/2021/02/dale-hogar-estos-perrtios-gatitos-fundaciones.jpg" alt="Evento 1" className="event-image" />
-                </div>
-                <div className="EventCardHome">
-                    <h5>Rifa</h5>
-                    <img src="https://editorial.aristeguinoticias.com/wp-content/uploads/2023/06/colonia-dogtores-refugio-perros-puebla-250623-2.jpg" alt="Evento 2" className="event-image" />
-                </div>
-                <div className="EventCardHome">
-                    <h5>Voluntariado</h5>
-                    <img src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/07/22/voluntarios_animales.jpg" alt="Evento 3" className="event-image" />
-                </div>
+                {errorEventos ? (
+                    <p>{errorEventos}</p>
+                ) : (
+                    eventos.map((evento) => (
+                        <div className="EventCardHome" key={evento.id}>
+                            <h5>{evento.nombre_evento}</h5>
+                                <img
+                                    src={evento.imagen_evento ? `http://localhost:8000${evento.imagen_evento}` : '/images/eventos.jpg'}
+                                    alt={evento.nombre_evento}
+                                    className="event-image"
+                                />
+                            <p><strong>Fecha:</strong> {evento.fecha_evento || 'Fecha no disponible'}</p>
+                        </div>
+                    ))
+                )}
                 <div className="view-more">
                     <a href="/eventos">Ver más</a>
                 </div>
